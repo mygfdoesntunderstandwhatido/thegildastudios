@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Instructions for every coding agent working in this repo. Codex reads this file directly, and Claude Code reads it through `CLAUDE.md`. Keep project rules here, in one place.
+Instructions for every coding agent working in this repo. This project is built jointly by Codex and Claude Code. Codex reads this file directly, and Claude Code reads it through `CLAUDE.md`. Keep shared project rules here so both agents follow the same workflow.
 
 ## The project
 
@@ -31,10 +31,13 @@ Each issue carries exactly one lane label:
 
 ## Branches, commits, PRs
 
-- **One issue, one branch, one PR.** Branch names: `claude/<issue>-<slug>` or `codex/<issue>-<slug>`. Codex cloud's automatic `codex/…` names are fine.
-- PR title: the issue title plus the number, for example `[Phase 2.1] Port the design tokens into CSS custom properties (#3)`.
-- The PR body uses `.github/pull_request_template.md` and must contain `Closes #<issue>`.
-- Copy the issue's acceptance criteria into the PR, and tick only the ones you've actually checked.
+- **Batch related, ready issues into one branch and one PR to reduce paid Netlify deploys.** This applies to both Codex and Claude Code. Keep each issue's lane, dependencies and scope intact.
+- Before opening a PR, check existing PRs for related work. Reuse the batch's PR for follow-up changes. Each batch has one owning agent; use separate worktrees and coordinate an explicit handoff before changing the other agent's branch.
+- Finish the local batch and run its checks before pushing. Batch follow-up fixes into as few pushes as practical: each push to an open PR can trigger another Netlify Deploy Preview.
+- Branch names: `claude/<issue>-<slug>` or `codex/<issue>-<slug>` using the first issue in the batch. Codex cloud's automatic `codex/…` names are fine.
+- PR title: describe the combined changes and list all issue numbers. For a single issue, use its title plus the number.
+- The PR body uses `.github/pull_request_template.md` and must contain a separate `Closes #<issue>` line for every issue in the batch.
+- Copy each issue's acceptance criteria into its own section of the PR, and tick only the ones you've actually checked.
 - Small, focused commits. Never push to `main` directly: it's protected.
 - Before opening the PR, rebase on the latest `main` and rerun the checks.
 

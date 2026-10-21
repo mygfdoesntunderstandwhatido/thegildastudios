@@ -33,7 +33,7 @@ Use a full-width band with a container inside it:
   Light row rules use Brine at 25%, or 20% with `.rule-row--soft`. Dark row
   rules use Cream at 25%; dark opening rules use Cream at 35%.
 - `.label` applies the shared mono label defaults. The Label component's
-  additional sizes and tones belong to #7.
+  additional sizes and tones are documented in [Shared components](../components/README.md).
 
 For the About-style dark decoration, add `band--decorated` to a Brine band and
 an empty `<div class="band__mark" aria-hidden="true"></div>` inside. It clips

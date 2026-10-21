@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<title>The Gilda Studios · Website · Projects</title>
+<link rel="stylesheet" href="_ds/gilda-studios-design-system-9ab164db-40cd-45c8-99f8-8fe06155eb90/styles.css">
+<script src="_ds/gilda-studios-design-system-9ab164db-40cd-45c8-99f8-8fe06155eb90/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>body{margin:0;background:#DCD8CD;-webkit-font-smoothing:antialiased}a{color:#646E2C}a:hover{color:#24261A}.dv-turn{padding:48px 56px 40px;border-bottom:1px solid rgba(36,38,26,.15)}.dv-thd{display:flex;align-items:baseline;gap:12px;margin:0 0 8px}.dv-tid{font:500 11px 'IBM Plex Mono',monospace;padding:4px 8px;background:#24261A;color:#F3EEE2;border-radius:4px;text-decoration:none}.dv-tname{font:400 28px/1.1 'Gilda Display',serif;color:#24261A}.dv-intro{font:15px/1.55 'Archivo',sans-serif;color:#3A3C2E;max-width:860px;margin:0 0 36px}.dv-opt{display:flex;flex-direction:column;gap:14px}.dv-oid{font:500 11px 'IBM Plex Mono',monospace;padding:4px 8px;background:rgba(36,38,26,.1);color:#24261A;border-radius:4px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:10px;font:15px/1.4 'Archivo',sans-serif;color:#3A3C2E}.dv-olabel b{font:400 22px/1 'Gilda Display',serif;color:#24261A;font-weight:400}.dv-row{display:flex;gap:40px;align-items:flex-start}.dv-card{background:#F3EEE2;box-shadow:0 10px 30px rgba(36,38,26,.12);overflow:hidden;flex:none}.dv-ph{border-radius:28px}.dv-cap{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C;margin:0 0 10px}</style>
+</helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Projects</span></div>
+<p class="dv-intro">"Work" is now "Projects" across the site. <a class="dv-oid" href="#1a">1a</a> is the index with branch filters. <a class="dv-oid" href="#1b">1b</a> is the case study template: every project fills the same slots (summary, facts, then numbered sections), and each section can hold paragraphs, lists, grouped lists or a highlighted line, so a long project and a short one both fit. Use the tabs above 1b to see all three in the same template.</p>
+
+<div style="display:flex;flex-direction:column;gap:72px">
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a><b>Projects index</b>Click a filter, or a project to open it in 1b.</div>
+<div class="dv-row">
+
+<div><p class="dv-cap">Desktop · 1280</p>
+<div class="dv-card" style="width:1280px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 56px;background:#E9E2D0;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)">
+    <a href="Website - Homepage.dc.html" style="font:400 26px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a>
+    <nav style="display:flex;gap:32px;font-size:14px;font-weight:500"><a href="Website - About.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">About</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Plan</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Build</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Grow</a><a href="#1a" style="color:#646E2C;text-decoration:none;box-shadow:inset 0 -2px 0 #646E2C;padding-bottom:4px">Projects</a></nav>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" size="sm" dc-props="{{ anchProps }}" hint-size="130px,36px">Book a chat</x-import>
+  </header>
+  <section style="padding:80px 56px 56px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:56px;align-items:end">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <span style="align-self:flex-start;padding:9px 14px;border-radius:99px;background:#E6E5B4;color:#24261A;font:500 12px/1 var(--font-mono);letter-spacing:.06em">PROJECTS · {{ countLabel }}</span>
+      <h1 style="margin:0;font:400 104px/1 var(--font-display)">Projects.</h1>
+    </div>
+    <p style="margin:0;font-size:19px;line-height:1.6;color:#3A3C2E">The businesses we've worked with, what they needed and what we did. Filter by branch to see where each ingredient came in.</p>
+  </section>
+  <section style="padding:0 56px 96px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;align-items:center;gap:10px;padding-bottom:24px;border-bottom:1px solid rgba(36,38,26,.25)">
+      <sc-for list="{{ filters }}" as="fl" hint-placeholder-count="4">
+        <button onClick="{{ fl.onClick }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:99px;background:{{ fl.bg }};color:{{ fl.fg }};box-shadow:inset 0 0 0 1.5px #24261A;font:500 11px/1 var(--font-mono);letter-spacing:.06em"><span style="width:9px;height:9px;border-radius:50%;background:{{ fl.dot }};display:{{ fl.dotD }}"></span>{{ fl.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <sc-for list="{{ shown }}" as="p" hint-placeholder-count="3">
+        <a href="#1b" onClick="{{ p.open }}" style="display:flex;flex-direction:column;gap:16px;color:#24261A;text-decoration:none" style-hover="opacity:.86">
+          <div style="position:relative;width:100%;aspect-ratio:4/3;pointer-events:none"><image-slot style="position:absolute;inset:0;width:100%;height:100%" id="{{ p.coverId }}" shape="rect" placeholder="{{ p.coverPh }}"></image-slot></div>
+          <div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:5px"><sc-for list="{{ p.dots }}" as="d"><span style="width:10px;height:10px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">{{ p.sector }}</span></div>
+          <span style="font:400 36px/1.04 var(--font-display)">{{ p.name }}</span>
+          <span style="font-size:15px;line-height:1.55;color:#3A3C2E">{{ p.short }}</span>
+          <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C">READ THE PROJECT</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="position:relative;overflow:hidden;background:#24261A;color:#F3EEE2;padding:96px 56px">
+    <div style="position:absolute;right:40px;bottom:-160px;width:494px;height:600px;background:#8E9A3C;-webkit-mask:url(assets/logos/mask-engraved.png) center/contain no-repeat;mask:url(assets/logos/mask-engraved.png) center/contain no-repeat"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:24px;max-width:640px">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">WE'LL TAKE IT FROM HERE.</span>
+      <h2 style="margin:0;font:400 80px/1 var(--font-display)">Have a project in mind?</h2>
+      <p style="margin:0;font-size:18px;line-height:1.55;color:#D6D7CC">Tell us what you're planning and we'll take it from there.</p>
+      <div style="display:flex;gap:12px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" hint-size="160px,42px">Book a call</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" dc-props="{{ anchProps }}" hint-size="280px,42px">hello@thegildastudios.com</x-import></div>
+    </div>
+  </section>
+  <footer style="background:#8A4B3B;color:#F3EEE2;padding:56px 56px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div style="display:flex;align-items:flex-start;gap:16px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:96px;width:auto"><span style="font:400 32px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">STUDIO</span><a href="Website - About.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">About</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Plan</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Build</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Grow</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">PROJECTS</span><a href="#1a" style="color:inherit;text-decoration:none" style-hover="opacity:.75">All projects</a><a href="Website - Homepage.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Client words</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">CONTACT</span><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none" style-hover="opacity:.75">hello@thegildastudios.com</a><a href="tel:+35600000000" style="color:inherit;text-decoration:none" style-hover="opacity:.75">+356 0000 0000</a></div>
+    </div>
+    <div style="display:flex;padding-top:20px;border-top:1px solid rgba(243,238,226,.35);font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 THE GILDA STUDIOS · MALTA</span></div>
+  </footer>
+</div></div>
+
+<div><p class="dv-cap">Phone · 390</p>
+<div class="dv-card dv-ph" style="width:390px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#E9E2D0;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)"><a href="Website - Homepage.dc.html" style="font:400 20px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a><span style="font:500 11px/1 var(--font-mono);letter-spacing:.1em;padding:12px 0">MENU</span></header>
+  <section style="padding:40px 24px 24px;display:flex;flex-direction:column;gap:18px">
+    <span style="align-self:flex-start;padding:8px 12px;border-radius:99px;background:#E6E5B4;color:#24261A;font:500 11px/1 var(--font-mono);letter-spacing:.06em">PROJECTS · {{ countLabel }}</span>
+    <h1 style="margin:0;font:400 60px/1 var(--font-display)">Projects.</h1>
+    <p style="margin:0;font-size:16px;line-height:1.6;color:#3A3C2E">The businesses we've worked with, what they needed and what we did.</p>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px">
+      <sc-for list="{{ filters }}" as="fl" hint-placeholder-count="4"><button onClick="{{ fl.onClick }}" style="all:unset;cursor:pointer;flex:none;display:flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:99px;background:{{ fl.bg }};color:{{ fl.fg }};box-shadow:inset 0 0 0 1.5px #24261A;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:8px;height:8px;border-radius:50%;background:{{ fl.dot }};display:{{ fl.dotD }}"></span>{{ fl.label }}</button></sc-for>
+    </div>
+  </section>
+  <section style="padding:0 24px 48px;display:flex;flex-direction:column;gap:36px">
+    <sc-for list="{{ shown }}" as="p" hint-placeholder-count="3">
+      <a href="#1b" onClick="{{ p.open }}" style="display:flex;flex-direction:column;gap:12px;color:#24261A;text-decoration:none">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;pointer-events:none"><image-slot style="position:absolute;inset:0;width:100%;height:100%" id="{{ p.coverIdM }}" shape="rect" placeholder="{{ p.coverPh }}"></image-slot></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:4px"><sc-for list="{{ p.dots }}" as="d"><span style="width:9px;height:9px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">{{ p.sector }}</span></div>
+        <span style="font:400 30px/1.06 var(--font-display)">{{ p.name }}</span>
+        <span style="font-size:15px;line-height:1.55;color:#3A3C2E">{{ p.short }}</span>
+      </a>
+    </sc-for>
+  </section>
+  <section style="background:#24261A;color:#F3EEE2;padding:48px 24px;display:flex;flex-direction:column;gap:18px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">WE'LL TAKE IT FROM HERE.</span>
+    <h2 style="margin:0;font:400 44px/1 var(--font-display)">Have a project in mind?</h2>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" style="{{ fullW }}" hint-size="100%,44px">Book a call</x-import>
+  </section>
+  <footer style="background:#8A4B3B;color:#F3EEE2;padding:40px 24px 32px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:flex-start;gap:12px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:72px;width:auto"><span style="font:400 26px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;font-size:15px"><a href="Website - About.dc.html" style="color:inherit;text-decoration:none;padding:10px 0">About</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none;padding:10px 0">Services</a><a href="#1a" style="color:inherit;text-decoration:none;padding:10px 0">Projects</a><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none;padding:10px 0">hello@thegildastudios.com</a></div>
+    <div style="display:flex;padding-top:16px;border-top:1px solid rgba(243,238,226,.35);font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 · MALTA</span></div>
+  </footer>
+</div></div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b" style="order:{{ csOrder }}"><span id="cs"></span><span id="mbn"></span><span id="dfd"></span>
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a><b>Case study template</b>Switch project:</div>
+<div style="display:flex;gap:8px">
+  <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button onClick="{{ t.onClick }}" style="all:unset;cursor:pointer;padding:10px 16px;border-radius:99px;background:{{ t.bg }};color:{{ t.fg }};box-shadow:inset 0 0 0 1.5px #24261A;font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.06em">{{ t.label }}</button></sc-for>
+</div>
+<div class="dv-row">
+
+<div id="cs-d"><p class="dv-cap">Desktop · 1280</p>
+<div class="dv-card" style="width:1280px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 56px;background:#E9E2D0;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)">
+    <a href="Website - Homepage.dc.html" style="font:400 26px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a>
+    <nav style="display:flex;gap:32px;font-size:14px;font-weight:500"><a href="Website - About.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">About</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Plan</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Build</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Grow</a><a href="#1a" style="color:#646E2C;text-decoration:none;box-shadow:inset 0 -2px 0 #646E2C;padding-bottom:4px">Projects</a></nav>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" size="sm" dc-props="{{ anchProps }}" hint-size="130px,36px">Book a chat</x-import>
+  </header>
+  <section style="padding:56px 56px 0;display:flex;flex-direction:column;gap:40px">
+    <a href="#1a" style="align-self:flex-start;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C;text-decoration:none;padding:8px 0">ALL PROJECTS</a>
+    <div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:56px;align-items:end">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:5px"><sc-for list="{{ cs.dots }}" as="d"><span style="width:12px;height:12px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">{{ cs.sector }}</span></div>
+        <h1 style="margin:0;font:400 104px/1 var(--font-display);text-wrap:balance">{{ cs.name }}</h1>
+      </div>
+      <p style="margin:0;font:400 26px/1.3 var(--font-display);text-wrap:pretty">{{ cs.summary }}</p>
+    </div>
+    <div style="position:relative;width:100%;aspect-ratio:21/8"><image-slot style="position:absolute;inset:0;width:100%;height:100%" id="{{ cs.heroId }}" shape="rect" placeholder="{{ cs.heroPh }}"></image-slot></div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;padding-bottom:56px">
+      <sc-for list="{{ cs.facts }}" as="fa" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:2px solid #24261A"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">{{ fa.k }}</span><span style="font-size:16px;line-height:1.45">{{ fa.v }}</span></div></sc-for>
+    </div>
+  </section>
+  <sc-for list="{{ cs.sections }}" as="se" hint-placeholder-count="4">
+    <section style="background:{{ se.bg }};padding:88px 56px;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:72px">
+      <div style="display:flex;flex-direction:column;gap:14px;padding-top:18px;border-top:2px solid #24261A;align-self:start">
+        <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:{{ cs.accent }}">{{ se.n }}</span>
+        <h2 style="margin:0;font:400 48px/1.04 var(--font-display)">{{ se.title }}</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px;max-width:720px">
+        <sc-for list="{{ se.blocks }}" as="bl"><sc-if value="{{ bl.show }}" hint-placeholder-val="{{ true }}">
+          <sc-if value="{{ bl.isP }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:18px;line-height:1.65;color:#3A3C2E;text-wrap:pretty">{{ bl.t }}</p></sc-if>
+          <sc-if value="{{ bl.isBigP }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font:400 34px/1.22 var(--font-display);color:#24261A;text-wrap:pretty">{{ bl.t }}</p></sc-if>
+          <sc-if value="{{ bl.isQuote }}" hint-placeholder-val="{{ false }}"><figure style="margin:0;display:flex;flex-direction:column;gap:16px;padding:24px 0 28px;border-top:2px solid #24261A"><span style="font:400 96px/.5 var(--font-display);color:#646E2C;margin-top:28px">“</span><blockquote style="margin:0;font:400 24px/1.35 var(--font-display);text-wrap:pretty">{{ bl.t }}</blockquote><figcaption style="display:flex;flex-direction:column;gap:6px"><span style="font:400 20px/1.1 var(--font-display)">{{ bl.name }}</span><span style="font:500 11px/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ bl.role }}</span></figcaption></figure></sc-if>
+          <sc-if value="{{ bl.isHi }}" hint-placeholder-val="{{ false }}"><div style="position:relative;overflow:hidden;margin:16px 0 0;padding:44px 48px;background:#24261A;color:#F3EEE2;display:flex;flex-direction:column;gap:20px"><div style="position:absolute;right:-30px;bottom:-70px;width:190px;height:231px;background:#646E2C;-webkit-mask:url(assets/logos/mask-engraved.png) center/contain no-repeat;mask:url(assets/logos/mask-engraved.png) center/contain no-repeat"></div><span style="position:relative;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">{{ bl.label }}</span><p style="position:relative;margin:0;font:400 40px/1.15 var(--font-display);text-wrap:pretty;max-width:520px">{{ bl.t }}</p></div></sc-if>
+          <sc-if value="{{ bl.isCallout }}" hint-placeholder-val="{{ false }}"><p style="margin:8px 0;padding:28px 0;border-top:2px solid #24261A;border-bottom:1px solid rgba(36,38,26,.25);font:400 34px/1.2 var(--font-display);text-wrap:pretty">{{ bl.t }}</p></sc-if>
+          <sc-if value="{{ bl.isList }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.18)"><sc-for list="{{ bl.items }}" as="it"><div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid rgba(36,38,26,.18)"><span style="font:500 11px/1.9 var(--font-mono);letter-spacing:.06em;color:{{ cs.accent }}">{{ it.n }}</span><span style="font-size:17px;line-height:1.55">{{ it.t }}</span></div></sc-for></div></sc-if>
+          <sc-if value="{{ bl.isPillars }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 32px;margin-top:12px"><sc-for list="{{ bl.pillars }}" as="pl"><div style="grid-column:{{ pl.col }};order:{{ pl.ord }};display:flex;flex-direction:column;border-top:2px solid #24261A;border-bottom:1px solid rgba(36,38,26,.25)"><button onClick="{{ pl.toggle }}" style="all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:24px 0"><div style="display:flex;flex-direction:column;gap:12px"><span style="display:flex;align-items:center;gap:8px;font:500 12px/1 var(--font-mono);letter-spacing:.06em"><span style="width:12px;height:12px;border-radius:50%;background:{{ pl.c }}"></span>{{ pl.n }} / {{ pl.ing }}</span><span style="font:400 52px/1 var(--font-display)">{{ pl.name }}</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">{{ pl.cnt }}</span></div><div style="display:flex;align-items:center;gap:14px"><img src="{{ pl.img }}" alt="" style="height:96px;width:auto;max-width:84px;object-fit:contain"><span style="width:32px;height:32px;border-radius:50%;background:#24261A;color:#F3EEE2;display:flex;align-items:center;justify-content:center;font:400 18px/1 var(--font-body);flex:none">{{ pl.sign }}</span></div></button><sc-if value="{{ pl.on }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:{{ pl.gcols }};gap:8px 40px;padding-bottom:20px"><sc-for list="{{ pl.groups }}" as="g"><div style="display:flex;flex-direction:column"><span style="font:400 26px/1.15 var(--font-display);padding:14px 0 10px">{{ g.title }}</span><div style="display:grid;grid-template-columns:{{ pl.icols }};column-gap:40px"><sc-for list="{{ g.items }}" as="gi"><span style="font-size:17px;line-height:1.5;padding:11px 0;border-top:1px solid rgba(36,38,26,.15)">{{ gi }}</span></sc-for></div></div></sc-for></div></sc-if></div></sc-for></div></sc-if>
+          <sc-if value="{{ bl.isGroups }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 40px"><sc-for list="{{ bl.groups }}" as="g"><div style="display:flex;flex-direction:column;gap:4px;padding-top:16px;border-top:2px solid #24261A"><span style="font:400 26px/1.1 var(--font-display);margin-bottom:8px">{{ g.title }}</span><sc-for list="{{ g.items }}" as="gi"><span style="font-size:15px;line-height:1.5;padding:8px 0;border-bottom:1px solid rgba(36,38,26,.15)">{{ gi }}</span></sc-for></div></sc-for></div></sc-if>
+        </sc-if></sc-for>
+        <sc-if value="{{ se.hasMore }}" hint-placeholder-val="{{ false }}"><button onClick="{{ se.toggle }}" style="all:unset;cursor:pointer;align-self:flex-start;display:flex;align-items:center;gap:12px;min-height:44px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#24261A"><span style="width:28px;height:28px;border-radius:50%;background:#24261A;color:#F3EEE2;display:flex;align-items:center;justify-content:center;font:400 18px/1 var(--font-body)">{{ se.sign }}</span>{{ se.moreLabel }}</button></sc-if>
+      </div>
+    </section>
+  </sc-for>
+  <section style="padding:72px 56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+    <div style="position:relative;width:100%;aspect-ratio:3/2"><image-slot style="position:absolute;inset:0;width:100%;height:100%" id="{{ cs.g1 }}" shape="rect" placeholder="Project image"></image-slot></div>
+    <div style="position:relative;width:100%;aspect-ratio:3/2"><image-slot style="position:absolute;inset:0;width:100%;height:100%" id="{{ cs.g2 }}" shape="rect" placeholder="Project image"></image-slot></div>
+    <div style="position:relative;width:100%;aspect-ratio:3/2"><image-slot style="position:absolute;inset:0;width:100%;height:100%" id="{{ cs.g3 }}" shape="rect" placeholder="Project image"></image-slot></div>
+  </section>
+  <a href="#cs-d" onClick="{{ goNextD }}" style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;padding:56px;background:#E9E2D0;color:#24261A;text-decoration:none;border-top:1px solid rgba(36,38,26,.2)" style-hover="background:#E6E5B4">
+    <div style="display:flex;flex-direction:column;gap:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">NEXT PROJECT</span><span style="font:400 64px/1 var(--font-display)">{{ next.name }}</span></div>
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C;padding-bottom:10px">{{ next.sector }}</span>
+  </a>
+  <section style="position:relative;overflow:hidden;background:#24261A;color:#F3EEE2;padding:96px 56px">
+    <div style="position:absolute;right:40px;bottom:-160px;width:494px;height:600px;background:#8E9A3C;-webkit-mask:url(assets/logos/mask-engraved.png) center/contain no-repeat;mask:url(assets/logos/mask-engraved.png) center/contain no-repeat"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:24px;max-width:640px">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">WE'LL TAKE IT FROM HERE.</span>
+      <h2 style="margin:0;font:400 80px/1 var(--font-display)">Start with a conversation.</h2>
+      <p style="margin:0;font-size:18px;line-height:1.55;color:#D6D7CC">Tell us what you're planning and we'll take it from there.</p>
+      <div style="display:flex;gap:12px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" hint-size="160px,42px">Book a call</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" dc-props="{{ anchProps }}" hint-size="280px,42px">hello@thegildastudios.com</x-import></div>
+    </div>
+  </section>
+  <footer style="background:#8A4B3B;color:#F3EEE2;padding:56px 56px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div style="display:flex;align-items:flex-start;gap:16px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:96px;width:auto"><span style="font:400 32px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">STUDIO</span><a href="Website - About.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">About</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Plan</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Build</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Grow</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">PROJECTS</span><a href="#1a" style="color:inherit;text-decoration:none" style-hover="opacity:.75">All projects</a><a href="Website - Homepage.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Client words</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">CONTACT</span><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none" style-hover="opacity:.75">hello@thegildastudios.com</a><a href="tel:+35600000000" style="color:inherit;text-decoration:none" style-hover="opacity:.75">+356 0000 0000</a></div>
+    </div>
+    <div style="display:flex;padding-top:20px;border-top:1px solid rgba(243,238,226,.35);font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 THE GILDA STUDIOS · MALTA</span></div>
+  </footer>
+</div></div>
+
+<div id="cs-m"><p class="dv-cap">Phone · 390</p>
+<div class="dv-card dv-ph" style="width:390px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#E9E2D0;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)"><a href="Website - Homepage.dc.html" style="font:400 20px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a><span style="font:500 11px/1 var(--font-mono);letter-spacing:.1em;padding:12px 0">MENU</span></header>
+  <section style="padding:24px 24px 40px;display:flex;flex-direction:column;gap:20px">
+    <a href="#1a" style="align-self:flex-start;font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C;text-decoration:none;padding:14px 0">ALL PROJECTS</a>
+    <div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:4px"><sc-for list="{{ cs.dots }}" as="d"><span style="width:10px;height:10px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 10px/1.4 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">{{ cs.sector }}</span></div>
+    <h1 style="margin:0;font:400 52px/1.02 var(--font-display)">{{ cs.name }}</h1>
+    <p style="margin:0;font:400 21px/1.3 var(--font-display)">{{ cs.summary }}</p>
+    <div style="position:relative;width:100%;aspect-ratio:16/9"><image-slot style="position:absolute;inset:0;width:100%;height:100%" id="{{ cs.heroIdM }}" shape="rect" placeholder="{{ cs.heroPh }}"></image-slot></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <sc-for list="{{ cs.facts }}" as="fa" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:2px solid #24261A"><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">{{ fa.k }}</span><span style="font-size:14px;line-height:1.45">{{ fa.v }}</span></div></sc-for>
+    </div>
+  </section>
+  <sc-for list="{{ cs.sections }}" as="se" hint-placeholder-count="4">
+    <section style="background:{{ se.bg }};padding:48px 24px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:14px;border-top:2px solid #24261A"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:{{ cs.accent }}">{{ se.n }}</span><h2 style="margin:0;font:400 34px/1.06 var(--font-display)">{{ se.title }}</h2></div>
+      <sc-for list="{{ se.blocks }}" as="bl"><sc-if value="{{ bl.show }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ bl.isP }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:16px;line-height:1.65;color:#3A3C2E">{{ bl.t }}</p></sc-if>
+        <sc-if value="{{ bl.isBigP }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font:400 24px/1.25 var(--font-display);color:#24261A">{{ bl.t }}</p></sc-if>
+        <sc-if value="{{ bl.isQuote }}" hint-placeholder-val="{{ false }}"><figure style="margin:0;display:flex;flex-direction:column;gap:12px;padding:18px 0 22px;border-top:2px solid #24261A"><span style="font:400 72px/.5 var(--font-display);color:#646E2C;margin-top:22px">“</span><blockquote style="margin:0;font:400 19px/1.4 var(--font-display)">{{ bl.t }}</blockquote><figcaption style="display:flex;flex-direction:column;gap:6px"><span style="font:400 18px/1.1 var(--font-display)">{{ bl.name }}</span><span style="font:500 10px/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ bl.role }}</span></figcaption></figure></sc-if>
+        <sc-if value="{{ bl.isHi }}" hint-placeholder-val="{{ false }}"><div style="margin:8px 0 0;padding:28px 24px;background:#24261A;color:#F3EEE2;display:flex;flex-direction:column;gap:14px"><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">{{ bl.label }}</span><p style="margin:0;font:400 26px/1.2 var(--font-display)">{{ bl.t }}</p></div></sc-if>
+        <sc-if value="{{ bl.isCallout }}" hint-placeholder-val="{{ false }}"><p style="margin:4px 0;padding:20px 0;border-top:2px solid #24261A;border-bottom:1px solid rgba(36,38,26,.25);font:400 24px/1.25 var(--font-display)">{{ bl.t }}</p></sc-if>
+        <sc-if value="{{ bl.isList }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.18)"><sc-for list="{{ bl.items }}" as="it"><div style="display:grid;grid-template-columns:32px minmax(0,1fr);gap:6px;padding:12px 0;border-top:1px solid rgba(36,38,26,.18)"><span style="font:500 10px/1.9 var(--font-mono);color:{{ cs.accent }}">{{ it.n }}</span><span style="font-size:15px;line-height:1.5">{{ it.t }}</span></div></sc-for></div></sc-if>
+        <sc-if value="{{ bl.isPillars }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column"><sc-for list="{{ bl.pillars }}" as="pl"><div style="display:flex;flex-direction:column;border-top:2px solid #24261A"><button onClick="{{ pl.toggle }}" style="all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0"><div style="display:flex;flex-direction:column;gap:8px"><span style="display:flex;align-items:center;gap:8px;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:9px;height:9px;border-radius:50%;background:{{ pl.c }}"></span>{{ pl.n }} / {{ pl.ing }}</span><span style="font:400 36px/1 var(--font-display)">{{ pl.name }}</span></div><div style="display:flex;align-items:center;gap:12px"><img src="{{ pl.img }}" alt="" style="height:64px;width:auto;max-width:58px;object-fit:contain"><span style="width:28px;height:28px;border-radius:50%;background:#24261A;color:#F3EEE2;display:flex;align-items:center;justify-content:center;font:400 18px/1 var(--font-body);flex:none">{{ pl.sign }}</span></div></button><sc-if value="{{ pl.on }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;padding-bottom:16px"><sc-for list="{{ pl.groups }}" as="g"><span style="font:400 21px/1.15 var(--font-display);padding:12px 0 6px">{{ g.title }}</span><sc-for list="{{ g.items }}" as="gi"><span style="font-size:15px;line-height:1.5;padding:9px 0;border-top:1px solid rgba(36,38,26,.15)">{{ gi }}</span></sc-for></sc-for></div></sc-if></div></sc-for></div></sc-if>
+        <sc-if value="{{ bl.isGroups }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:24px"><sc-for list="{{ bl.groups }}" as="g"><div style="display:flex;flex-direction:column;gap:2px;padding-top:14px;border-top:2px solid #24261A"><span style="font:400 22px/1.1 var(--font-display);margin-bottom:6px">{{ g.title }}</span><sc-for list="{{ g.items }}" as="gi"><span style="font-size:14px;line-height:1.5;padding:7px 0;border-bottom:1px solid rgba(36,38,26,.15)">{{ gi }}</span></sc-for></div></sc-for></div></sc-if>
+      </sc-if></sc-for>
+      <sc-if value="{{ se.hasMore }}" hint-placeholder-val="{{ false }}"><button onClick="{{ se.toggle }}" style="all:unset;cursor:pointer;align-self:flex-start;display:flex;align-items:center;gap:12px;min-height:44px;font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#24261A"><span style="width:28px;height:28px;border-radius:50%;background:#24261A;color:#F3EEE2;display:flex;align-items:center;justify-content:center;font:400 18px/1 var(--font-body)">{{ se.sign }}</span>{{ se.moreLabel }}</button></sc-if>
+    </section>
+  </sc-for>
+  <a href="#cs-m" onClick="{{ goNextM }}" style="display:flex;flex-direction:column;gap:10px;padding:40px 24px;background:#E9E2D0;color:#24261A;text-decoration:none;border-top:1px solid rgba(36,38,26,.2)"><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">NEXT PROJECT</span><span style="font:400 36px/1.04 var(--font-display)">{{ next.name }}</span></a>
+  <section style="background:#24261A;color:#F3EEE2;padding:48px 24px;display:flex;flex-direction:column;gap:18px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">WE'LL TAKE IT FROM HERE.</span>
+    <h2 style="margin:0;font:400 44px/1 var(--font-display)">Start with a conversation.</h2>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" style="{{ fullW }}" hint-size="100%,44px">Book a call</x-import>
+  </section>
+  <footer style="background:#8A4B3B;color:#F3EEE2;padding:40px 24px 32px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:flex-start;gap:12px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:72px;width:auto"><span style="font:400 26px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;font-size:15px"><a href="Website - About.dc.html" style="color:inherit;text-decoration:none;padding:10px 0">About</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none;padding:10px 0">Services</a><a href="#1a" style="color:inherit;text-decoration:none;padding:10px 0">Projects</a><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none;padding:10px 0">hello@thegildastudios.com</a></div>
+    <div style="display:flex;padding-top:16px;border-top:1px solid rgba(243,238,226,.35);font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 · MALTA</span></div>
+  </footer>
+</div></div>
+</div>
+</div>
+</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { f: 'all', cs: 0, exp: {} };
+  data() {
+    const ring = 'inset 0 0 0 1px rgba(36,38,26,.25)';
+    const D = { plan: { c: '#646E2C', ring: 'none' }, build: { c: '#8A4B3B', ring: 'none' }, grow: { c: '#B8BC32', ring } };
+    const p = (t) => ({ isP: true, t });
+    const co = (t) => ({ isCallout: true, t });
+    const qt = (t, name, role) => ({ isQuote: true, t, name, role });
+    const hi = (t, label) => ({ isHi: true, t, label: label || 'THE RESULT' });
+    const li = (arr) => ({ isList: true, items: arr.map((t, i) => ({ n: String(i + 1).padStart(2, '0'), t })) });
+    const gr = (groups) => ({ isGroups: true, groups });
+    const pil = (pillars) => ({ isPillars: true, pillars });
+    const PL = { plan: { n: '01', name: 'Plan', ing: 'OLIVE', c: '#646E2C', img: 'assets/illustrations/01-olive-plan.png' }, build: { n: '02', name: 'Build', ing: 'ANCHOVY', c: '#8A4B3B', img: 'assets/illustrations/02-anchovy-build.png' }, grow: { n: '03', name: 'Grow', ing: 'PEPPER', c: '#B8BC32', img: 'assets/illustrations/03-pepper-grow.png' } };
+    return [
+      {
+        key: 'cs', name: 'CS Butcher', branches: ['plan', 'build', 'grow'], sector: 'RETAIL · INDEPENDENT BUTCHER · MALTA', accent: '#8A4B3B',
+        short: 'A traditional butcher on the verge of closing, repositioned around convenience with delivery and online ordering.',
+        summary: 'At a time when the business was on the verge of shutting down, we were brought in to identify opportunities for innovation, reposition the offering, and develop a strategy to reconnect the business with modern consumer habits.',
+        facts: [{ k: 'CLIENT', v: 'CS Butcher' }, { k: 'SECTOR', v: 'Independent retail' }, { k: 'BRANCHES', v: 'Plan · Build · Grow' }, { k: 'SERVICES', v: 'Strategy · Website and online ordering · Social media · Paid ads' }],
+        sections: [
+          ['Overview', [p('Independent butcher shops in Malta have increasingly faced pressure from supermarkets offering convenience, extended opening hours, and one-stop shopping experiences. Like many traditional businesses, CS Butcher was experiencing declining momentum and was approaching a critical stage in its operations.')]],
+          ['The challenge', [p('Through research and discussion, it became clear that the issue was not customer loyalty, but accessibility and convenience. A key problem quickly emerged:'), p('Most customers work until after 6:00 PM, while butcher shops traditionally close by 4:00 PM, making it difficult for customers to shop during operating hours.'), p('At the same time, supermarkets had become the preferred option due to convenience, despite customers often valuing the higher quality and personalised service offered by local butchers.'), p('The challenge was to modernise the customer experience without losing the core identity of the business.')]],
+          ['The strategy', [p('Rather than competing directly with supermarkets, the strategy focused on solving the customer problem. We repositioned the business around convenience, accessibility, and quality, introducing:'), li(['Home delivery services for customers unable to visit during opening hours', 'An online ordering platform allowing customers to place orders at any time', 'A clearer digital presence focused on communicating convenience and premium product quality', 'Stronger promotional offers and messaging tailored to busy households and working professionals']), hi('The goal was simple: make shopping from a local butcher as easy as shopping from a supermarket, while maintaining a far superior product and service experience.', 'THE GOAL')]],
+          ['Our role', [p('We managed the project end-to-end, supporting both the strategic direction and execution.'), pil([
+            { ...PL.plan, groups: [{ title: 'Business and digital strategy', items: ['Identified customer pain points and opportunities for innovation', 'Developed a customer-focused repositioning strategy', 'Brainstormed offers and service models to drive adoption', 'Defined messaging pillars centred around convenience and quality'] }] },
+            { ...PL.build, groups: [{ title: 'Website development and online ordering', items: ['Gathered requirements and project specifications', 'Managed the website build process from concept to launch', 'Oversaw functionality requirements for online ordering and delivery', 'Ensured the platform aligned with customer behaviour and business needs'] }] },
+            { ...PL.grow, groups: [{ title: 'Social media and content strategy', items: ['Developed the social media strategy and content calendar', 'Designed branded post templates', 'Created social media copy and captions focused on reinforcing key messaging', 'Consistently communicated the value proposition and convenience factor to customers'] }, { title: 'Paid advertising', items: ['Set up and managed Meta Ads campaigns', 'Implemented Google Ads to increase visibility and drive conversions', 'Used paid media to support awareness, online orders, and service adoption'] }] },
+          ])]],
+          ['Outcome', [p('By shifting the focus from a traditional retail model to a convenience-driven service, CS Butcher was able to modernise its customer experience and strengthen its relevance in a changing market.'), p('The project transformed the business from relying solely on footfall to offering a digital-first, customer-centric solution that aligned with contemporary consumer behaviour.')], { feat: true }],
+          ['In their words', [qt('Working with the team gave our business a new direction at a time when we really needed it. They took the time to understand our challenges and helped us find practical ways to adapt to how customers shop today. From introducing online ordering and home delivery to improving our social media presence and advertising, they helped us modernise while staying true to the quality and personal service we\'ve always been known for. Their support and fresh ideas have made a real difference to our business, and we\'re very happy with the results.', 'Carmelo Vella', 'Owner, CS Butcher')]],
+        ],
+      },
+      {
+        key: 'mbn', name: 'Malta Business Network', branches: ['plan', 'grow'], sector: 'BUSINESS NETWORK · MALTA AND UK', accent: '#646E2C',
+        short: 'Project and social media management for a network of senior leaders, across dozens of events in Malta and the UK.',
+        summary: 'We offer project and social media management to MBN. This includes end-to-end coordination, planning, and execution of events and member communications, ensuring every initiative is delivered professionally, efficiently, and in line with the organisation’s brand and tone of voice.',
+        facts: [{ k: 'CLIENT', v: 'Malta Business Network (MBN MT and MBN UK)' }, { k: 'SECTOR', v: 'Professional business organisation' }, { k: 'BRANCHES', v: 'Plan · Grow' }, { k: 'SERVICES', v: 'Event project management · Copywriting · Website · Email marketing' }],
+        sections: [
+          ['Overview', [p('The Malta Business Network (MBN) is a professional business organisation connecting senior leaders, entrepreneurs, investors, and professionals through high-level networking events, exclusive lunches, international delegations, and thought leadership initiatives across Malta and the UK.'), p('We manage end-to-end coordination, planning, and execution of events and member communications, ensuring every initiative is delivered professionally, efficiently, and in line with the organisation’s brand and tone of voice.')]],
+          ['The challenge', [p('MBN hosts a diverse calendar of events involving high-profile speakers, government officials, business leaders, diplomatic stakeholders, and international delegates.'), p('Given the pace and complexity of delivery, MBN required dedicated support to:'), li(['Coordinate event logistics and timelines across multiple stakeholders', 'Manage communications with speakers, sponsors, directors, and members', 'Develop consistent, professional event communications aligned with the MBN brand', 'Execute marketing activity across email, web, ticketing, and social platforms', 'Ensure smooth operational delivery while maintaining a premium member experience'])]],
+          ['Our role', [p('We act as an operational and communications lead across multiple touchpoints of the organisation, managing projects from concept to execution. These services include:'), li(['Event project management', 'Strategic copywriting', 'Brand tone management', 'Website management', 'Email marketing'])]],
+          ['Key outcomes', [co('Throughout our work with both MBN MT and MBN UK, we have delivered high-quality communications across dozens of events in Malta and the UK, ensuring a consistent and premium tone of voice across all member-facing materials.'), p('We have also supported the promotion of high-profile events involving ministers, international business delegations, senior executives, and subject matter experts, helping position them effectively for the target audience. In doing so, we have streamlined event execution through proactive coordination and structured processes, contributing to smoother delivery and improved turnaround times.'), p('Finally, we have focused on improving the speed and consistency of marketing and event communications, while maintaining a strong focus on quality and detail throughout.')]],
+          ['In their words', [qt('Maronia is meticulous in her way, highly organised and well disciplined which for the assistance we need at the Malta Business Network works extremely well. She is highly proactive and responsive in ensuring deadlines are met.', 'Christopher Naudi', 'Treasurer, Malta Business Network'), qt('The MBN has been in existence since June 2013 and, during these last 13 years, we have never found someone like Maronia who is totally committed to ensuring that information is collated early enough to ensure the success of our events - be it our monthly networking events or hosting particular lunches.', 'Joseph Zammit Tabona', 'Founder, Malta Business Network'), qt('We have had the pleasure of working with Maronia the last three years and have always found her to be highly organised, proactive and dependable. She has a strong ability to manage projects while maintaining excellent communication. Maronia consistently delivers to a high standard, takes ownership of her work, and is a pleasure to work with. She has contributed significantly to the success of our UK monthly events.', 'Martin V. Zahra', 'Chairman, Malta Business Network UK')]],
+        ],
+      },
+      {
+        key: 'dfd', name: 'Drapp fuq Drapp', branches: ['plan', 'grow'], sector: 'OWN VENTURE · HANDMADE ACCESSORIES · MALTA', accent: '#646E2C',
+        short: 'Maronia’s own business: from pandemic face masks to a lifestyle brand, grown through social media over almost four years.',
+        summary: 'Drapp fuq Drapp began as a response to a moment of disruption, but evolved into a long-term creative business built on adaptability, product evolution, and social media-led growth.',
+        facts: [{ k: 'FOUNDER', v: 'Maronia Falzon' }, { k: 'SECTOR', v: 'Handmade accessories' }, { k: 'BRANCHES', v: 'Plan · Grow' }, { k: 'RAN FOR', v: 'Almost four years' }],
+        sections: [
+          ['Overview', [p('Drapp fuq Drapp was founded during the early stages of the COVID-19 pandemic, at a time of uncertainty and disruption. Inspired by my mother’s background as a seamstress and my own interest in marketing and social media, the business started with handmade reusable face masks aimed at reducing single-use waste in public spaces.'), p('As the pandemic situation evolved and social behaviour shifted, the brand naturally transitioned from necessity-based products into lifestyle-led design. This included reversible bucket hats and small-batch creative accessories that blended sustainability with everyday style.'), p('The business ran for almost four years, alongside my studies and later a full-time role in a creative agency, growing into a consistent side venture with a strong digital presence.')]],
+          ['The challenge', [co('The original challenge was timing: the business was built for a moment that eventually disappeared.'), p('As COVID restrictions eased, demand for masks declined significantly, meaning the business risked becoming irrelevant if it stayed static. The challenge became less about production and more about reinvention: how to evolve a brand built on a temporary global need into something that could sustain itself creatively and commercially.'), p('At the same time, I was balancing full-time studies and later agency work, which meant growth had to be strategic, efficient, and driven largely through digital channels rather than operational scale.')]],
+          ['My role', [p('I managed the business end-to-end, combining creative direction with operational execution. This included:'), li(['Product development and direction', 'Brand identity and positioning', 'Social media strategy and content creation', 'Photography, videography, and editing', 'Day-to-day operations and planning', 'Growth strategy and audience engagement']), p('I also led the shift in positioning from product necessity to lifestyle brand, ensuring the business could continue beyond its original context.')]],
+          ['Key outcomes', [li(['Successfully grew and maintained a digital audience across platforms, reaching a combined 3.5k followers.', 'Transitioned the brand from pandemic-driven demand to a lifestyle-oriented product offering.', 'Sustained and evolved the business for almost four years while balancing academic commitments and a full-time agency role.', 'Built and executed a full social media strategy focused on organic growth, storytelling, and product evolution.', 'Gained hands-on experience in running a full-cycle creative business: from concept to execution to reinvention.', 'Represented the company at the Startup Festival by Malta Enterprise.'])]],
+        ],
+      },
+    ].map((c) => ({
+      ...c,
+      dots: c.branches.map((b) => D[b]),
+      coverId: 'proj-' + c.key + '-cover', coverIdM: 'proj-' + c.key + '-cover-m', coverPh: c.name + ' cover image',
+      heroId: 'proj-' + c.key + '-hero', heroIdM: 'proj-' + c.key + '-hero-m', heroPh: c.name + ' hero image',
+      g1: 'proj-' + c.key + '-g1', g2: 'proj-' + c.key + '-g2', g3: 'proj-' + c.key + '-g3',
+      sections: c.sections.map(([title, blocks, opt], i) => {
+        const feat = !!(opt && opt.feat);
+        const k = c.key + i, open = !!this.state.exp[k];
+        const vis = () => true;
+        const hasMore = false;
+        return { n: String(i + 1).padStart(2, '0'), title, bg: feat ? '#E6E5B4' : (i % 2 ? '#F3EEE2' : '#E9E2D0'), hasMore, sign: open ? '−' : '+', moreLabel: open ? 'SHOW LESS' : 'READ MORE', toggle: () => this.setState((s) => ({ exp: { ...s.exp, [k]: !s.exp[k] } })), blocks: blocks.map((b, j) => { const lk = k + '-' + j, lo = !!this.state.exp[lk]; const pk = k + '-pil', po = this.state.exp[pk];
+          const pillars = b.pillars && b.pillars.map((pl, pi) => { const on = po === pi; return { ...pl, on, col: on ? '1 / -1' : 'auto', ord: on ? -1 : pi, sign: on ? '−' : '+', gcols: on && pl.groups.length > 1 ? 'repeat(2,minmax(0,1fr))' : '1fr', icols: on && pl.groups.length === 1 ? 'repeat(2,minmax(0,1fr))' : '1fr', cnt: pl.groups.reduce((a, g) => a + g.items.length, 0) + ' THINGS WE DID', toggle: () => this.setState((s) => ({ exp: { ...s.exp, [pk]: s.exp[pk] === pi ? null : pi } })) }; });
+          return { ...b, isP: b.isP && !feat, isBigP: b.isP && feat, pillars, show: true, lOpen: lo, lSign: lo ? '−' : '+', lLabel: (lo ? 'HIDE THE ' : 'SHOW THE ') + (b.items ? b.items.length : 0) + ' POINTS', lToggle: () => this.setState((s) => ({ exp: { ...s.exp, [lk]: !s.exp[lk] } })) }; }) };
+      }),
+    }));
+  }
+  componentDidMount() {
+    this.applyHash();
+    this._hc = () => this.applyHash();
+    window.addEventListener('hashchange', this._hc);
+  }
+  componentWillUnmount() { window.removeEventListener('hashchange', this._hc); }
+  applyHash() {
+    let ls = null; try { ls = localStorage.getItem('gilda-open-project'); if (ls) localStorage.removeItem('gilda-open-project'); } catch (e) {}
+    const q = ls || new URLSearchParams(location.search).get('project');
+    const h = q || (location.hash || '').slice(1);
+    const i = ['cs', 'mbn', 'dfd'].indexOf(h);
+    if (i >= 0) this.setState({ cs: i, deep: true }, () => [300, 900].forEach((t) => setTimeout(() => { const el = document.getElementById('1b'); const host = el && el.closest('.sc-host'); if (host) { const m = new DOMMatrix(getComputedStyle(host).transform); const dy = el.getBoundingClientRect().top - 24; host.style.transform = `matrix(${m.a}, ${m.b}, ${m.c}, ${m.d}, ${m.e}, ${m.f - dy})`; } }, t)));
+  }
+  goNext(e, id, n) {
+    e.preventDefault();
+    this.setState((s) => ({ cs: (s.cs + 1) % n }), () => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const host = el.closest('.sc-host');
+      if (host) {
+        const m = new DOMMatrix(getComputedStyle(host).transform);
+        if (m.f !== 0 || m.a !== 1) {
+          const dy = el.getBoundingClientRect().top - 24;
+          host.style.transition = 'transform .35s ease';
+          host.style.transform = `matrix(${m.a}, ${m.b}, ${m.c}, ${m.d}, ${m.e}, ${m.f - dy})`;
+          setTimeout(() => { host.style.transition = ''; }, 400);
+          return;
+        }
+      }
+      let p = el.parentElement;
+      while (p) { const cs = getComputedStyle(p); if (/(auto|scroll)/.test(cs.overflowY) && p.scrollHeight > p.clientHeight) { p.scrollTop += el.getBoundingClientRect().top - p.getBoundingClientRect().top - 16; } p = p.parentElement; }
+      const top = el.getBoundingClientRect().top + window.scrollY - 16; window.scrollTo({ top, behavior: 'smooth' });
+      if (location.hash === '#' + id) history.replaceState(null, '', location.pathname + location.search);
+      location.hash = id;
+    });
+  }
+  renderVals() {
+    const all = this.data();
+    const f = this.state.f, ci = this.state.cs;
+    const shown = all.map((c, i) => ({ ...c, open: () => this.setState({ cs: i }) })).filter((c) => f === 'all' || c.branches.includes(f));
+    const FD = [['all', 'ALL', null], ['plan', 'PLAN', '#646E2C'], ['build', 'BUILD', '#8A4B3B'], ['grow', 'GROW', '#B8BC32']];
+    return {
+      filters: FD.map(([k, label, dot]) => ({ label, dot: dot || 'transparent', dotD: dot ? 'block' : 'none', bg: f === k ? '#24261A' : 'transparent', fg: f === k ? '#F3EEE2' : '#24261A', onClick: () => this.setState({ f: k }) })),
+      shown,
+      countLabel: String(shown.length).padStart(2, '0') + ' / ' + String(all.length).padStart(2, '0'),
+      cs: all[ci],
+      csOrder: this.state.deep ? -1 : 0,
+      next: all[(ci + 1) % all.length],
+      goNextD: (e) => this.goNext(e, 'cs-d', all.length),
+      goNextM: (e) => this.goNext(e, 'cs-m', all.length),
+      tabs: all.map((c, i) => ({ label: c.name.toUpperCase(), bg: i === ci ? '#24261A' : 'transparent', fg: i === ci ? '#F3EEE2' : '#24261A', onClick: () => this.setState({ cs: i }) })),
+      anchProps: { style: { background: '#8A4B3B', color: '#F3EEE2' } },
+      fullW: { width: '100%' },
+    };
+  }
+}
+</script>
+</body>
+</html>

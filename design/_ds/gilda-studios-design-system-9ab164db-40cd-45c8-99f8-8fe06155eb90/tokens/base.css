@@ -1,0 +1,5 @@
+/* Minimal element defaults. */
+html, body { margin: 0; -webkit-font-smoothing: antialiased; }
+body { background: var(--surface-page); color: var(--text-body); font-family: var(--font-body); }
+a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: var(--link-hover); }

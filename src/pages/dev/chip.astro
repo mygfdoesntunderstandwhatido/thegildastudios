@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import Chip from '../../components/core/Chip.astro';
+import Label from '../../components/core/Label.astro';
+import { chipPreview as content, previewGrounds } from '../../content/dev/primitives';
+---
+
+<Base title={content.title}>
+  <main>
+    <header class="band band--cream band--compact">
+      <div class="container stack">
+        <h1>{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </header>
+    {previewGrounds.map((ground) => (
+      <section class:list={['band', ground.className]} aria-labelledby={`chips-${ground.id}`}>
+        <div class="container stack">
+          <h2 id={`chips-${ground.id}`}>{ground.label}</h2>
+          <Label as="h3" tone={ground.onDark ? 'on-dark' : 'accent'}>
+            {content.outline}
+          </Label>
+          <div class="samples">
+            {content.outlineSamples.map((label) => (
+              <Chip onDark={ground.onDark}>{label}</Chip>
+            ))}
+          </div>
+          <div class="samples">
+            {content.filled.map((label) => (
+              <Chip variant="filled">{label}</Chip>
+            ))}
+          </div>
+          <Label as="h3" tone={ground.onDark ? 'on-dark' : 'accent'}>
+            {content.toggle}
+          </Label>
+          <div class="samples" role="group" aria-label={`${content.toggle} · ${ground.label}`}>
+            {content.choices.map((choice) => (
+              <Chip
+                variant="toggle"
+                value={choice.value}
+                dot={choice.dot}
+                pressed={choice.value === 'all'}
+                onDark={ground.onDark}
+              >
+                {choice.label}
+              </Chip>
+            ))}
+            <Chip variant="toggle" onDark={ground.onDark} disabled>
+              {content.disabled}
+            </Chip>
+          </div>
+        </div>
+      </section>
+    ))}
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .samples {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+</style>

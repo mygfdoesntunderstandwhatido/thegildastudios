@@ -1,0 +1,40 @@
+<gilda-toggle-chip>
+  <slot />
+</gilda-toggle-chip>
+
+<script>
+  class GildaToggleChip extends HTMLElement {
+    connectedCallback() {
+      this.addEventListener('click', this.toggle);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('click', this.toggle);
+    }
+
+    private toggle = () => {
+      const button = this.querySelector('button');
+      if (!button || button.disabled) return;
+
+      const pressed = button.getAttribute('aria-pressed') !== 'true';
+      button.setAttribute('aria-pressed', String(pressed));
+      this.dispatchEvent(
+        new CustomEvent('chip-change', {
+          bubbles: true,
+          detail: { pressed, value: button.value },
+        }),
+      );
+    };
+  }
+
+  if (!customElements.get('gilda-toggle-chip')) {
+    customElements.define('gilda-toggle-chip', GildaToggleChip);
+  }
+</script>
+
+<style>
+  gilda-toggle-chip {
+    display: inline-flex;
+    max-inline-size: 100%;
+  }
+</style>

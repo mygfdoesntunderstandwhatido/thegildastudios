@@ -1,0 +1,191 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { ChipVariant, DotColor } from './types';
+import ToggleChip from './ToggleChip.astro';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
+  variant?: ChipVariant;
+  onDark?: boolean;
+  pressed?: boolean;
+  dot?: DotColor;
+}
+
+const {
+  variant = 'outline',
+  onDark = false,
+  pressed = false,
+  dot,
+  disabled,
+  class: className,
+  ...attrs
+} = Astro.props;
+---
+
+{variant === 'toggle' ? (
+  <ToggleChip>
+    <button
+      {...attrs}
+      type="button"
+      disabled={disabled}
+      aria-pressed={pressed}
+      class:list={['chip', className]}
+      data-variant={variant}
+      data-on-dark={onDark}
+      data-dot={dot}
+    >
+      <slot />
+    </button>
+  </ToggleChip>
+) : (
+  <span {...attrs} class:list={['chip', className]} data-variant={variant} data-on-dark={onDark}>
+    <slot />
+  </span>
+)}
+
+<style>
+  .chip {
+    --chip-ring-width: 1px;
+    --chip-pad-block: var(--space-2);
+    --chip-pad-inline: 14px;
+    --chip-ring-color: color-mix(in srgb, var(--brine) 35%, transparent);
+    --chip-disabled-opacity: 0.4;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    max-inline-size: 100%;
+    padding: var(--chip-pad-block) var(--chip-pad-inline);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    box-shadow: inset 0 0 0 var(--chip-ring-width) var(--chip-ring-color);
+    color: var(--brine);
+    font: var(--type-body-sm);
+    line-height: 1.2;
+  }
+
+  .chip[data-on-dark='true'] {
+    --chip-ring-color: color-mix(in srgb, var(--cream) 35%, transparent);
+
+    color: var(--cream);
+  }
+
+  .chip[data-variant='filled'] {
+    --chip-pad-block: 9px;
+
+    background: var(--pepper-pale);
+    box-shadow: none;
+    color: var(--brine);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .chip[data-variant='toggle'] {
+    --chip-ring-width: 1.5px;
+    --chip-ring-color: var(--brine);
+    --chip-pad-block: 0;
+    --chip-pad-inline: 18px;
+
+    min-block-size: var(--space-10);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .chip[data-variant='toggle'][data-on-dark='true'] {
+    --chip-ring-color: var(--cream);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: var(--brine);
+    color: var(--cream);
+  }
+
+  .chip[aria-pressed='true'][data-on-dark='true'] {
+    background: var(--cream);
+    color: var(--brine);
+  }
+
+  .chip[data-dot]::before {
+    --chip-dot-size: 9px;
+
+    flex: none;
+    inline-size: var(--chip-dot-size);
+    block-size: var(--chip-dot-size);
+    border-radius: 50%;
+    background: var(--chip-dot-color);
+    content: '';
+  }
+
+  .chip[data-dot='olive'] {
+    --chip-dot-color: var(--olive);
+  }
+
+  .chip[data-dot='anchovy'] {
+    --chip-dot-color: var(--anchovy);
+  }
+
+  .chip[data-dot='pepper'] {
+    --chip-dot-color: var(--pepper);
+  }
+
+  .chip[data-dot='pepper']:not([data-on-dark='true'], [aria-pressed='true'])::before {
+    box-shadow: var(--ring-dot-pepper);
+  }
+
+  .chip[data-dot='olive'][data-on-dark='true'],
+  .chip[data-dot='olive'][aria-pressed='true'] {
+    --chip-dot-color: var(--olive-on-dark);
+  }
+
+  .chip[data-dot='anchovy'][data-on-dark='true'],
+  .chip[data-dot='anchovy'][aria-pressed='true'] {
+    --chip-dot-color: var(--anchovy-on-dark);
+  }
+
+  .chip[data-dot='olive'][data-on-dark='true'][aria-pressed='true'] {
+    --chip-dot-color: var(--olive);
+  }
+
+  .chip[data-dot='anchovy'][data-on-dark='true'][aria-pressed='true'] {
+    --chip-dot-color: var(--anchovy);
+  }
+
+  .chip[data-dot='pepper'][data-on-dark='true'][aria-pressed='true']::before {
+    box-shadow: var(--ring-dot-pepper);
+  }
+
+  .chip[data-variant='toggle']:hover {
+    opacity: var(--hover-opacity);
+  }
+
+  .chip:disabled {
+    opacity: var(--chip-disabled-opacity);
+    cursor: default;
+  }
+
+  @media (width < 768px) {
+    .chip[data-variant='filled'] {
+      --chip-pad-block: var(--space-2);
+      --chip-pad-inline: var(--space-3);
+
+      font-size: var(--label-phone-size);
+    }
+  }
+
+  @media (any-pointer: coarse) {
+    .chip[data-variant='toggle'] {
+      min-block-size: var(--space-11);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip[data-variant='toggle'] {
+      transition-duration: 0s;
+    }
+  }
+</style>

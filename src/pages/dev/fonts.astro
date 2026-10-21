@@ -1,0 +1,80 @@
+---
+// Font specimen for #4: every self-hosted face, the Maltese test string and the 125% button width.
+import Base from '../../layouts/Base.astro';
+
+const maltese = 'Merħba · Grazzi · Saħħa · żebbuġ · ċavetta';
+const specimens = [
+  { label: 'Gilda Display 400', family: 'display', weight: 400 },
+  { label: 'Archivo 400', family: 'body', weight: 400 },
+  { label: 'Archivo 500', family: 'body', weight: 500 },
+  { label: 'Archivo 600', family: 'body', weight: 600 },
+  { label: 'IBM Plex Mono 400', family: 'mono', weight: 400 },
+  { label: 'IBM Plex Mono 500', family: 'mono', weight: 500 },
+];
+---
+
+<Base title="Fonts · dev">
+  <main class="specimen">
+    {specimens.map((s) => (
+      <section>
+        <p class="label">{s.label}</p>
+        <p class={`sample sample-${s.family}`} style={`font-weight: ${s.weight}`}>
+          {maltese}
+        </p>
+      </section>
+    ))}
+    <section>
+      <p class="label">Archivo 600 at 125% (button)</p>
+      <p class="button">Book a call · {maltese}</p>
+      <p class="label">Archivo 600 at 100% (for comparison)</p>
+      <p class="button button-normal">Book a call · {maltese}</p>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .specimen {
+    display: grid;
+    gap: var(--space-8);
+    padding: var(--space-8);
+  }
+
+  .label {
+    margin: 0 0 var(--space-2);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .sample {
+    margin: 0;
+    font-size: var(--display-30);
+    line-height: 1.2;
+  }
+
+  .sample-display {
+    font-family: var(--font-display);
+  }
+
+  .sample-body {
+    font-family: var(--font-body);
+  }
+
+  .sample-mono {
+    font-family: var(--font-mono);
+  }
+
+  .button {
+    margin: 0 0 var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--display-22);
+    font-weight: 600;
+    font-stretch: var(--stretch-button);
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+  }
+
+  .button-normal {
+    font-stretch: 100%;
+  }
+</style>

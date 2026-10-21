@@ -1,0 +1,116 @@
+---
+import Base from '../../layouts/Base.astro';
+import { baseStylesContent as content } from '../../content/dev/base-styles';
+---
+
+<Base title={content.title}>
+  <main>
+    <header class="band band--cream band--compact">
+      <div class="container specimen-stack">
+        <p class="label">{content.label}</p>
+        <h1>{content.heading}</h1>
+        <p class="specimen-copy">{content.intro}</p>
+      </div>
+    </header>
+
+    {content.bands.map((band) => (
+      <section class:list={['band', band.className]} aria-labelledby={`${band.id}-title`}>
+        <div class="container specimen-stack">
+          <p class="label">{band.label}</p>
+          <h2 id={`${band.id}-title`}>{band.title}</h2>
+          <p class="specimen-copy">{content.bandBody}</p>
+          <p>
+            <a href="#layout">{content.link}</a>
+          </p>
+          <div class="rule-open specimen-rule">{content.rules.opening}</div>
+          <div class="rule-row specimen-rule">{content.rules.row}</div>
+          <div class="rule-row rule-row--soft specimen-rule">{content.rules.soft}</div>
+        </div>
+      </section>
+    ))}
+
+    <section
+      id="decoration"
+      class="band band--brine band--roomy band--decorated"
+      aria-labelledby="decoration-title"
+    >
+      <div class="band__mark" aria-hidden="true"></div>
+      <div class="container specimen-stack">
+        <p class="label">{content.decoration.label}</p>
+        <h2 id="decoration-title" class="specimen-heading">
+          {content.decoration.heading}
+        </h2>
+        <p class="specimen-copy">{content.decoration.body}</p>
+        <p>
+          <a href="#layout">{content.link}</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="layout" class="band band--sand band--spacious" aria-labelledby="layout-title">
+      <div class="container specimen-stack">
+        <p class="label">{content.layout.label}</p>
+        <h2 id="layout-title">{content.layout.heading}</h2>
+        <p class="specimen-copy">{content.layout.body}</p>
+        {content.layout.grids.map((grid) => (
+          <section class="specimen-stack" aria-label={grid.label}>
+            <h3 class="label">{grid.label}</h3>
+            <div class:list={['grid', grid.className]}>
+              {grid.columns.map((column) => (
+                <p class="rule-open specimen-cell">{column}</p>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
+
+    <section class="band band--brine" aria-labelledby="nested-title">
+      <div class="container">
+        <div class="band band--cream band--compact">
+          <div class="container specimen-stack">
+            <p class="label">{content.nested.label}</p>
+            <h2 id="nested-title">{content.nested.heading}</h2>
+            <p class="specimen-copy">{content.nested.body}</p>
+            <p>
+              <a href="#layout">{content.link}</a>
+            </p>
+            <div class="rule-open specimen-rule">{content.rules.opening}</div>
+            <div class="rule-row specimen-rule">{content.rules.row}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .specimen-stack {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .specimen-copy {
+    max-inline-size: var(--body-measure);
+  }
+
+  .specimen-heading {
+    max-inline-size: var(--preview-display-measure);
+  }
+
+  .specimen-rule {
+    padding-block-start: var(--space-3);
+    font: var(--type-body-sm);
+  }
+
+  .specimen-cell {
+    padding: var(--space-4);
+    background: var(--cream);
+  }
+
+  @media (width < 768px) {
+    #decoration {
+      padding-block-end: var(--preview-mark-space);
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+/* Web foundations (#6). Keep the source tokens unchanged; page artboards
+   supply these additional layout and element-default values. */
+:root {
+  --content-max: 1280px;
+  --page-gutter: var(--space-12);
+  --header-gutter: var(--space-12);
+  --band-space-compact: 72px;
+  --band-space-default: var(--space-14);
+  --band-space-roomy: 96px;
+  --band-space-spacious: 112px;
+  --grid-gap: var(--space-8);
+  --grid-gap-wide: 72px;
+
+  --heading-leading: 1.02;
+  --heading-leading-tight: 0.92;
+  --heading-leading-loose: 1.1;
+  --label-leading: 1.4;
+  --label-phone-size: 11px;
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --link-underline-offset: 3px;
+  --link-hover-opacity: 1;
+  --link-hover-opacity-on-dark: 0.75;
+  --focus-width: 2px;
+  --focus-offset: 3px;
+  --rule-open-width: 2px;
+  --rule-row-width: 1px;
+
+  --band-mark-width: 494px;
+  --band-mark-height: 600px;
+  --band-mark-right: var(--space-10);
+  --band-mark-bottom: -160px;
+
+  --body-measure: 65ch;
+  --preview-display-measure: 12ch;
+  --preview-mark-space: 220px;
+}
+
+@media (width < 768px) {
+  :root {
+    --page-gutter: var(--space-6);
+    --header-gutter: var(--space-5);
+    --band-space-compact: 48px;
+    --band-space-default: 48px;
+    --band-space-roomy: var(--space-12);
+    --band-space-spacious: var(--space-12);
+    --grid-gap: var(--space-6);
+    --grid-gap-wide: var(--space-6);
+    --band-mark-width: 247px;
+    --band-mark-height: 300px;
+    --band-mark-right: -30px;
+    --band-mark-bottom: -90px;
+  }
+}

@@ -1,4 +1,5 @@
 ---
+import '../styles/fonts.css';
 import '../styles/tokens.css';
 interface Props {
   title: string;
@@ -13,6 +14,21 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Preload only the above-the-fold fonts: the hero headline and body copy. -->
+    <link
+      rel="preload"
+      href="/fonts/gilda-display-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/archivo-400-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
   </head>

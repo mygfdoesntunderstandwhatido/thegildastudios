@@ -1,0 +1,6 @@
+# The design export is read-only reference material: never reformat it.
+design/
+dist/
+.astro/
+node_modules/
+package-lock.json

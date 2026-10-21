@@ -1,6 +1,7 @@
 @AGENTS.md
 
 ## Claude Code specifics
+
 - Your lane is `agent:claude`. List your ready work with:
   `gh issue list --label agent:claude --label status:ready --state open`
 - Work in a git worktree per issue, so Codex PRs and other sessions never collide with yours.

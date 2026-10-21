@@ -1,9 +1,9 @@
 /* Social-only --social-* and --story-safe-* tokens are omitted for web. */
 /* The Gilda Studios · type. Gilda Display (display), Archivo (body/UI), IBM Plex Mono (labels). */
 :root {
-  --font-display: 'Gilda Display', Georgia, serif;
-  --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --font-display: 'Gilda Display', 'Gilda Display Fallback', Georgia, serif;
+  --font-body: 'Archivo', 'Archivo Fallback', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, Menlo, monospace;
 
   /* Document / web scale (brand book §10) */
   --type-display: 400 68px/1 var(--font-display);

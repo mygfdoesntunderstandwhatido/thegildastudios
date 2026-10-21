@@ -1,0 +1,97 @@
+/* The Gilda Studios · self-hosted webfonts (#4).
+   WOFF2, subset to Latin + Latin Extended (Maltese ħ, ż, ġ, ċ). Built by scripts/build-fonts.sh.
+   OFL licences sit next to the files in /fonts/. */
+
+@font-face {
+  font-family: 'Gilda Display';
+  src: url('/fonts/gilda-display-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Body: variable weight axis, normal width only. */
+@font-face {
+  font-family: Archivo;
+  src: url('/fonts/archivo-400-600.woff2') format('woff2');
+  font-weight: 400 600;
+  font-stretch: 100%;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Buttons: Archivo 600 at 125% width, a static instance of the variable font. */
+@font-face {
+  font-family: Archivo;
+  src: url('/fonts/archivo-expanded-600.woff2') format('woff2');
+  font-weight: 600;
+  font-stretch: 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Metric-matched fallbacks, so the swap to the webfont doesn't move the layout.
+   size-adjust matches average character width; the overrides match the webfont's vertical
+   metrics (hhea). Values come from capsize metrics. Liberation Sans, Arimo and DejaVu Sans Mono
+   share the metrics of Arial and Menlo, which covers Linux and Lighthouse runs. */
+@font-face {
+  font-family: 'Gilda Display Fallback';
+  src: local('Georgia');
+  size-adjust: 101.17%;
+  ascent-override: 88.17%;
+  descent-override: 28.17%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Archivo Fallback';
+  src:
+    local('Arial'), local('ArialMT'), local('Helvetica'), local('Liberation Sans'),
+    local('LiberationSans'), local('Arimo');
+  font-stretch: 100%;
+  size-adjust: 98.7%;
+  ascent-override: 88.96%;
+  descent-override: 21.28%;
+  line-gap-override: 0%;
+}
+
+/* Matches the expanded button face's width, so buttons keep their size during the swap. */
+@font-face {
+  font-family: 'Archivo Fallback';
+  src:
+    local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold'), local('Helvetica-Bold'),
+    local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Arimo Bold');
+  font-weight: 600;
+  font-stretch: 125%;
+  size-adjust: 122.3%;
+  ascent-override: 71.79%;
+  descent-override: 17.17%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono Fallback';
+  src:
+    local('Menlo Regular'), local('Menlo-Regular'), local('DejaVu Sans Mono'),
+    local('DejaVuSansMono');
+  size-adjust: 99.66%;
+  ascent-override: 102.85%;
+  descent-override: 27.59%;
+  line-gap-override: 0%;
+}

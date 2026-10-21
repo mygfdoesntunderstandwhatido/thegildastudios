@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import Testimonial from '../../components/content/Testimonial.astro';
+import { testimonialPreview as content } from '../../content/dev/testimonial';
+---
+
+<Base title={content.title}>
+  <main>
+    <header class="band band--cream band--compact">
+      <div class="container stack">
+        <h1>{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </header>
+    <section class="band band--brine band--spacious" aria-labelledby="dark-title">
+      <div class="container stack">
+        <h2 id="dark-title" class="label">
+          {content.dark}
+        </h2>
+        {content.samples.map((sample) => (
+          <Testimonial {...sample} />
+        ))}
+      </div>
+    </section>
+    <section class="band band--cream" aria-labelledby="light-title">
+      <div class="container stack">
+        <h2 id="light-title" class="label">
+          {content.light}
+        </h2>
+        {content.samples.map((sample) => (
+          <Testimonial {...sample} variant="light" />
+        ))}
+      </div>
+    </section>
+    <section class="band band--sand" aria-labelledby="sand-title">
+      <div class="container stack">
+        <h2 id="sand-title" class="label">
+          {content.sand}
+        </h2>
+        <Testimonial {...content.samples[1]} variant="light" />
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-9);
+  }
+</style>

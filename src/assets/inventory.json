@@ -1,0 +1,695 @@
+[
+  {
+    "file": "logos/app-icon-mark.png",
+    "width": 1024,
+    "height": 1024,
+    "usage": "Reserved for #28 icons and social",
+    "variants": []
+  },
+  {
+    "file": "logos/gilda-mark-full-colour.png",
+    "width": 823,
+    "height": 1000,
+    "usage": "Shared brand mark / homepage interactive hero",
+    "variants": [
+      {
+        "file": "logos/gilda-mark-full-colour-354.avif",
+        "width": 354,
+        "height": 430,
+        "bytes": 14016
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-354.webp",
+        "width": 354,
+        "height": 430,
+        "bytes": 23812
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-354.png",
+        "width": 354,
+        "height": 430,
+        "bytes": 128750
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-708.avif",
+        "width": 708,
+        "height": 860,
+        "bytes": 32607
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-708.webp",
+        "width": 708,
+        "height": 860,
+        "bytes": 54798
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-708.png",
+        "width": 708,
+        "height": 860,
+        "bytes": 472995
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-823.avif",
+        "width": 823,
+        "height": 1000,
+        "bytes": 33602
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-823.webp",
+        "width": 823,
+        "height": 1000,
+        "bytes": 51284
+      },
+      {
+        "file": "logos/gilda-mark-full-colour-823.png",
+        "width": 823,
+        "height": 1000,
+        "bytes": 608312
+      }
+    ]
+  },
+  {
+    "file": "logos/gilda-mark-on-dark.png",
+    "width": 823,
+    "height": 1000,
+    "usage": "Shared brand mark / homepage interactive hero",
+    "variants": [
+      {
+        "file": "logos/gilda-mark-on-dark-354.avif",
+        "width": 354,
+        "height": 430,
+        "bytes": 13051
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-354.webp",
+        "width": 354,
+        "height": 430,
+        "bytes": 22424
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-354.png",
+        "width": 354,
+        "height": 430,
+        "bytes": 126152
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-708.avif",
+        "width": 708,
+        "height": 860,
+        "bytes": 30338
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-708.webp",
+        "width": 708,
+        "height": 860,
+        "bytes": 51020
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-708.png",
+        "width": 708,
+        "height": 860,
+        "bytes": 460756
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-823.avif",
+        "width": 823,
+        "height": 1000,
+        "bytes": 31488
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-823.webp",
+        "width": 823,
+        "height": 1000,
+        "bytes": 39776
+      },
+      {
+        "file": "logos/gilda-mark-on-dark-823.png",
+        "width": 823,
+        "height": 1000,
+        "bytes": 581137
+      }
+    ]
+  },
+  {
+    "file": "logos/mark-piece-0.png",
+    "width": 823,
+    "height": 1000,
+    "usage": "Shared brand mark / homepage interactive hero",
+    "variants": [
+      {
+        "file": "logos/mark-piece-0-354.avif",
+        "width": 354,
+        "height": 430,
+        "bytes": 3244
+      },
+      {
+        "file": "logos/mark-piece-0-354.webp",
+        "width": 354,
+        "height": 430,
+        "bytes": 4884
+      },
+      {
+        "file": "logos/mark-piece-0-354.png",
+        "width": 354,
+        "height": 430,
+        "bytes": 30943
+      },
+      {
+        "file": "logos/mark-piece-0-708.avif",
+        "width": 708,
+        "height": 860,
+        "bytes": 6807
+      },
+      {
+        "file": "logos/mark-piece-0-708.webp",
+        "width": 708,
+        "height": 860,
+        "bytes": 10950
+      },
+      {
+        "file": "logos/mark-piece-0-708.png",
+        "width": 708,
+        "height": 860,
+        "bytes": 108507
+      },
+      {
+        "file": "logos/mark-piece-0-823.avif",
+        "width": 823,
+        "height": 1000,
+        "bytes": 7044
+      },
+      {
+        "file": "logos/mark-piece-0-823.webp",
+        "width": 823,
+        "height": 1000,
+        "bytes": 8922
+      },
+      {
+        "file": "logos/mark-piece-0-823.png",
+        "width": 823,
+        "height": 1000,
+        "bytes": 134672
+      }
+    ]
+  },
+  {
+    "file": "logos/mark-piece-1.png",
+    "width": 823,
+    "height": 1000,
+    "usage": "Shared brand mark / homepage interactive hero",
+    "variants": [
+      {
+        "file": "logos/mark-piece-1-354.avif",
+        "width": 354,
+        "height": 430,
+        "bytes": 4146
+      },
+      {
+        "file": "logos/mark-piece-1-354.webp",
+        "width": 354,
+        "height": 430,
+        "bytes": 7056
+      },
+      {
+        "file": "logos/mark-piece-1-354.png",
+        "width": 354,
+        "height": 430,
+        "bytes": 35508
+      },
+      {
+        "file": "logos/mark-piece-1-708.avif",
+        "width": 708,
+        "height": 860,
+        "bytes": 9962
+      },
+      {
+        "file": "logos/mark-piece-1-708.webp",
+        "width": 708,
+        "height": 860,
+        "bytes": 16762
+      },
+      {
+        "file": "logos/mark-piece-1-708.png",
+        "width": 708,
+        "height": 860,
+        "bytes": 127737
+      },
+      {
+        "file": "logos/mark-piece-1-823.avif",
+        "width": 823,
+        "height": 1000,
+        "bytes": 9949
+      },
+      {
+        "file": "logos/mark-piece-1-823.webp",
+        "width": 823,
+        "height": 1000,
+        "bytes": 13956
+      },
+      {
+        "file": "logos/mark-piece-1-823.png",
+        "width": 823,
+        "height": 1000,
+        "bytes": 160092
+      }
+    ]
+  },
+  {
+    "file": "logos/mark-piece-2.png",
+    "width": 823,
+    "height": 1000,
+    "usage": "Shared brand mark / homepage interactive hero",
+    "variants": [
+      {
+        "file": "logos/mark-piece-2-354.avif",
+        "width": 354,
+        "height": 430,
+        "bytes": 6546
+      },
+      {
+        "file": "logos/mark-piece-2-354.webp",
+        "width": 354,
+        "height": 430,
+        "bytes": 10994
+      },
+      {
+        "file": "logos/mark-piece-2-354.png",
+        "width": 354,
+        "height": 430,
+        "bytes": 58688
+      },
+      {
+        "file": "logos/mark-piece-2-708.avif",
+        "width": 708,
+        "height": 860,
+        "bytes": 14055
+      },
+      {
+        "file": "logos/mark-piece-2-708.webp",
+        "width": 708,
+        "height": 860,
+        "bytes": 24058
+      },
+      {
+        "file": "logos/mark-piece-2-708.png",
+        "width": 708,
+        "height": 860,
+        "bytes": 214868
+      },
+      {
+        "file": "logos/mark-piece-2-823.avif",
+        "width": 823,
+        "height": 1000,
+        "bytes": 14675
+      },
+      {
+        "file": "logos/mark-piece-2-823.webp",
+        "width": 823,
+        "height": 1000,
+        "bytes": 17310
+      },
+      {
+        "file": "logos/mark-piece-2-823.png",
+        "width": 823,
+        "height": 1000,
+        "bytes": 270035
+      }
+    ]
+  },
+  {
+    "file": "logos/mark-piece-map.png",
+    "width": 823,
+    "height": 1000,
+    "usage": "Exact original hit-test map; import with ?url, never transform",
+    "variants": []
+  },
+  {
+    "file": "logos/mask-engraved.png",
+    "width": 823,
+    "height": 1000,
+    "usage": "Single-colour CSS mask",
+    "variants": []
+  },
+  {
+    "file": "logos/mask-outline.png",
+    "width": 198,
+    "height": 240,
+    "usage": "Single-colour CSS mask",
+    "variants": []
+  },
+  {
+    "file": "logos/monogram-gs-brine.png",
+    "width": 1024,
+    "height": 1024,
+    "usage": "Reserved for #28 icons and social",
+    "variants": []
+  },
+  {
+    "file": "logos/monogram-gs-tile.png",
+    "width": 1024,
+    "height": 1024,
+    "usage": "Reserved for #28 icons and social",
+    "variants": []
+  },
+  {
+    "file": "logos/profile-picture-brine.png",
+    "width": 1080,
+    "height": 1080,
+    "usage": "Reserved for #28 icons and social",
+    "variants": []
+  },
+  {
+    "file": "logos/profile-picture-cream.png",
+    "width": 1080,
+    "height": 1080,
+    "usage": "Reserved for #28 icons and social",
+    "variants": []
+  },
+  {
+    "file": "logos/profile-picture-olive.png",
+    "width": 1080,
+    "height": 1080,
+    "usage": "Reserved for #28 icons and social",
+    "variants": []
+  },
+  {
+    "file": "illustrations/01-olive-plan.png",
+    "width": 677,
+    "height": 623,
+    "usage": "About, Services and case-study pillars",
+    "variants": [
+      {
+        "file": "illustrations/01-olive-plan-96.avif",
+        "width": 96,
+        "height": 88,
+        "bytes": 2517
+      },
+      {
+        "file": "illustrations/01-olive-plan-96.webp",
+        "width": 96,
+        "height": 88,
+        "bytes": 3784
+      },
+      {
+        "file": "illustrations/01-olive-plan-96.png",
+        "width": 96,
+        "height": 88,
+        "bytes": 20548
+      },
+      {
+        "file": "illustrations/01-olive-plan-192.avif",
+        "width": 192,
+        "height": 177,
+        "bytes": 6030
+      },
+      {
+        "file": "illustrations/01-olive-plan-192.webp",
+        "width": 192,
+        "height": 177,
+        "bytes": 9502
+      },
+      {
+        "file": "illustrations/01-olive-plan-192.png",
+        "width": 192,
+        "height": 177,
+        "bytes": 71966
+      },
+      {
+        "file": "illustrations/01-olive-plan-280.avif",
+        "width": 280,
+        "height": 258,
+        "bytes": 9820
+      },
+      {
+        "file": "illustrations/01-olive-plan-280.webp",
+        "width": 280,
+        "height": 258,
+        "bytes": 15410
+      },
+      {
+        "file": "illustrations/01-olive-plan-280.png",
+        "width": 280,
+        "height": 258,
+        "bytes": 141969
+      },
+      {
+        "file": "illustrations/01-olive-plan-384.avif",
+        "width": 384,
+        "height": 353,
+        "bytes": 13972
+      },
+      {
+        "file": "illustrations/01-olive-plan-384.webp",
+        "width": 384,
+        "height": 353,
+        "bytes": 21864
+      },
+      {
+        "file": "illustrations/01-olive-plan-384.png",
+        "width": 384,
+        "height": 353,
+        "bytes": 249860
+      },
+      {
+        "file": "illustrations/01-olive-plan-560.avif",
+        "width": 560,
+        "height": 515,
+        "bytes": 21185
+      },
+      {
+        "file": "illustrations/01-olive-plan-560.webp",
+        "width": 560,
+        "height": 515,
+        "bytes": 32694
+      },
+      {
+        "file": "illustrations/01-olive-plan-560.png",
+        "width": 560,
+        "height": 515,
+        "bytes": 485723
+      }
+    ]
+  },
+  {
+    "file": "illustrations/02-anchovy-build.png",
+    "width": 497,
+    "height": 832,
+    "usage": "About, Services and case-study pillars",
+    "variants": [
+      {
+        "file": "illustrations/02-anchovy-build-96.avif",
+        "width": 96,
+        "height": 161,
+        "bytes": 3476
+      },
+      {
+        "file": "illustrations/02-anchovy-build-96.webp",
+        "width": 96,
+        "height": 161,
+        "bytes": 5292
+      },
+      {
+        "file": "illustrations/02-anchovy-build-96.png",
+        "width": 96,
+        "height": 161,
+        "bytes": 23796
+      },
+      {
+        "file": "illustrations/02-anchovy-build-192.avif",
+        "width": 192,
+        "height": 321,
+        "bytes": 7925
+      },
+      {
+        "file": "illustrations/02-anchovy-build-192.webp",
+        "width": 192,
+        "height": 321,
+        "bytes": 13244
+      },
+      {
+        "file": "illustrations/02-anchovy-build-192.png",
+        "width": 192,
+        "height": 321,
+        "bytes": 84456
+      },
+      {
+        "file": "illustrations/02-anchovy-build-280.avif",
+        "width": 280,
+        "height": 469,
+        "bytes": 12811
+      },
+      {
+        "file": "illustrations/02-anchovy-build-280.webp",
+        "width": 280,
+        "height": 469,
+        "bytes": 21300
+      },
+      {
+        "file": "illustrations/02-anchovy-build-280.png",
+        "width": 280,
+        "height": 469,
+        "bytes": 171089
+      },
+      {
+        "file": "illustrations/02-anchovy-build-384.avif",
+        "width": 384,
+        "height": 643,
+        "bytes": 18347
+      },
+      {
+        "file": "illustrations/02-anchovy-build-384.webp",
+        "width": 384,
+        "height": 643,
+        "bytes": 29952
+      },
+      {
+        "file": "illustrations/02-anchovy-build-384.png",
+        "width": 384,
+        "height": 643,
+        "bytes": 309380
+      },
+      {
+        "file": "illustrations/02-anchovy-build-497.avif",
+        "width": 497,
+        "height": 832,
+        "bytes": 22227
+      },
+      {
+        "file": "illustrations/02-anchovy-build-497.webp",
+        "width": 497,
+        "height": 832,
+        "bytes": 32010
+      },
+      {
+        "file": "illustrations/02-anchovy-build-497.png",
+        "width": 497,
+        "height": 832,
+        "bytes": 479328
+      }
+    ]
+  },
+  {
+    "file": "illustrations/03-pepper-grow.png",
+    "width": 250,
+    "height": 900,
+    "usage": "About, Services and case-study pillars",
+    "variants": [
+      {
+        "file": "illustrations/03-pepper-grow-96.avif",
+        "width": 96,
+        "height": 346,
+        "bytes": 5175
+      },
+      {
+        "file": "illustrations/03-pepper-grow-96.webp",
+        "width": 96,
+        "height": 346,
+        "bytes": 8176
+      },
+      {
+        "file": "illustrations/03-pepper-grow-96.png",
+        "width": 96,
+        "height": 346,
+        "bytes": 34984
+      },
+      {
+        "file": "illustrations/03-pepper-grow-192.avif",
+        "width": 192,
+        "height": 691,
+        "bytes": 11545
+      },
+      {
+        "file": "illustrations/03-pepper-grow-192.webp",
+        "width": 192,
+        "height": 691,
+        "bytes": 19318
+      },
+      {
+        "file": "illustrations/03-pepper-grow-192.png",
+        "width": 192,
+        "height": 691,
+        "bytes": 124833
+      },
+      {
+        "file": "illustrations/03-pepper-grow-250.avif",
+        "width": 250,
+        "height": 900,
+        "bytes": 12807
+      },
+      {
+        "file": "illustrations/03-pepper-grow-250.webp",
+        "width": 250,
+        "height": 900,
+        "bytes": 19034
+      },
+      {
+        "file": "illustrations/03-pepper-grow-250.png",
+        "width": 250,
+        "height": 900,
+        "bytes": 195156
+      }
+    ]
+  },
+  {
+    "file": "graphics/photo-placeholder-feed.png",
+    "width": 1080,
+    "height": 820,
+    "usage": "Homepage Selected work cards",
+    "variants": [
+      {
+        "file": "graphics/photo-placeholder-feed-354.avif",
+        "width": 354,
+        "height": 269,
+        "bytes": 3347
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-354.webp",
+        "width": 354,
+        "height": 269,
+        "bytes": 4438
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-354.png",
+        "width": 354,
+        "height": 269,
+        "bytes": 18301
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-708.avif",
+        "width": 708,
+        "height": 538,
+        "bytes": 7909
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-708.webp",
+        "width": 708,
+        "height": 538,
+        "bytes": 11920
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-708.png",
+        "width": 708,
+        "height": 538,
+        "bytes": 48969
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-1080.avif",
+        "width": 1080,
+        "height": 820,
+        "bytes": 7390
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-1080.webp",
+        "width": 1080,
+        "height": 820,
+        "bytes": 13014
+      },
+      {
+        "file": "graphics/photo-placeholder-feed-1080.png",
+        "width": 1080,
+        "height": 820,
+        "bytes": 22834
+      }
+    ]
+  }
+]

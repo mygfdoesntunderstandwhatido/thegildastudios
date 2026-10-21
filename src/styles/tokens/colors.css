@@ -1,0 +1,58 @@
+/* Social-only --social-* and --story-safe-* tokens are omitted for web. */
+/* The Gilda Studios · colour. Source: Canva kit 04 Colour/colours.txt + Brand book §08–09. */
+:root {
+  /* Core */
+  --cream: #f3eee2; /* main ground, ~50% */
+  --brine: #24261a; /* text and dark bands, ~30% */
+  --olive: #646e2c; /* 01 Plan · buttons, links */
+  --anchovy: #8a4b3b; /* 02 Build */
+  /* Pepper: never text on cream (or sand). */
+  --pepper: #b8bc32; /* 03 Grow · highlights on dark */
+  --salt: #a7adb2; /* secondary text on dark */
+  --sand: #e9e2d0; /* alternate light ground */
+
+  /* Social extended (full post backgrounds) */
+  --pepper-pale: #e6e5b4;
+  --olive-deep: #3e4519;
+  --cure: #5c2f24;
+
+  /* Branch dots on Brine */
+  --olive-on-dark: #8e9a3c;
+  --anchovy-on-dark: #b86a55;
+  --pepper-on-dark: #b8bc32;
+
+  /* Supporting neutrals (used across brand book + social) */
+  --paper: #fbf9f4; /* raised panel on Cream/Sand */
+  --brine-deep: #1b1d13; /* behind dark artwork, monogram tile ground */
+  --desk: #dcd8cd; /* canvas behind pages */
+  --ink-2: #3a3c2e; /* secondary text on light */
+  --ink-3: #4a4c3c; /* captions, notes on light */
+  --ink-4: #6b6d5e; /* muted labels on light */
+  --cream-2: #d6d7cc; /* secondary text on Brine */
+
+  /* Hairlines */
+  --rule-light: rgba(36, 38, 26, 0.25);
+  --rule-light-soft: rgba(36, 38, 26, 0.2);
+  --rule-light-faint: rgba(36, 38, 26, 0.12);
+  --rule-dark: rgba(243, 238, 226, 0.25);
+  --rule-dark-strong: rgba(243, 238, 226, 0.35);
+
+  /* Semantic aliases */
+  --surface-page: var(--cream);
+  --surface-alt: var(--sand);
+  --surface-panel: var(--paper);
+  --surface-inverse: var(--brine);
+  --text-body: var(--brine);
+  --text-secondary: var(--ink-2);
+  --text-caption: var(--ink-3);
+  --text-on-dark: var(--cream);
+  --text-on-dark-secondary: var(--cream-2);
+  --text-on-dark-muted: var(--salt);
+  --accent: var(--olive); /* labels, links, primary button on light */
+  --accent-on-dark: var(--pepper); /* labels and highlights on Brine/Olive */
+  --link: var(--olive);
+  --link-hover: var(--brine);
+  --branch-plan: var(--olive);
+  --branch-build: var(--anchovy);
+  --branch-grow: var(--pepper);
+}

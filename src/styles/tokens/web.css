@@ -1,0 +1,23 @@
+/* Web sizes interpolate from the 390px phone to the 1280px desktop artboard.
+   Intermediate phone sizes use a capped 38px baseline pending design sign-off. */
+:root {
+  --display-124: clamp(62px, 34.8315px + 6.9663vw, 124px);
+  --display-120: clamp(38px, 2.0674px + 9.2135vw, 120px);
+  --display-104: clamp(38px, 9.0787px + 7.4157vw, 104px);
+  --display-96: clamp(38px, 12.5843px + 6.5169vw, 96px);
+  --display-80: clamp(38px, 19.5955px + 4.7191vw, 80px);
+  --display-64: clamp(38px, 26.6067px + 2.9213vw, 64px);
+  --display-52: clamp(38px, 31.8652px + 1.573vw, 52px);
+  --display-48: clamp(38px, 33.618px + 1.1236vw, 48px);
+  --display-44: clamp(38px, 35.3708px + 0.6742vw, 44px);
+  --display-36: 36px;
+  --display-30: 30px;
+  --display-26: 26px;
+  --display-22: 22px;
+  --anchovy-label: #f0dcd3;
+  --phase-line: #c9a77a;
+  --hover-opacity: 0.86;
+  --hover-duration: 150ms;
+  --mark-duration: 200ms;
+  --strip-duration: 200ms;
+}

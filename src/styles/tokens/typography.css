@@ -1,0 +1,25 @@
+/* Social-only --social-* and --story-safe-* tokens are omitted for web. */
+/* The Gilda Studios · type. Gilda Display (display), Archivo (body/UI), IBM Plex Mono (labels). */
+:root {
+  --font-display: 'Gilda Display', Georgia, serif;
+  --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* Document / web scale (brand book §10) */
+  --type-display: 400 68px/1 var(--font-display);
+  --type-heading: 400 34px/1.1 var(--font-display);
+  --type-subheading: 400 22px/1.15 var(--font-display);
+  --type-body: 400 17px/1.6 var(--font-body);
+  --type-body-sm: 400 14px/1.5 var(--font-body);
+  --type-label: 500 12px/1 var(--font-mono);
+  --type-label-sm: 500 11px/1 var(--font-mono);
+  --tracking-label: 0.06em;
+  --tracking-running: 0.1em; /* running headers, section labels */
+  --tracking-button: 0.12em;
+  --stretch-button: 125%;
+
+  /* Social scale (1080px-wide canvases) */
+
+  /* Wordmark: always the three words at one size, line-height .95 stacked */
+  --wordmark-leading: 0.95;
+}

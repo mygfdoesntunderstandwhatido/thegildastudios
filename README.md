@@ -16,7 +16,7 @@ Everything is a GitHub issue in phase order (milestones Phase 1–8). Each issue
 - `status:ready` once its dependencies are closed (set automatically)
 - `status:in-progress` while someone is working on it
 
-One issue maps to one branch and one PR (`Closes #N`).
+Codex and Claude Code batch related, ready issues into one branch and one PR to reduce paid Netlify deploys. Each PR includes a separate `Closes #N` line and acceptance criteria for every issue. Both agents follow the lane and ownership rules in `AGENTS.md` and group local changes before pushing, since each push can trigger another preview deploy.
 
 ## Getting started
 

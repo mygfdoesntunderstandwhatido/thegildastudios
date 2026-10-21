@@ -1,0 +1,63 @@
+# Keeps `status:ready` in step with each issue's "## Depends on" section:
+# an open issue is ready once every issue it depends on is closed.
+# Closing an issue also clears its status labels.
+name: Issue readiness
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened]
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+concurrency:
+  group: issue-readiness
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v9
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const READY = 'status:ready';
+            const IN_PROGRESS = 'status:in-progress';
+
+            const all = (await github.paginate(github.rest.issues.listForRepo, {
+              owner, repo, state: 'all', per_page: 100,
+            })).filter((i) => !i.pull_request);
+            const stateOf = new Map(all.map((i) => [i.number, i.state]));
+            const labelsOf = (i) => i.labels.map((l) => (typeof l === 'string' ? l : l.name));
+
+            const dependsOn = (body) => {
+              const match = (body || '').match(/^## Depends on\s*$([\s\S]*?)(?=^## |(?![\s\S]))/m);
+              if (!match) return null;
+              const section = match[1].replace(/<!--[\s\S]*?-->/g, '');
+              return [...section.matchAll(/#(\d+)/g)].map((m) => Number(m[1]));
+            };
+
+            const remove = async (issue, name) => {
+              if (!labelsOf(issue).includes(name)) return;
+              await github.rest.issues.removeLabel({ owner, repo, issue_number: issue.number, name });
+              core.info(`#${issue.number}: removed ${name}`);
+            };
+
+            for (const issue of all) {
+              if (issue.state === 'closed') {
+                await remove(issue, READY);
+                await remove(issue, IN_PROGRESS);
+                continue;
+              }
+              const deps = dependsOn(issue.body);
+              if (deps === null) continue; // not a build-task issue
+              const ready = deps.every((n) => stateOf.get(n) === 'closed');
+              if (ready && !labelsOf(issue).includes(READY)) {
+                await github.rest.issues.addLabels({ owner, repo, issue_number: issue.number, labels: [READY] });
+                core.info(`#${issue.number}: added ${READY}`);
+              } else if (!ready) {
+                await remove(issue, READY);
+              }
+            }

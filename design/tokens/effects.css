@@ -1,0 +1,14 @@
+/* The Gilda Studios · borders + shadows. Flat brand: shadows only on physical mockups. */
+:root {
+  --border-rule: 1px solid var(--rule-light);
+  --border-rule-strong: 2px solid var(--brine);
+  --border-rule-dark: 1px solid var(--rule-dark);
+  --ring-swatch: inset 0 0 0 1px rgba(36, 38, 26, .2);
+  --ring-dot-pepper: inset 0 0 0 1px rgba(36, 38, 26, .3);
+  --ring-outline-button: inset 0 0 0 1.5px var(--brine);
+
+  --shadow-post: 0 1px 3px rgba(36, 38, 26, .18);
+  --shadow-print: 0 10px 30px rgba(36, 38, 26, .18);
+  --shadow-frame: 0 0 0 1px rgba(36, 38, 26, .14), 0 16px 40px rgba(36, 38, 26, .12);
+  --shadow-icon: 0 4px 12px rgba(0, 0, 0, .2);
+}

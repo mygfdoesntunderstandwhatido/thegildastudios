@@ -1,0 +1,36 @@
+/* The Gilda Studios · spacing, radii, layout. Values lifted from the brand book + social templates. */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-11: 44px;
+  --space-12: 56px;
+  --space-13: 64px;
+  --space-14: 80px;
+
+  --page-pad-y: 40px;     /* A4 landscape page */
+  --page-pad-x: 56px;
+  --band-pad-y: 80px;     /* full-width web/brand bands */
+  --band-pad-x: 64px;
+  --social-pad: 80px;     /* all 1080px social canvases */
+  --story-safe-top: 240px;
+  --story-safe-bottom: 340px;
+
+  --radius-none: 0;       /* panels, swatches, bands: square */
+  --radius-tag: 4px;
+  --radius-frame: 6px;    /* browser / product frames */
+  --radius-pass: 12px;    /* event pass, lanyard card */
+  --radius-icon: 22%;     /* app icon / monogram tile (22px on 96–100px) */
+  --radius-pill: 99px;    /* buttons, chips */
+
+  --dot-sm: 10px;
+  --dot-md: 14px;
+  --dot-lg: 24px;
+}

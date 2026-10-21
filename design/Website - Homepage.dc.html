@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<title>The Gilda Studios · Website · Homepage</title>
+<link rel="stylesheet" href="_ds/gilda-studios-design-system-9ab164db-40cd-45c8-99f8-8fe06155eb90/styles.css">
+<script src="_ds/gilda-studios-design-system-9ab164db-40cd-45c8-99f8-8fe06155eb90/_ds_bundle.js"></script>
+<style>body{margin:0;background:#DCD8CD;-webkit-font-smoothing:antialiased}a{color:#646E2C}a:hover{color:#24261A}.dv-turn{padding:48px 56px 40px;border-bottom:1px solid rgba(36,38,26,.15)}.dv-thd{display:flex;align-items:baseline;gap:12px;margin:0 0 8px}.dv-tid{font:500 11px 'IBM Plex Mono',monospace;padding:4px 8px;background:#24261A;color:#F3EEE2;border-radius:4px;text-decoration:none}.dv-tname{font:400 28px/1.1 'Gilda Display',serif;color:#24261A}.dv-intro{font:15px/1.55 'Archivo',sans-serif;color:#3A3C2E;max-width:860px;margin:0 0 36px}.dv-opts{display:flex;flex-direction:column;gap:64px}.dv-opt{display:flex;flex-direction:column;gap:14px}.dv-oid{font:500 11px 'IBM Plex Mono',monospace;padding:4px 8px;background:rgba(36,38,26,.1);color:#24261A;border-radius:4px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:10px;font:15px/1.4 'Archivo',sans-serif;color:#3A3C2E}.dv-olabel b{font:400 22px/1 'Gilda Display',serif;color:#24261A;font-weight:400}.dv-row{display:flex;gap:40px;align-items:flex-start}.dv-card{background:#F3EEE2;box-shadow:0 10px 30px rgba(36,38,26,.12);overflow:hidden;flex:none}.dv-ph{border-radius:28px}.dv-cap{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C;margin:0 0 10px}.dv-opt:target .dv-oid{background:#646E2C;color:#F3EEE2}.dv-next{margin:40px 0 0;font:14px/1.5 'Archivo',sans-serif;color:#4A4C3C}</style>
+</helmet>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Homepage · combined</span></div>
+<p class="dv-intro">Updated: cream header, a cleaner edge on the mark, a faint skewer line through the testimonial dots, and a static phone hero. <a class="dv-oid" href="#2b">2b</a> is the light version. Hero and testimonials from <a class="dv-oid" href="#1c">1c</a>, selected work and the "We'll take it from here" band from <a class="dv-oid" href="#1a">1a</a>, footer from <a class="dv-oid" href="#1c">1c</a>. The light outline around the mark is removed with a version cleaned for dark grounds. The separate "What we do" section is gone. Hover an ingredient in the mark, or a column below it, and that piece lights up while its branch details fill in. On phone you tap instead.</p>
+<div class="dv-opts">
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a><b>Dark</b>Hover the olive, anchovy and pepper on desktop. Phone shows the mark and the three branches without interaction.</div>
+<div class="dv-row">
+<div><p class="dv-cap">Desktop · 1280</p>
+<div class="dv-card" style="width:1280px;background:#24261A;color:#F3EEE2;font-family:var(--font-body)">
+  <section style="position:relative;overflow:hidden;height:820px;display:flex;flex-direction:column">
+    <div style="position:absolute;right:10px;top:84px;width:708px;height:860px">
+      <img src="assets/logos/gilda-mark-on-dark.png" alt="The Gilda Studios mark" style="position:absolute;inset:0;width:100%;height:100%;opacity:{{ baseOp }};transition:opacity .2s ease">
+      <sc-for list="{{ pieces }}" as="p" hint-placeholder-count="3"><img src="{{ p.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:{{ p.op }};transform:scale({{ p.sc }});transform-origin:{{ p.org }};filter:drop-shadow(0 12px 28px rgba(0,0,0,.45));transition:opacity .2s ease,transform .25s ease;pointer-events:none"></sc-for>
+      <div onMouseMove="{{ markMove }}" onMouseLeave="{{ markLeave }}" style="position:absolute;inset:0;cursor:{{ markCursor }}"></div>
+    </div>
+    <header style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 56px;background:#F3EEE2;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)">
+      <a href="Website - Homepage.dc.html" style="font:400 26px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a>
+      <nav style="display:flex;gap:32px;font-size:14px;font-weight:500"><a href="Website - About.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">About</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Plan</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Build</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Grow</a><a href="Website - Projects.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Projects</a></nav>
+      <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" size="sm" dc-props="{{ anchProps }}" hint-size="130px,36px">Book a chat</x-import>
+    </header>
+    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px;padding:0 56px;max-width:600px;pointer-events:none">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#B8BC32">Studio for digital and events · Malta</span>
+      <h1 style="margin:0;font:400 124px/1.02 var(--font-display)">The right ingredients.</h1>
+      <p style="margin:0;font-size:19px;line-height:1.55;color:#D6D7CC;max-width:440px">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+      <div style="display:flex;gap:12px;pointer-events:auto"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" hint-size="150px,42px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" dc-props="{{ anchProps }}" hint-size="170px,42px">See our work</x-import></div>
+    </div>
+    <div style="position:relative;z-index:1;background:#24261A;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(243,238,226,.2)">
+      <sc-for list="{{ strip }}" as="s" hint-placeholder-count="3">
+        <a href="#" onMouseEnter="{{ s.on }}" onMouseLeave="{{ s.off }}" style="display:flex;flex-direction:column;gap:12px;padding:28px 56px 32px;background:{{ s.bg }};color:{{ s.fg }};opacity:{{ s.op }};text-decoration:none;transition:background .2s ease,opacity .2s ease;border-right:1px solid rgba(243,238,226,.12)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span style="display:flex;align-items:center;gap:10px;font:500 12px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:{{ s.dot }}"></span>{{ s.n }} / {{ s.ingU }}</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;opacity:{{ s.moreOp }}">EXPLORE</span></div>
+          <span style="font:400 36px/1 var(--font-display)">{{ s.name }}</span>
+          <span style="font-size:15px;line-height:1.5;color:{{ s.lineC }};min-height:45px">{{ s.line }}</span>
+          <span style="font:500 11px/1.5 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;opacity:{{ s.moreOp }};transition:opacity .2s ease">{{ s.svc }}</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="background:#F3EEE2;color:#24261A;padding:88px 56px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;align-items:center;gap:16px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">01</span><span>Selected work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span><a href="Website - Projects.dc.html" style="color:#646E2C">All projects</a></div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+        <a href="{{ w.href }}" onClick="{{ w.go }}" style="display:flex;flex-direction:column;gap:14px;color:#24261A;text-decoration:none" style-hover="opacity:.86">
+          <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">
+          <div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:5px"><sc-for list="{{ w.dots }}" as="d"><span style="width:10px;height:10px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+          <span style="font:400 30px/1.08 var(--font-display);text-wrap:pretty">{{ w.title }}</span>
+          <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Read the case study</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="padding:112px 56px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:36px">
+    <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2">02 · IN THEIR WORDS · {{ qcNum }}</span>
+    <span style="font:400 200px/.5 var(--font-display);color:{{ qcMark }};margin-top:40px;transition:color .3s ease">“</span>
+    <span style="font:400 36px/1.3 var(--font-display);max-width:960px;text-wrap:pretty;min-height:235px">{{ qc.q }}</span>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:center"><span style="font:400 26px/1.1 var(--font-display)">{{ qc.name }}</span><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#D6D7CC">{{ qc.biz }}</span><a href="{{ qc.href }}" onClick="{{ qc.go }}" style="align-self:center;margin-top:6px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4;padding:10px 0;text-decoration:none;box-shadow:inset 0 -1px 0 #E6E5B4">READ THE PROJECT</a></div>
+    <div style="position:relative;display:flex;gap:6px;align-items:center"><span style="position:absolute;left:22px;right:22px;top:50%;height:1px;background:rgba(243,238,226,.3)"></span>
+      <sc-for list="{{ dotsC }}" as="d" hint-placeholder-count="4"><button onClick="{{ d.onClick }}" style="all:unset;position:relative;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:{{ d.size }};height:{{ d.size }};border-radius:50%;background:{{ d.c }};transition:all .15s ease"></span></button></sc-for>
+    </div>
+  </section>
+  <section style="background:#E9E2D0;color:#24261A;padding:96px 56px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:center">
+    <img src="assets/logos/gilda-mark-on-dark.png" alt="The gilda: an olive, an anchovy and a pickled pepper on one skewer" style="width:100%;max-width:420px;height:auto;display:block;justify-self:center">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:center;gap:16px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">03</span><span>Where the name comes from</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+      <h2 style="margin:0;font:400 64px/1.02 var(--font-display);text-wrap:balance">Three ingredients. One skewer.</h2>
+      <p style="margin:0;font-size:18px;line-height:1.6;color:#3A3C2E;max-width:560px">The name comes from the gilda, a Spanish tapa we were served in Seville: a green olive, a salt-cured anchovy and a pickled pepper on one skewer. Each ingredient is one branch of the studio. The skewer is the team that holds them together.</p>
+      <div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.2);max-width:560px"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#646E2C"></span>01 / OLIVE</span><span style="font:400 26px/1 var(--font-display)">Plan</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#8A4B3B"></span>02 / ANCHOVY</span><span style="font:400 26px/1 var(--font-display)">Build</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32"></span>03 / PEPPER</span><span style="font:400 26px/1 var(--font-display)">Grow</span></div></div>
+      <a href="Website - About.dc.html" style="align-self:flex-start;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#24261A;padding:10px 0;text-decoration:none;box-shadow:inset 0 -1.5px 0 #646E2C">READ OUR STORY</a>
+    </div>
+  </section>
+  <footer style="background:#8A4B3B;padding:56px 56px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div style="display:flex;align-items:flex-start;gap:16px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:96px;width:auto"><span style="font:400 32px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">STUDIO</span><a href="Website - About.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">About</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Plan</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Build</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Grow</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">PROJECTS</span><a href="Website - Projects.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">All projects</a><a href="Website - Homepage.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Client words</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">CONTACT</span><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none" style-hover="opacity:.75">hello@thegildastudios.com</a><a href="tel:+35600000000" style="color:inherit;text-decoration:none" style-hover="opacity:.75">+356 0000 0000</a></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(243,238,226,.35);font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 THE GILDA STUDIOS · MALTA</span></div>
+  </footer>
+</div></div>
+
+<div><p class="dv-cap">Phone · 390</p>
+<div class="dv-card dv-ph" style="width:390px;background:#24261A;color:#F3EEE2;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#F3EEE2;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)"><a href="Website - Homepage.dc.html" style="font:400 20px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a><span style="font:500 11px/1 var(--font-mono);letter-spacing:.1em;padding:12px 0">MENU</span></header>
+  <section style="display:flex;flex-direction:column;gap:18px;padding:32px 24px 8px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#B8BC32">DIGITAL AND EVENTS · MALTA</span>
+    <h1 style="margin:0;font:400 62px/1.04 var(--font-display)">The right ingredients.</h1>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#D6D7CC">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+    <div style="display:flex;gap:10px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" hint-size="150px,42px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" dc-props="{{ anchProps }}" hint-size="150px,42px">Our work</x-import></div>
+  </section>
+  <div style="display:flex;justify-content:center;padding:24px 0 0"><img src="assets/logos/gilda-mark-on-dark.png" alt="The Gilda Studios mark" style="width:300px;height:auto;display:block"></div>
+  <div style="display:flex;flex-direction:column;gap:28px;padding:32px 24px 48px">
+    <sc-for list="{{ branches }}" as="b" hint-placeholder-count="3">
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:2px solid {{ b.tint }}">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span style="font:400 32px/1 var(--font-display)">{{ b.name }}</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:{{ b.tint }}">{{ b.n }} / {{ b.ingU }}</span></div>
+        <span style="font-size:15px;line-height:1.5;color:#D6D7CC">{{ b.line }}</span>
+        <span style="font:500 10px/1.5 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#F3EEE2">{{ b.svc }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <section style="background:#F3EEE2;color:#24261A;padding:48px 24px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:center;gap:12px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">01</span><span>Selected work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+      <a href="{{ w.href }}" onClick="{{ w.go }}" style="display:flex;flex-direction:column;gap:12px;color:#24261A;text-decoration:none">
+        <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:4px"><sc-for list="{{ w.dots }}" as="d"><span style="width:9px;height:9px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+        <span style="font:400 26px/1.1 var(--font-display)">{{ w.title }}</span>
+      </a>
+    </sc-for>
+    <a href="Website - Projects.dc.html" style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C;padding:12px 0">ALL PROJECTS</a>
+  </section>
+  <section style="padding:56px 24px;display:flex;flex-direction:column;gap:24px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2">02 · IN THEIR WORDS · {{ qcNum }}</span>
+    <span style="font:400 110px/.5 var(--font-display);color:{{ qcMark }};margin-top:28px">“</span>
+    <span style="font:400 22px/1.35 var(--font-display);min-height:330px">{{ qc.q }}</span>
+    <div style="display:flex;flex-direction:column;gap:8px"><span style="font:400 21px/1.1 var(--font-display)">{{ qc.name }}</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#D6D7CC">{{ qc.biz }}</span><a href="{{ qc.href }}" onClick="{{ qc.go }}" style="align-self:flex-start;margin-top:6px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4;padding:10px 0;text-decoration:none;box-shadow:inset 0 -1px 0 #E6E5B4">READ THE PROJECT</a></div>
+    <div style="position:relative;display:flex;gap:2px;margin-left:-14px;align-self:flex-start"><span style="position:absolute;left:22px;right:22px;top:50%;height:1px;background:rgba(243,238,226,.3)"></span><sc-for list="{{ dotsC }}" as="d" hint-placeholder-count="4"><button onClick="{{ d.onClick }}" style="all:unset;position:relative;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:{{ d.size }};height:{{ d.size }};border-radius:50%;background:{{ d.c }}"></span></button></sc-for></div>
+  </section>
+  <section style="background:#E9E2D0;color:#24261A;padding:48px 24px;display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;align-items:center;gap:12px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">03</span><span>Where the name comes from</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <h2 style="margin:0;font:400 38px/1.04 var(--font-display)">Three ingredients. One skewer.</h2>
+    <img src="assets/logos/gilda-mark-on-dark.png" alt="The gilda" style="width:240px;height:auto;display:block;align-self:center">
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#3A3C2E">The name comes from the gilda, a Spanish tapa we were served in Seville: a green olive, a salt-cured anchovy and a pickled pepper on one skewer. Each ingredient is one branch of the studio. The skewer is the team that holds them together.</p>
+    <div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.2)"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#646E2C"></span>01 / OLIVE</span><span style="font:400 22px/1 var(--font-display)">Plan</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#8A4B3B"></span>02 / ANCHOVY</span><span style="font:400 22px/1 var(--font-display)">Build</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32"></span>03 / PEPPER</span><span style="font:400 22px/1 var(--font-display)">Grow</span></div></div>
+    <a href="Website - About.dc.html" style="align-self:flex-start;font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#24261A;padding:14px 0;text-decoration:none;box-shadow:inset 0 -1.5px 0 #646E2C">READ OUR STORY</a>
+  </section>
+  <footer style="background:#8A4B3B;padding:40px 24px 32px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:flex-start;gap:12px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:72px;width:auto"><span style="font:400 26px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+    <div style="display:flex;flex-direction:column;gap:12px;font-size:15px"><span style="display:flex;gap:6px;flex-wrap:wrap"><a href="Website - About.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">About</a>·<a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Plan</a>·<a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Build</a>·<a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Grow</a></span><a href="Website - Projects.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">All projects</a><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none" style-hover="opacity:.75">hello@thegildastudios.com</a></div>
+    <div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(243,238,226,.35);font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 · MALTA</span></div>
+  </footer>
+</div></div>
+</div>
+</div>
+<div class="dv-opt" id="2b">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a><b>Light</b>The same page on cream. "Start with a conversation" stays as the one dark band.</div>
+<div class="dv-row">
+<div><p class="dv-cap">Desktop · 1280</p>
+<div class="dv-card" style="width:1280px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <section style="position:relative;overflow:hidden;height:820px;display:flex;flex-direction:column">
+    <div style="position:absolute;right:10px;top:84px;width:708px;height:860px">
+      <img src="assets/logos/gilda-mark-on-dark.png" alt="The Gilda Studios mark" style="position:absolute;inset:0;width:100%;height:100%;opacity:{{ baseOp }};transition:opacity .2s ease">
+      <sc-for list="{{ pieces }}" as="p" hint-placeholder-count="3"><img src="{{ p.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;opacity:{{ p.op }};transform:scale({{ p.sc }});transform-origin:{{ p.org }};filter:drop-shadow(0 12px 28px rgba(36,38,26,.22));transition:opacity .2s ease,transform .25s ease;pointer-events:none"></sc-for>
+      <div onMouseMove="{{ markMove }}" onMouseLeave="{{ markLeave }}" style="position:absolute;inset:0;cursor:{{ markCursor }}"></div>
+    </div>
+    <header style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 56px;background:#F3EEE2;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)">
+      <a href="Website - Homepage.dc.html" style="font:400 26px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a>
+      <nav style="display:flex;gap:32px;font-size:14px;font-weight:500"><a href="Website - About.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">About</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Plan</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Build</a><a href="Website - Services.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Grow</a><a href="Website - Projects.dc.html" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Projects</a></nav>
+      <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" size="sm" dc-props="{{ anchProps }}" hint-size="130px,36px">Book a chat</x-import>
+    </header>
+    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px;padding:0 56px;max-width:600px;pointer-events:none">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Studio for digital and events · Malta</span>
+      <h1 style="margin:0;font:400 124px/1.02 var(--font-display)">The right ingredients.</h1>
+      <p style="margin:0;font-size:19px;line-height:1.55;color:#3A3C2E;max-width:440px">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+      <div style="display:flex;gap:12px;pointer-events:auto"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" hint-size="150px,42px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" dc-props="{{ anchProps }}" hint-size="170px,42px">See our work</x-import></div>
+    </div>
+    <div style="position:relative;z-index:1;background:#F3EEE2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(36,38,26,.2)">
+      <sc-for list="{{ stripL }}" as="s" hint-placeholder-count="3">
+        <a href="#" onMouseEnter="{{ s.on }}" onMouseLeave="{{ s.off }}" style="display:flex;flex-direction:column;gap:12px;padding:28px 56px 32px;background:{{ s.bg }};color:{{ s.fg }};opacity:{{ s.op }};text-decoration:none;transition:background .2s ease,opacity .2s ease;border-right:1px solid rgba(36,38,26,.12)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span style="display:flex;align-items:center;gap:10px;font:500 12px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:{{ s.dot }}"></span>{{ s.n }} / {{ s.ingU }}</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;opacity:{{ s.moreOp }}">EXPLORE</span></div>
+          <span style="font:400 36px/1 var(--font-display)">{{ s.name }}</span>
+          <span style="font-size:15px;line-height:1.5;color:{{ s.lineC }};min-height:45px">{{ s.line }}</span>
+          <span style="font:500 11px/1.5 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;opacity:{{ s.moreOp }};transition:opacity .2s ease">{{ s.svc }}</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="background:#E9E2D0;color:#24261A;padding:88px 56px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;align-items:center;gap:16px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">01</span><span>Selected work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span><a href="Website - Projects.dc.html" style="color:#646E2C">All projects</a></div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+        <a href="{{ w.href }}" onClick="{{ w.go }}" style="display:flex;flex-direction:column;gap:14px;color:#24261A;text-decoration:none" style-hover="opacity:.86">
+          <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">
+          <div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:5px"><sc-for list="{{ w.dots }}" as="d"><span style="width:10px;height:10px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+          <span style="font:400 30px/1.08 var(--font-display);text-wrap:pretty">{{ w.title }}</span>
+          <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Read the case study</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="padding:112px 56px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:36px">
+    <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">02 · IN THEIR WORDS · {{ qcNum }}</span>
+    <span style="font:400 200px/.5 var(--font-display);color:{{ qcMarkL }};margin-top:40px;transition:color .3s ease">“</span>
+    <span style="font:400 36px/1.3 var(--font-display);max-width:960px;text-wrap:pretty;min-height:235px">{{ qc.q }}</span>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:center"><span style="font:400 26px/1.1 var(--font-display)">{{ qc.name }}</span><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#3A3C2E">{{ qc.biz }}</span><a href="{{ qc.href }}" onClick="{{ qc.go }}" style="align-self:center;margin-top:6px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C;padding:10px 0;text-decoration:none;box-shadow:inset 0 -1px 0 #646E2C">READ THE PROJECT</a></div>
+    <div style="position:relative;display:flex;gap:6px;align-items:center"><span style="position:absolute;left:22px;right:22px;top:50%;height:1px;background:rgba(36,38,26,.3)"></span>
+      <sc-for list="{{ dotsCL }}" as="d" hint-placeholder-count="4"><button onClick="{{ d.onClick }}" style="all:unset;position:relative;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:{{ d.size }};height:{{ d.size }};border-radius:50%;background:{{ d.c }};transition:all .15s ease"></span></button></sc-for>
+    </div>
+  </section>
+  <section style="background:#E9E2D0;color:#24261A;padding:96px 56px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:center">
+    <img src="assets/logos/gilda-mark-on-dark.png" alt="The gilda: an olive, an anchovy and a pickled pepper on one skewer" style="width:100%;max-width:420px;height:auto;display:block;justify-self:center">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:center;gap:16px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">03</span><span>Where the name comes from</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+      <h2 style="margin:0;font:400 64px/1.02 var(--font-display);text-wrap:balance">Three ingredients. One skewer.</h2>
+      <p style="margin:0;font-size:18px;line-height:1.6;color:#3A3C2E;max-width:560px">The name comes from the gilda, a Spanish tapa we were served in Seville: a green olive, a salt-cured anchovy and a pickled pepper on one skewer. Each ingredient is one branch of the studio. The skewer is the team that holds them together.</p>
+      <div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.2);max-width:560px"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#646E2C"></span>01 / OLIVE</span><span style="font:400 26px/1 var(--font-display)">Plan</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#8A4B3B"></span>02 / ANCHOVY</span><span style="font:400 26px/1 var(--font-display)">Build</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32"></span>03 / PEPPER</span><span style="font:400 26px/1 var(--font-display)">Grow</span></div></div>
+      <a href="Website - About.dc.html" style="align-self:flex-start;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#24261A;padding:10px 0;text-decoration:none;box-shadow:inset 0 -1.5px 0 #646E2C">READ OUR STORY</a>
+    </div>
+  </section>
+  <footer style="background:#8A4B3B;padding:56px 56px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div style="display:flex;align-items:flex-start;gap:16px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:96px;width:auto"><span style="font:400 32px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">STUDIO</span><a href="Website - About.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">About</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Plan</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Build</a><a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Grow</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">PROJECTS</span><a href="Website - Projects.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">All projects</a><a href="Website - Homepage.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Client words</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3;margin-bottom:6px">CONTACT</span><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none" style-hover="opacity:.75">hello@thegildastudios.com</a><a href="tel:+35600000000" style="color:inherit;text-decoration:none" style-hover="opacity:.75">+356 0000 0000</a></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(243,238,226,.35);font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 THE GILDA STUDIOS · MALTA</span></div>
+  </footer>
+</div></div>
+
+<div><p class="dv-cap">Phone · 390</p>
+<div class="dv-card dv-ph" style="width:390px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#F3EEE2;color:#24261A;border-bottom:1px solid rgba(36,38,26,.12)"><a href="Website - Homepage.dc.html" style="font:400 20px/1 var(--font-display);color:inherit;text-decoration:none">The Gilda Studios</a><span style="font:500 11px/1 var(--font-mono);letter-spacing:.1em;padding:12px 0">MENU</span></header>
+  <section style="display:flex;flex-direction:column;gap:18px;padding:32px 24px 8px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C">DIGITAL AND EVENTS · MALTA</span>
+    <h1 style="margin:0;font:400 62px/1.04 var(--font-display)">The right ingredients.</h1>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#3A3C2E">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+    <div style="display:flex;gap:10px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" hint-size="150px,42px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" dc-props="{{ anchProps }}" hint-size="150px,42px">Our work</x-import></div>
+  </section>
+  <div style="display:flex;justify-content:center;padding:24px 0 0"><img src="assets/logos/gilda-mark-on-dark.png" alt="The Gilda Studios mark" style="width:300px;height:auto;display:block"></div>
+  <div style="display:flex;flex-direction:column;gap:28px;padding:32px 24px 48px">
+    <sc-for list="{{ branches }}" as="b" hint-placeholder-count="3">
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:2px solid {{ b.c }}">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span style="font:400 32px/1 var(--font-display)">{{ b.name }}</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:{{ b.labelC }}">{{ b.n }} / {{ b.ingU }}</span></div>
+        <span style="font-size:15px;line-height:1.5;color:#3A3C2E">{{ b.line }}</span>
+        <span style="font:500 10px/1.5 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#24261A">{{ b.svc }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <section style="background:#E9E2D0;color:#24261A;padding:48px 24px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:center;gap:12px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">01</span><span>Selected work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+      <a href="{{ w.href }}" onClick="{{ w.go }}" style="display:flex;flex-direction:column;gap:12px;color:#24261A;text-decoration:none">
+        <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:4px"><sc-for list="{{ w.dots }}" as="d"><span style="width:9px;height:9px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+        <span style="font:400 26px/1.1 var(--font-display)">{{ w.title }}</span>
+      </a>
+    </sc-for>
+    <a href="Website - Projects.dc.html" style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C;padding:12px 0">ALL PROJECTS</a>
+  </section>
+  <section style="padding:56px 24px;display:flex;flex-direction:column;gap:24px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">02 · IN THEIR WORDS · {{ qcNum }}</span>
+    <span style="font:400 110px/.5 var(--font-display);color:{{ qcMarkL }};margin-top:28px">“</span>
+    <span style="font:400 22px/1.35 var(--font-display);min-height:330px">{{ qc.q }}</span>
+    <div style="display:flex;flex-direction:column;gap:8px"><span style="font:400 21px/1.1 var(--font-display)">{{ qc.name }}</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#3A3C2E">{{ qc.biz }}</span><a href="{{ qc.href }}" onClick="{{ qc.go }}" style="align-self:flex-start;margin-top:6px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C;padding:10px 0;text-decoration:none;box-shadow:inset 0 -1px 0 #646E2C">READ THE PROJECT</a></div>
+    <div style="position:relative;display:flex;gap:2px;margin-left:-14px;align-self:flex-start"><span style="position:absolute;left:22px;right:22px;top:50%;height:1px;background:rgba(36,38,26,.3)"></span><sc-for list="{{ dotsCL }}" as="d" hint-placeholder-count="4"><button onClick="{{ d.onClick }}" style="all:unset;position:relative;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:{{ d.size }};height:{{ d.size }};border-radius:50%;background:{{ d.c }}"></span></button></sc-for></div>
+  </section>
+  <section style="background:#E9E2D0;color:#24261A;padding:48px 24px;display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;align-items:center;gap:12px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">03</span><span>Where the name comes from</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <h2 style="margin:0;font:400 38px/1.04 var(--font-display)">Three ingredients. One skewer.</h2>
+    <img src="assets/logos/gilda-mark-on-dark.png" alt="The gilda" style="width:240px;height:auto;display:block;align-self:center">
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#3A3C2E">The name comes from the gilda, a Spanish tapa we were served in Seville: a green olive, a salt-cured anchovy and a pickled pepper on one skewer. Each ingredient is one branch of the studio. The skewer is the team that holds them together.</p>
+    <div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.2)"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#646E2C"></span>01 / OLIVE</span><span style="font:400 22px/1 var(--font-display)">Plan</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#8A4B3B"></span>02 / ANCHOVY</span><span style="font:400 22px/1 var(--font-display)">Build</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(36,38,26,.2)"><span style="display:flex;align-items:center;gap:10px;font:500 10px/1 var(--font-mono);letter-spacing:.06em"><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32"></span>03 / PEPPER</span><span style="font:400 22px/1 var(--font-display)">Grow</span></div></div>
+    <a href="Website - About.dc.html" style="align-self:flex-start;font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#24261A;padding:14px 0;text-decoration:none;box-shadow:inset 0 -1.5px 0 #646E2C">READ OUR STORY</a>
+  </section>
+  <footer style="background:#8A4B3B;padding:40px 24px 32px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:flex-start;gap:12px"><img src="assets/logos/gilda-mark-on-dark.png" alt="" style="height:72px;width:auto"><span style="font:400 26px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+    <div style="display:flex;flex-direction:column;gap:12px;font-size:15px"><span style="display:flex;gap:6px;flex-wrap:wrap"><a href="Website - About.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">About</a>·<a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Plan</a>·<a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Build</a>·<a href="Website - Services.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">Grow</a></span><a href="Website - Projects.dc.html" style="color:inherit;text-decoration:none" style-hover="opacity:.75">All projects</a><a href="mailto:hello@thegildastudios.com" style="color:inherit;text-decoration:none" style-hover="opacity:.75">hello@thegildastudios.com</a></div>
+    <div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(243,238,226,.35);font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#F0DCD3"><span>© 2026 · MALTA</span></div>
+  </footer>
+</div></div>
+</div>
+</div>
+</div>
+<p class="dv-next">Try next: "approve <a class="dv-oid" href="#2a">2a</a>, move to Contact" · "on hover, also tint the hero ground in the branch colour" · "bring back the three-column testimonials from <a class="dv-oid" href="#1b">1b</a> on phone"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Homepage · three directions</span></div>
+<p class="dv-intro">All three share the same content: hero, the three branches, selected work, client words, how we work, a contact band and footer. They differ in how the mark and the branch colours carry the page. Case studies, testimonials and contact details are placeholders until you send real ones.</p>
+<div class="dv-opts">
+
+<!-- ============ 1a ============ -->
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a><b>Annotated mark</b>Cream-led and by the book. The full-colour mark is labelled ingredient by ingredient; client quotes switch the band colour.</div>
+<div class="dv-row">
+<div><p class="dv-cap">Desktop · 1280</p>
+<div class="dv-card" style="width:1280px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 56px;border-bottom:1px solid rgba(36,38,26,.12)">
+    <div style="display:flex;align-items:center;gap:12px"><img src="assets/logos/gilda-mark-full-colour.png" alt="" style="height:44px;width:auto;display:block"><span style="font:400 24px/1 var(--font-display)">The Gilda Studios</span></div>
+    <nav style="display:flex;gap:32px;font-size:14px;font-weight:500"><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Plan</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Build</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Grow</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Work</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">About</a></nav>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="dark" size="sm" hint-size="130px,36px">Book a chat</x-import>
+  </header>
+  <section style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;padding:56px 56px 72px">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Merħba · Studio for digital and events, Malta</span>
+      <h1 style="margin:0;font:400 104px/.94 var(--font-display);text-wrap:balance">The right ingredients.</h1>
+      <p style="margin:0;font-size:19px;line-height:1.55;color:#3A3C2E;max-width:460px">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+      <div style="display:flex;gap:12px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="dark" hint-size="150px,42px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="outline" hint-size="170px,42px">See our work</x-import></div>
+    </div>
+    <div style="position:relative;height:600px">
+      <img src="assets/logos/gilda-mark-full-colour.png" alt="The Gilda Studios mark" style="position:absolute;left:70px;top:10px;height:580px;width:auto">
+      <div style="position:absolute;left:0;top:440px;display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:2px solid #646E2C"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C">01 / OLIVE</span><span style="font:400 26px/1 var(--font-display)">Plan</span></div>
+      <div style="position:absolute;left:0;top:150px;display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:2px solid #8A4B3B"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#8A4B3B">02 / ANCHOVY</span><span style="font:400 26px/1 var(--font-display)">Build</span></div>
+      <div style="position:absolute;right:0;top:250px;display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:2px solid #B8BC32;text-align:right"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#24261A">03 / PEPPER</span><span style="font:400 26px/1 var(--font-display)">Grow</span></div>
+    </div>
+  </section>
+  <section style="background:#E9E2D0;padding:88px 56px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;align-items:center;gap:16px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">01</span><span>What we do</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <h2 style="margin:0;font:400 56px/1.02 var(--font-display);max-width:760px">Three branches. One team holding them together.</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <sc-for list="{{ branches }}" as="b" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:16px;padding-top:20px;border-top:3px solid {{ b.c }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;font:500 12px/1 var(--font-mono);letter-spacing:.06em"><span>{{ b.n }}</span><span style="color:{{ b.labelC }}">{{ b.ingU }}</span></div>
+          <div style="height:200px;display:flex;align-items:flex-end"><img src="{{ b.img }}" alt="" style="max-height:200px;max-width:220px;width:auto;height:auto;display:block"></div>
+          <span style="font:400 48px/1 var(--font-display)">{{ b.name }}</span>
+          <p style="margin:0;font-size:16px;line-height:1.55;color:#3A3C2E">{{ b.line }}</p>
+          <span style="font:500 11px/1.5 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ b.svc }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  <section style="padding:88px 56px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;align-items:center;gap:16px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">02</span><span>Selected work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span><a href="#" style="color:#646E2C">All case studies</a></div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+        <a href="#" style="display:flex;flex-direction:column;gap:14px;color:#24261A;text-decoration:none" style-hover="opacity:.86">
+          <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">
+          <div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:5px"><sc-for list="{{ w.dots }}" as="d"><span style="width:10px;height:10px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+          <span style="font:400 30px/1.08 var(--font-display);text-wrap:pretty">{{ w.title }}</span>
+          <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Read the case study</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="background:{{ qa.bg }};color:{{ qa.fg }};padding:96px 56px;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:72px;transition:background .3s ease">
+    <div style="display:flex;flex-direction:column;gap:40px">
+      <div style="display:flex;flex-direction:column;gap:16px"><span style="font:400 160px/.6 var(--font-display);color:{{ qa.mark }}">“</span><span style="font:400 60px/1.08 var(--font-display);text-wrap:pretty;min-height:195px">{{ qa.q }}</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:20px;border-top:2px solid {{ qa.rule }}"><span style="font:400 28px/1.1 var(--font-display)">{{ qa.name }}</span><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:{{ qa.acc }}">{{ qa.biz }}</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;justify-content:flex-end">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase">03 · In their words</span>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ tabsA }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.onClick }}" style="all:unset;cursor:pointer;display:flex;gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid {{ qa.rule }};opacity:{{ t.op }};transition:opacity .15s ease"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">{{ t.num }}</span><span style="font-size:15px;font-weight:500">{{ t.biz }}</span></button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+  <section style="padding:88px 56px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;align-items:center;gap:16px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">04</span><span>How we work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span><span>One shared calendar</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:2px solid #24261A"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">{{ s.k }}</span><span style="font:400 32px/1 var(--font-display)">{{ s.t }}</span><span style="font-size:15px;line-height:1.55;color:#3A3C2E">{{ s.d }}</span></div>
+      </sc-for>
+    </div>
+  </section>
+  <section style="position:relative;overflow:hidden;background:#24261A;color:#F3EEE2;padding:96px 56px">
+    <div style="position:absolute;right:40px;bottom:-160px;width:494px;height:600px;background:#8E9A3C;-webkit-mask:url(assets/logos/mask-engraved.png) center/contain no-repeat;mask:url(assets/logos/mask-engraved.png) center/contain no-repeat"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:24px;max-width:640px">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#B8BC32">We'll take it from here.</span>
+      <h2 style="margin:0;font:400 80px/1 var(--font-display)">Start with a conversation.</h2>
+      <p style="margin:0;font-size:18px;line-height:1.55;color:#D6D7CC">Tell us what you're planning. We reply within one working day.</p>
+      <div style="display:flex;gap:12px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="light" hint-size="160px,42px">Book a call</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="outline-light" hint-size="280px,42px">hello@thegildastudios.com</x-import></div>
+    </div>
+  </section>
+  <footer style="background:#1B1D13;color:#F3EEE2;padding:56px 56px 32px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:14px"><span style="font:400 36px/.95 var(--font-display)">The<br>Gilda<br>Studios</span><span style="font-size:14px;color:#A7ADB2">Online and in the room.</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2;margin-bottom:6px">STUDIO</span><span>Plan</span><span>Build</span><span>Grow</span><span>About</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2;margin-bottom:6px">WORK</span><span>Case studies</span><span>Client words</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2;margin-bottom:6px">CONTACT</span><span>hello@thegildastudios.com</span><span>+356 0000 0000</span><span>Instagram · LinkedIn</span></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid rgba(243,238,226,.2);font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2"><span>© 2026 THE GILDA STUDIOS · MALTA</span><div style="display:flex;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#8E9A3C"></span><span style="width:10px;height:10px;border-radius:50%;background:#B86A55"></span><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32"></span></div></div>
+  </footer>
+</div></div>
+
+<div><p class="dv-cap">Phone · 390</p>
+<div class="dv-card dv-ph" style="width:390px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(36,38,26,.12)"><div style="display:flex;align-items:center;gap:8px"><img src="assets/logos/gilda-mark-full-colour.png" alt="" style="height:34px;width:auto;display:block"><span style="font:400 19px/1 var(--font-display)">The Gilda Studios</span></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.1em;padding:12px 0">MENU</span></header>
+  <section style="padding:32px 24px 40px;display:flex;flex-direction:column;gap:20px">
+    <span style="font:500 11px/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Merħba · Studio for digital and events, Malta</span>
+    <h1 style="margin:0;font:400 58px/.94 var(--font-display)">The right ingredients.</h1>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#3A3C2E">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+    <div style="position:relative;height:380px;margin:4px 0">
+      <img src="assets/logos/gilda-mark-full-colour.png" alt="" style="position:absolute;left:50px;top:0;height:370px;width:auto">
+      <div style="position:absolute;left:0;top:290px;display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:2px solid #646E2C"><span style="font:500 10px/1 var(--font-mono);color:#646E2C;letter-spacing:.06em">01 / OLIVE</span><span style="font:400 20px/1 var(--font-display)">Plan</span></div>
+      <div style="position:absolute;left:0;top:90px;display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:2px solid #8A4B3B"><span style="font:500 10px/1 var(--font-mono);color:#8A4B3B;letter-spacing:.06em">02 / ANCHOVY</span><span style="font:400 20px/1 var(--font-display)">Build</span></div>
+      <div style="position:absolute;right:0;top:170px;display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:2px solid #B8BC32;text-align:right"><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em">03 / PEPPER</span><span style="font:400 20px/1 var(--font-display)">Grow</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="dark" style="{{ fullW }}" hint-size="100%,44px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="outline" style="{{ fullW }}" hint-size="100%,44px">See our work</x-import></div>
+  </section>
+  <section style="background:#E9E2D0;padding:48px 24px;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;align-items:center;gap:12px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">01</span><span>What we do</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <h2 style="margin:0;font:400 36px/1.04 var(--font-display)">Three branches. One team holding them together.</h2>
+    <sc-for list="{{ branches }}" as="b" hint-placeholder-count="3">
+      <div style="display:grid;grid-template-columns:1fr 96px;gap:16px;padding-top:16px;border-top:3px solid {{ b.c }}">
+        <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">{{ b.n }} · <span style="color:{{ b.labelC }}">{{ b.ingU }}</span></span><span style="font:400 34px/1 var(--font-display)">{{ b.name }}</span><p style="margin:0;font-size:15px;line-height:1.5;color:#3A3C2E">{{ b.line }}</p></div>
+        <div style="display:flex;align-items:center;justify-content:center"><img src="{{ b.img }}" alt="" style="max-height:120px;max-width:96px;width:auto;height:auto"></div>
+      </div>
+    </sc-for>
+  </section>
+  <section style="padding:48px 24px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:center;gap:12px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">02</span><span>Selected work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+      <a href="#" style="display:flex;flex-direction:column;gap:12px;color:#24261A;text-decoration:none">
+        <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:4px"><sc-for list="{{ w.dots }}" as="d"><span style="width:9px;height:9px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+        <span style="font:400 26px/1.1 var(--font-display)">{{ w.title }}</span>
+      </a>
+    </sc-for>
+    <a href="#" style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C;padding:12px 0">ALL CASE STUDIES</a>
+  </section>
+  <section style="background:{{ qa.bg }};color:{{ qa.fg }};padding:48px 24px;display:flex;flex-direction:column;gap:24px;transition:background .3s ease">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">03 · IN THEIR WORDS</span>
+    <span style="font:400 100px/.5 var(--font-display);color:{{ qa.mark }};margin-top:24px">“</span>
+    <span style="font:400 34px/1.1 var(--font-display);min-height:150px">{{ qa.q }}</span>
+    <div style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:2px solid {{ qa.rule }}"><span style="font:400 22px/1.1 var(--font-display)">{{ qa.name }}</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:{{ qa.acc }}">{{ qa.biz }}</span></div>
+    <div style="display:flex;gap:8px">
+      <sc-for list="{{ tabsA }}" as="t" hint-placeholder-count="4"><button onClick="{{ t.onClick }}" style="all:unset;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:99px;box-shadow:inset 0 0 0 1.5px {{ qa.fg }};opacity:{{ t.op }};font:500 11px/1 var(--font-mono)">{{ t.num }}</button></sc-for>
+    </div>
+  </section>
+  <section style="padding:48px 24px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:center;gap:12px;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase"><span style="color:#646E2C">04</span><span>How we work</span><span style="flex:1;height:1px;background:rgba(36,38,26,.25)"></span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px 20px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:2px solid #24261A"><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">{{ s.k }}</span><span style="font:400 26px/1 var(--font-display)">{{ s.t }}</span><span style="font-size:14px;line-height:1.5;color:#3A3C2E">{{ s.d }}</span></div></sc-for>
+    </div>
+  </section>
+  <section style="position:relative;overflow:hidden;background:#24261A;color:#F3EEE2;padding:56px 24px 220px;display:flex;flex-direction:column;gap:18px">
+    <div style="position:absolute;right:-30px;bottom:-90px;width:247px;height:300px;background:#8E9A3C;-webkit-mask:url(assets/logos/mask-engraved.png) center/contain no-repeat;mask:url(assets/logos/mask-engraved.png) center/contain no-repeat"></div>
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#B8BC32">We'll take it from here.</span>
+    <h2 style="margin:0;font:400 46px/1 var(--font-display)">Start with a conversation.</h2>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#D6D7CC">Tell us what you're planning. We reply within one working day.</p>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="light" style="{{ fullW }}" hint-size="100%,44px">Book a call</x-import>
+  </section>
+  <footer style="background:#1B1D13;color:#F3EEE2;padding:40px 24px 32px;display:flex;flex-direction:column;gap:28px">
+    <span style="font:400 30px/.95 var(--font-display)">The<br>Gilda<br>Studios</span>
+    <div style="display:flex;flex-direction:column;gap:12px;font-size:15px"><span>Plan · Build · Grow</span><span>Case studies</span><span>hello@thegildastudios.com</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(243,238,226,.2);font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2"><span>© 2026 · MALTA</span><div style="display:flex;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:#8E9A3C"></span><span style="width:9px;height:9px;border-radius:50%;background:#B86A55"></span><span style="width:9px;height:9px;border-radius:50%;background:#B8BC32"></span></div></div>
+  </footer>
+</div></div>
+</div>
+</div>
+
+<!-- ============ 1b ============ -->
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a><b>Split ground</b>The mark runs across three branch-coloured panels, tone-on-tone, so the logo becomes the "what we do" section. Work as an index list.</div>
+<div class="dv-row">
+<div><p class="dv-cap">Desktop · 1280</p>
+<div class="dv-card" style="width:1280px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 56px">
+    <div style="display:flex;align-items:center;gap:12px"><img src="assets/logos/gilda-mark-full-colour.png" alt="" style="height:44px;width:auto;display:block"><span style="font:400 24px/1 var(--font-display)">The Gilda Studios</span></div>
+    <nav style="display:flex;gap:32px;font-size:14px;font-weight:500"><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Plan</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#8A4B3B">Build</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Grow</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">Work</a><a href="#" style="color:#24261A;text-decoration:none" style-hover="color:#646E2C">About</a></nav>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" size="sm" hint-size="130px,36px">Book a chat</x-import>
+  </header>
+  <section style="padding:72px 56px 64px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:26px">
+    <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Studio for digital and events · Malta</span>
+    <h1 style="margin:0;font:400 132px/.92 var(--font-display)">The right ingredients.</h1>
+    <p style="margin:0;font-size:19px;line-height:1.55;color:#3A3C2E;max-width:540px">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+    <div style="display:flex;gap:12px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" hint-size="150px,42px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="outline" hint-size="170px,42px">See our work</x-import></div>
+  </section>
+  <section style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:640px">
+    <div style="position:relative;overflow:hidden;background:#646E2C;color:#F3EEE2;padding:40px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="position:absolute;top:0;bottom:0;left:0;width:300%;background:#3E4519;-webkit-mask:url(assets/logos/mask-engraved.png) center 20px/auto 900px no-repeat;mask:url(assets/logos/mask-engraved.png) center 20px/auto 900px no-repeat"></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px"><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em">01 / OLIVE</span><span style="font:400 64px/1 var(--font-display)">Plan</span></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px;max-width:300px"><p style="margin:0;font-size:16px;line-height:1.5">Projects, events and on-the-day coordination. One plan with owners and dates.</p><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">EXPLORE PLAN</span></div>
+    </div>
+    <div style="position:relative;overflow:hidden;background:#8A4B3B;color:#F3EEE2;padding:40px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="position:absolute;top:0;bottom:0;left:-100%;width:300%;background:#5C2F24;-webkit-mask:url(assets/logos/mask-engraved.png) center 20px/auto 900px no-repeat;mask:url(assets/logos/mask-engraved.png) center 20px/auto 900px no-repeat"></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px"><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em">02 / ANCHOVY</span><span style="font:400 64px/1 var(--font-display)">Build</span></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px;max-width:300px"><p style="margin:0;font-size:16px;line-height:1.5">Websites designed, built, hosted and looked after by the people who made them.</p><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#E6E5B4">EXPLORE BUILD</span></div>
+    </div>
+    <div style="position:relative;overflow:hidden;background:#B8BC32;color:#24261A;padding:40px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="position:absolute;top:0;bottom:0;left:-200%;width:300%;background:#E6E5B4;-webkit-mask:url(assets/logos/mask-engraved.png) center 20px/auto 900px no-repeat;mask:url(assets/logos/mask-engraved.png) center 20px/auto 900px no-repeat"></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px"><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em">03 / PEPPER</span><span style="font:400 64px/1 var(--font-display)">Grow</span></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px;max-width:300px"><p style="margin:0;font-size:16px;line-height:1.5">Social media run month by month. Twelve posts a month, planned by the 25th.</p><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">EXPLORE GROW</span></div>
+    </div>
+  </section>
+  <section style="padding:96px 56px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px"><h2 style="margin:0;font:400 64px/1 var(--font-display)">Selected work.</h2><a href="#" style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C">ALL CASE STUDIES</a></div>
+    <div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.25)">
+      <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+        <a href="#" style="display:grid;grid-template-columns:72px minmax(0,1fr) minmax(0,1.5fr) 220px;gap:32px;align-items:center;padding:24px 0;border-top:1px solid rgba(36,38,26,.25);color:#24261A;text-decoration:none;transition:background .15s ease" style-hover="background:#E9E2D0">
+          <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;padding-left:8px">{{ w.num }}</span>
+          <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span><div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:5px"><sc-for list="{{ w.dots }}" as="d"><span style="width:10px;height:10px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase">{{ w.scope }}</span></div></div>
+          <span style="font:400 34px/1.08 var(--font-display);text-wrap:pretty">{{ w.title }}</span>
+          <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:220px;height:150px;object-fit:cover;display:block">
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr))">
+    <sc-for list="{{ quotes3 }}" as="q" hint-placeholder-count="3">
+      <div style="background:{{ q.bg }};color:{{ q.fg }};padding:56px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:48px;min-height:440px">
+        <div style="display:flex;flex-direction:column;gap:12px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">{{ q.branch }}</span><span style="font:400 120px/.6 var(--font-display);color:{{ q.mark }};margin-top:36px">“</span><span style="font:400 34px/1.12 var(--font-display);text-wrap:pretty">{{ q.q }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:2px solid {{ q.rule }}"><span style="font:400 22px/1.1 var(--font-display)">{{ q.name }}</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:{{ q.acc }}">{{ q.biz }}</span></div>
+      </div>
+    </sc-for>
+  </section>
+  <section style="background:#E9E2D0;padding:96px 56px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px">
+    <div style="display:flex;flex-direction:column;gap:20px"><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C">GET IN TOUCH</span><h2 style="margin:0;font:400 72px/1 var(--font-display)">Start with a conversation.</h2><p style="margin:0;font-size:18px;line-height:1.55;color:#3A3C2E;max-width:440px">Tell us what you're planning. We reply within one working day.</p></div>
+    <div style="display:flex;flex-direction:column;justify-content:flex-end">
+      <a href="#" style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:22px 0;border-top:2px solid #24261A;color:#24261A;text-decoration:none" style-hover="color:#646E2C"><span style="font:400 32px/1 var(--font-display)">Book a 20-minute call</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">PICK A TIME</span></a>
+      <a href="#" style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:22px 0;border-top:1px solid rgba(36,38,26,.25);color:#24261A;text-decoration:none" style-hover="color:#646E2C"><span style="font:400 32px/1 var(--font-display)">Write to us</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">HELLO@THEGILDASTUDIOS.COM</span></a>
+      <a href="#" style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:22px 0;border-top:1px solid rgba(36,38,26,.25);border-bottom:1px solid rgba(36,38,26,.25);color:#24261A;text-decoration:none" style-hover="color:#646E2C"><span style="font:400 32px/1 var(--font-display)">Call the studio</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">+356 0000 0000</span></a>
+    </div>
+  </section>
+  <footer style="padding:56px 56px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;justify-content:space-between;gap:32px;font-size:14px"><div style="display:flex;gap:32px"><span>Plan</span><span>Build</span><span>Grow</span><span>Work</span><span>About</span></div><div style="display:flex;gap:32px"><span>Instagram</span><span>LinkedIn</span></div></div>
+    <span style="font:400 154px/.9 var(--font-display);white-space:nowrap;letter-spacing:-.01em">The Gilda Studios</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid rgba(36,38,26,.25);font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C"><span>© 2026 · MALTA · ONLINE AND IN THE ROOM</span><div style="display:flex;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#646E2C"></span><span style="width:10px;height:10px;border-radius:50%;background:#8A4B3B"></span><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32;box-shadow:inset 0 0 0 1px rgba(36,38,26,.25)"></span></div></div>
+  </footer>
+</div></div>
+
+<div><p class="dv-cap">Phone · 390</p>
+<div class="dv-card dv-ph" style="width:390px;background:#F3EEE2;color:#24261A;font-family:var(--font-body)">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px"><div style="display:flex;align-items:center;gap:8px"><img src="assets/logos/gilda-mark-full-colour.png" alt="" style="height:34px;width:auto;display:block"><span style="font:400 19px/1 var(--font-display)">The Gilda Studios</span></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.1em;padding:12px 0">MENU</span></header>
+  <section style="padding:36px 24px 40px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#646E2C">Digital and events · Malta</span>
+    <h1 style="margin:0;font:400 64px/.92 var(--font-display)">The right ingredients.</h1>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#3A3C2E">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" style="{{ fullW }}" hint-size="100%,44px">Book a chat</x-import>
+  </section>
+  <section style="display:flex;flex-direction:column">
+    <div style="position:relative;overflow:hidden;height:200px;background:#646E2C;color:#F3EEE2;padding:24px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="position:absolute;left:0;right:0;top:0;height:300%;background:#3E4519;-webkit-mask:url(assets/logos/mask-engraved.png) 60% center/auto 600px no-repeat;mask:url(assets/logos/mask-engraved.png) 60% center/auto 600px no-repeat"></div>
+      <span style="position:relative;font:500 11px/1 var(--font-mono);letter-spacing:.06em">01 / OLIVE</span><div style="position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:12px"><span style="font:400 44px/1 var(--font-display)">Plan</span><span style="font-size:13px;line-height:1.4;max-width:170px;text-align:right">Projects, events and on-the-day coordination.</span></div>
+    </div>
+    <div style="position:relative;overflow:hidden;height:200px;background:#8A4B3B;color:#F3EEE2;padding:24px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="position:absolute;left:0;right:0;top:-100%;height:300%;background:#5C2F24;-webkit-mask:url(assets/logos/mask-engraved.png) 60% center/auto 600px no-repeat;mask:url(assets/logos/mask-engraved.png) 60% center/auto 600px no-repeat"></div>
+      <span style="position:relative;font:500 11px/1 var(--font-mono);letter-spacing:.06em">02 / ANCHOVY</span><div style="position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:12px"><span style="font:400 44px/1 var(--font-display)">Build</span><span style="font-size:13px;line-height:1.4;max-width:170px;text-align:right">Websites designed, built, hosted and looked after.</span></div>
+    </div>
+    <div style="position:relative;overflow:hidden;height:200px;background:#B8BC32;color:#24261A;padding:24px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="position:absolute;left:0;right:0;top:-200%;height:300%;background:#E6E5B4;-webkit-mask:url(assets/logos/mask-engraved.png) 60% center/auto 600px no-repeat;mask:url(assets/logos/mask-engraved.png) 60% center/auto 600px no-repeat"></div>
+      <span style="position:relative;font:500 11px/1 var(--font-mono);letter-spacing:.06em">03 / PEPPER</span><div style="position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:12px"><span style="font:400 44px/1 var(--font-display)">Grow</span><span style="font-size:13px;line-height:1.4;max-width:170px;text-align:right">Social media, content and campaigns, month by month.</span></div>
+    </div>
+  </section>
+  <section style="padding:48px 24px;display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font:400 40px/1 var(--font-display)">Selected work.</h2>
+    <div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(36,38,26,.25)">
+      <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+        <a href="#" style="display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:16px;align-items:center;padding:18px 0;border-top:1px solid rgba(36,38,26,.25);color:#24261A;text-decoration:none">
+          <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:4px"><sc-for list="{{ w.dots }}" as="d"><span style="width:8px;height:8px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div><span style="font:400 21px/1.12 var(--font-display)">{{ w.title }}</span></div>
+          <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:96px;height:96px;object-fit:cover;display:block">
+        </a>
+      </sc-for>
+    </div>
+    <a href="#" style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C;padding:12px 0">ALL CASE STUDIES</a>
+  </section>
+  <section style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory">
+    <sc-for list="{{ quotes3 }}" as="q" hint-placeholder-count="3">
+      <div style="flex:none;width:320px;scroll-snap-align:start;background:{{ q.bg }};color:{{ q.fg }};padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;gap:32px;min-height:360px;box-sizing:border-box">
+        <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em">{{ q.branch }}</span><span style="font:400 90px/.6 var(--font-display);color:{{ q.mark }};margin-top:28px">“</span><span style="font:400 27px/1.12 var(--font-display)">{{ q.q }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;padding-top:14px;border-top:2px solid {{ q.rule }}"><span style="font:400 19px/1.1 var(--font-display)">{{ q.name }}</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:{{ q.acc }}">{{ q.biz }}</span></div>
+      </div>
+    </sc-for>
+  </section>
+  <section style="background:#E9E2D0;padding:48px 24px;display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font:400 44px/1 var(--font-display)">Start with a conversation.</h2>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#3A3C2E">Tell us what you're planning. We reply within one working day.</p>
+    <div style="display:flex;flex-direction:column">
+      <a href="#" style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-top:2px solid #24261A;color:#24261A;text-decoration:none"><span style="font:400 24px/1 var(--font-display)">Book a call</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em">PICK A TIME</span></a>
+      <a href="#" style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-top:1px solid rgba(36,38,26,.25);color:#24261A;text-decoration:none"><span style="font:400 24px/1 var(--font-display)">Write to us</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em">EMAIL</span></a>
+      <a href="#" style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-top:1px solid rgba(36,38,26,.25);border-bottom:1px solid rgba(36,38,26,.25);color:#24261A;text-decoration:none"><span style="font:400 24px/1 var(--font-display)">Call the studio</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em">PHONE</span></a>
+    </div>
+  </section>
+  <footer style="padding:40px 24px 32px;display:flex;flex-direction:column;gap:24px">
+    <span style="font:400 52px/.92 var(--font-display)">The Gilda Studios</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(36,38,26,.25);font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C"><span>© 2026 · MALTA</span><div style="display:flex;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:#646E2C"></span><span style="width:9px;height:9px;border-radius:50%;background:#8A4B3B"></span><span style="width:9px;height:9px;border-radius:50%;background:#B8BC32;box-shadow:inset 0 0 0 1px rgba(36,38,26,.25)"></span></div></div>
+  </footer>
+</div></div>
+</div>
+</div>
+
+<!-- ============ 1c ============ -->
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a><b>Brine stage</b>Dark and confident. The mark is oversized and bleeds off the hero; each branch gets a full colour band with its ingredient. Quote marks take the colour of the branch.</div>
+<div class="dv-row">
+<div><p class="dv-cap">Desktop · 1280</p>
+<div class="dv-card" style="width:1280px;background:#24261A;color:#F3EEE2;font-family:var(--font-body)">
+  <section style="position:relative;overflow:hidden;height:800px;display:flex;flex-direction:column">
+    <img src="assets/logos/gilda-mark-full-colour.png" alt="The Gilda Studios mark" style="position:absolute;right:-40px;bottom:-200px;height:960px;width:auto">
+    <header style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 56px">
+      <span style="font:400 26px/1 var(--font-display)">The Gilda Studios</span>
+      <nav style="display:flex;gap:32px;font-size:14px;font-weight:500"><a href="#" style="color:#F3EEE2;text-decoration:none" style-hover="color:#B8BC32">Plan</a><a href="#" style="color:#F3EEE2;text-decoration:none" style-hover="color:#B8BC32">Build</a><a href="#" style="color:#F3EEE2;text-decoration:none" style-hover="color:#B8BC32">Grow</a><a href="#" style="color:#F3EEE2;text-decoration:none" style-hover="color:#B8BC32">Work</a><a href="#" style="color:#F3EEE2;text-decoration:none" style-hover="color:#B8BC32">About</a></nav>
+      <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="light" size="sm" hint-size="130px,36px">Book a chat</x-import>
+    </header>
+    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px;padding:0 56px;max-width:640px">
+      <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#B8BC32">Studio for digital and events · Malta</span>
+      <h1 style="margin:0;font:400 124px/.92 var(--font-display)">The right ingredients.</h1>
+      <p style="margin:0;font-size:19px;line-height:1.55;color:#D6D7CC;max-width:440px">Websites, projects, events and social media from one team. One contact, one plan, one invoice.</p>
+      <div style="display:flex;gap:12px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="light" hint-size="150px,42px">Book a chat</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="outline-light" hint-size="170px,42px">See our work</x-import></div>
+    </div>
+    <div style="position:relative;display:flex;gap:40px;padding:28px 56px;border-top:1px solid rgba(243,238,226,.2);font:500 12px/1 var(--font-mono);letter-spacing:.06em">
+      <span style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:#8E9A3C"></span>01 PLAN</span><span style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:#B86A55"></span>02 BUILD</span><span style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32"></span>03 GROW</span>
+    </div>
+  </section>
+  <sc-for list="{{ branches }}" as="b" hint-placeholder-count="3">
+    <section style="display:flex;flex-direction:{{ b.dir }};min-height:520px">
+      <div style="flex:1;background:{{ b.c }};color:{{ b.fg }};padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;gap:32px">
+        <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em">{{ b.n }} / {{ b.ingU }}</span>
+        <div style="display:flex;flex-direction:column;gap:20px"><span style="font:400 104px/.9 var(--font-display)">{{ b.name }}</span><p style="margin:0;font-size:19px;line-height:1.5;max-width:420px">{{ b.line }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ b.svcs }}" as="s"><span style="padding:10px 16px;border-radius:99px;box-shadow:inset 0 0 0 1.5px {{ b.fg }};font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase">{{ s }}</span></sc-for></div>
+        </div>
+      </div>
+      <div style="flex:1;background:#E9E2D0;display:flex;align-items:center;justify-content:center;padding:48px"><img src="{{ b.img }}" alt="" style="max-height:400px;max-width:420px;width:auto;height:auto;display:block"></div>
+    </section>
+  </sc-for>
+  <section style="background:#F3EEE2;color:#24261A;padding:96px 56px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px"><h2 style="margin:0;font:400 64px/1 var(--font-display)">Selected work.</h2><a href="#" style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#646E2C">ALL CASE STUDIES</a></div>
+    <a href="#" style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;color:#24261A;text-decoration:none" style-hover="opacity:.86">
+      <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:18px"><div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#646E2C"></span><span style="width:10px;height:10px;border-radius:50%;background:#8A4B3B"></span><span style="width:10px;height:10px;border-radius:50%;background:#B8BC32;box-shadow:inset 0 0 0 1px rgba(36,38,26,.25)"></span></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">RESTAURANT · VALLETTA</span></div>
+          <span style="font:400 52px/1.02 var(--font-display)">A new site and a sold-out opening night.</span>
+          <p style="margin:0;font-size:17px;line-height:1.55;color:#3A3C2E">One team ran the website, the launch event and three months of social. The owners had one number to call.</p></div>
+        <div style="display:flex;flex-direction:column;font-size:15px">
+          <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:2px solid #24261A"><span style="font:500 11px/1.4 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">SCOPE</span><span>Plan · Build · Grow</span></div>
+          <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid rgba(36,38,26,.25)"><span style="font:500 11px/1.4 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">TIMELINE</span><span>Eight weeks</span></div>
+          <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid rgba(36,38,26,.25);border-bottom:1px solid rgba(36,38,26,.25)"><span style="font:500 11px/1.4 var(--font-mono);letter-spacing:.06em;color:#4A4C3C">OPENING</span><span>Fri 14 Nov · 120 guests</span></div>
+        </div>
+      </div>
+    </a>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+      <sc-for list="{{ work2 }}" as="w" hint-placeholder-count="2">
+        <a href="#" style="display:flex;flex-direction:column;gap:14px;color:#24261A;text-decoration:none" style-hover="opacity:.86">
+          <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block">
+          <div style="display:flex;align-items:center;gap:10px"><div style="display:flex;gap:5px"><sc-for list="{{ w.dots }}" as="d"><span style="width:10px;height:10px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+          <span style="font:400 32px/1.08 var(--font-display)">{{ w.title }}</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+  <section style="padding:112px 56px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:36px">
+    <span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2">IN THEIR WORDS · {{ qcNum }}</span>
+    <span style="font:400 200px/.5 var(--font-display);color:{{ qcMark }};margin-top:40px;transition:color .3s ease">“</span>
+    <span style="font:400 68px/1.06 var(--font-display);max-width:1000px;text-wrap:balance;min-height:144px">{{ qc.q }}</span>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:center"><span style="font:400 26px/1.1 var(--font-display)">{{ qc.name }}</span><span style="font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#D6D7CC">{{ qc.biz }}</span></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <sc-for list="{{ dotsC }}" as="d" hint-placeholder-count="4"><button onClick="{{ d.onClick }}" style="all:unset;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:{{ d.size }};height:{{ d.size }};border-radius:50%;background:{{ d.c }};transition:all .15s ease"></span></button></sc-for>
+    </div>
+  </section>
+  <section style="position:relative;overflow:hidden;background:#B8BC32;color:#24261A;padding:96px 56px">
+    <div style="position:absolute;right:60px;top:-60px;width:494px;height:600px;background:#24261A;-webkit-mask:url(assets/logos/mask-engraved.png) center/contain no-repeat;mask:url(assets/logos/mask-engraved.png) center/contain no-repeat"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:24px;max-width:620px">
+      <h2 style="margin:0;font:400 88px/.98 var(--font-display)">Start with a conversation.</h2>
+      <p style="margin:0;font-size:19px;line-height:1.55">Tell us what you're planning. We reply within one working day.</p>
+      <div style="display:flex;gap:12px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="dark" hint-size="160px,42px">Book a call</x-import><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="outline" hint-size="280px,42px">hello@thegildastudios.com</x-import></div>
+    </div>
+  </section>
+  <footer style="padding:56px 56px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div style="display:flex;align-items:flex-start;gap:16px"><img src="assets/logos/gilda-mark-full-colour.png" alt="" style="height:96px;width:auto"><span style="font:400 32px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2;margin-bottom:6px">STUDIO</span><span>Plan</span><span>Build</span><span>Grow</span><span>About</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2;margin-bottom:6px">WORK</span><span>Case studies</span><span>Client words</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2;margin-bottom:6px">CONTACT</span><span>hello@thegildastudios.com</span><span>+356 0000 0000</span></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(243,238,226,.2);font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2"><span>© 2026 THE GILDA STUDIOS · MALTA</span><span>SAĦĦA</span></div>
+  </footer>
+</div></div>
+
+<div><p class="dv-cap">Phone · 390</p>
+<div class="dv-card dv-ph" style="width:390px;background:#24261A;color:#F3EEE2;font-family:var(--font-body)">
+  <section style="position:relative;overflow:hidden;height:720px;display:flex;flex-direction:column">
+    <img src="assets/logos/gilda-mark-full-colour.png" alt="" style="position:absolute;right:-90px;bottom:-110px;height:480px;width:auto">
+    <header style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:16px 20px"><span style="font:400 20px/1 var(--font-display)">The Gilda Studios</span><span style="font:500 11px/1 var(--font-mono);letter-spacing:.1em;padding:12px 0">MENU</span></header>
+    <div style="position:relative;display:flex;flex-direction:column;gap:18px;padding:40px 24px 0">
+      <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#B8BC32">DIGITAL AND EVENTS · MALTA</span>
+      <h1 style="margin:0;font:400 62px/.92 var(--font-display)">The right ingredients.</h1>
+      <p style="margin:0;font-size:16px;line-height:1.55;color:#D6D7CC;max-width:300px">Websites, projects, events and social media from one team.</p>
+      <div style="width:170px"><x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="light" style="{{ fullW }}" hint-size="100%,44px">Book a chat</x-import></div>
+    </div>
+  </section>
+  <sc-for list="{{ branches }}" as="b" hint-placeholder-count="3">
+    <section style="display:flex;flex-direction:column">
+      <div style="background:{{ b.c }};color:{{ b.fg }};padding:36px 24px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em">{{ b.n }} / {{ b.ingU }}</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="font:400 64px/.9 var(--font-display)">{{ b.name }}</span><div style="width:96px;height:96px;border-radius:50%;background:#E9E2D0;display:flex;align-items:center;justify-content:center;flex:none"><img src="{{ b.img }}" alt="" style="max-height:72px;max-width:64px;width:auto;height:auto"></div></div>
+        <p style="margin:0;font-size:15px;line-height:1.5">{{ b.line }}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ b.svcs }}" as="s"><span style="padding:8px 12px;border-radius:99px;box-shadow:inset 0 0 0 1.5px {{ b.fg }};font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase">{{ s }}</span></sc-for></div>
+      </div>
+    </section>
+  </sc-for>
+  <section style="background:#F3EEE2;color:#24261A;padding:48px 24px;display:flex;flex-direction:column;gap:28px">
+    <h2 style="margin:0;font:400 40px/1 var(--font-display)">Selected work.</h2>
+    <sc-for list="{{ work }}" as="w" hint-placeholder-count="3">
+      <a href="#" style="display:flex;flex-direction:column;gap:12px;color:#24261A;text-decoration:none">
+        <img src="assets/graphics/photo-placeholder-feed.png" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block">
+        <div style="display:flex;align-items:center;gap:8px"><div style="display:flex;gap:4px"><sc-for list="{{ w.dots }}" as="d"><span style="width:9px;height:9px;border-radius:50%;background:{{ d.c }};box-shadow:{{ d.ring }}"></span></sc-for></div><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#4A4C3C">{{ w.sector }}</span></div>
+        <span style="font:400 26px/1.1 var(--font-display)">{{ w.title }}</span>
+      </a>
+    </sc-for>
+  </section>
+  <section style="padding:56px 24px;display:flex;flex-direction:column;gap:24px">
+    <span style="font:500 11px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2">IN THEIR WORDS · {{ qcNum }}</span>
+    <span style="font:400 110px/.5 var(--font-display);color:{{ qcMark }};margin-top:28px">“</span>
+    <span style="font:400 34px/1.1 var(--font-display);min-height:150px">{{ qc.q }}</span>
+    <div style="display:flex;flex-direction:column;gap:8px"><span style="font:400 21px/1.1 var(--font-display)">{{ qc.name }}</span><span style="font:500 10px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#D6D7CC">{{ qc.biz }}</span></div>
+    <div style="display:flex;gap:2px;margin-left:-14px"><sc-for list="{{ dotsC }}" as="d" hint-placeholder-count="4"><button onClick="{{ d.onClick }}" style="all:unset;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:{{ d.size }};height:{{ d.size }};border-radius:50%;background:{{ d.c }}"></span></button></sc-for></div>
+  </section>
+  <section style="position:relative;overflow:hidden;background:#B8BC32;color:#24261A;padding:48px 24px 200px;display:flex;flex-direction:column;gap:18px">
+    <div style="position:absolute;right:-20px;bottom:-80px;width:230px;height:280px;background:#24261A;-webkit-mask:url(assets/logos/mask-engraved.png) center/contain no-repeat;mask:url(assets/logos/mask-engraved.png) center/contain no-repeat"></div>
+    <h2 style="margin:0;font:400 46px/1 var(--font-display)">Start with a conversation.</h2>
+    <p style="margin:0;font-size:16px;line-height:1.55">Tell us what you're planning. We reply within one working day.</p>
+    <x-import component-from-global-scope="GildaStudiosDesignSystem_9ab164.Button" variant="dark" style="{{ fullW }}" hint-size="100%,44px">Book a call</x-import>
+  </section>
+  <footer style="padding:40px 24px 32px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:flex-start;gap:12px"><img src="assets/logos/gilda-mark-full-colour.png" alt="" style="height:72px;width:auto"><span style="font:400 26px/.95 var(--font-display)">The<br>Gilda<br>Studios</span></div>
+    <div style="display:flex;flex-direction:column;gap:12px;font-size:15px"><span>Plan · Build · Grow</span><span>Case studies</span><span>hello@thegildastudios.com</span></div>
+    <div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(243,238,226,.2);font:500 10px/1 var(--font-mono);letter-spacing:.06em;color:#A7ADB2"><span>© 2026 · MALTA</span><span>SAĦĦA</span></div>
+  </footer>
+</div></div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "go with <a class="dv-oid" href="#1b">1b</a> but use the testimonial switcher from <a class="dv-oid" href="#1a">1a</a>" · "<a class="dv-oid" href="#1c">1c</a> hero with a cream ground" · "approve <a class="dv-oid" href="#1a">1a</a>, move to Contact"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { qa: 0, qc: 0, hov: null };
+  componentDidMount() {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+      const x = c.getContext('2d'); x.drawImage(img, 0, 0);
+      this.map = { w: img.width, h: img.height, d: x.getImageData(0, 0, img.width, img.height).data };
+    };
+    img.src = 'assets/logos/mark-piece-map.png';
+  }
+  pick(e) {
+    const m = this.map; if (!m) return null;
+    const r = e.currentTarget.getBoundingClientRect();
+    const px = Math.floor((e.clientX - r.left) / r.width * m.w), py = Math.floor((e.clientY - r.top) / r.height * m.h);
+    if (px < 0 || py < 0 || px >= m.w || py >= m.h) return null;
+    const q = (py * m.w + px) * 4;
+    if (m.d[q + 3] < 128) return null;
+    return m.d[q] > 128 ? 0 : m.d[q + 1] > 128 ? 1 : m.d[q + 2] > 128 ? 2 : null;
+  }
+  markVals(branches) {
+    const h = this.state.hov;
+    const clips = [
+      'polygon(0% 63%, 18% 55%, 20% 45%, 33% 41%, 47% 43%, 53% 53%, 50% 64%, 36% 68%, 22% 66%, 0% 66%)',
+      'polygon(42% 30%, 48% 27%, 55% 32%, 62% 42%, 71% 57%, 73% 69%, 62% 73%, 53% 64%, 51% 56%, 46% 46%, 42% 37%)',
+      'polygon(59% 0%, 64% 0%, 68% 10%, 75% 26%, 80% 40%, 100% 41%, 100% 46%, 83% 51%, 91% 68%, 94% 88%, 89% 100%, 81% 99%, 85% 86%, 80% 70%, 72% 57%, 66% 45%, 63% 31%, 62% 14%)',
+    ];
+    const set = (i) => () => this.setState({ hov: i });
+    const tap = (i) => () => this.setState((s) => ({ hov: s.hov === i ? null : i }));
+    const tints = ['#8E9A3C', '#B86A55', '#B8BC32'];
+    return {
+      markMove: (e) => { const k = this.pick(e); if (k !== this.state.hov) this.setState({ hov: k }); },
+      markLeave: () => this.setState({ hov: null }),
+      markTap: (e) => { const k = this.pick(e); this.setState((s) => ({ hov: k === null || s.hov === k ? null : k })); },
+      markCursor: h === null ? 'default' : 'pointer',
+      baseOp: h === null ? 1 : 0.15,
+      pieces: clips.map((clip, i) => ({ clip, src: 'assets/logos/mark-piece-' + i + '.png', op: h === i ? 1 : 0, sc: h === i ? 1.04 : 1, org: ['36% 55%', '57% 50%', '76% 50%'][i], on: set(i), off: set(null), tap: tap(i) })),
+      stripL: branches.map((b, i) => {
+        const on = h === i;
+        return { ...b, bg: on ? b.c : '#F3EEE2', fg: on ? b.fg : '#24261A', op: h === null || on ? 1 : 0.45, lineC: on ? b.fg : '#3A3C2E', dot: on ? b.fg : b.c, moreOp: on ? 1 : 0, on: set(i), off: set(null) };
+      }),
+      strip: branches.map((b, i) => {
+        const on = h === i;
+        return { ...b, open: on, bg: on ? b.c : '#24261A', fg: on ? b.fg : '#F3EEE2', op: h === null || on ? 1 : 0.45, lineC: on ? b.fg : '#D6D7CC', dot: on ? b.fg : tints[i], moreOp: on ? 1 : 0, on: set(i), off: set(null), tap: tap(i) };
+      }),
+    };
+  }
+  renderVals() {
+    const ring = 'inset 0 0 0 1px rgba(36,38,26,.25)';
+    const O = { c: '#646E2C', ring: 'none' }, A = { c: '#8A4B3B', ring: 'none' }, P = { c: '#B8BC32', ring };
+    const branches = [
+      { n: '01', name: 'Plan', ingU: 'OLIVE', c: '#646E2C', fg: '#F3EEE2', labelC: '#646E2C', tint: '#8E9A3C', dir: 'row', img: 'assets/illustrations/01-olive-plan.png', line: 'Projects, events and on-the-day coordination. One plan with owners and dates.', svc: 'Project management · Event management · On the day', svcs: ['Project management', 'Event management', 'On the day'] },
+      { n: '02', name: 'Build', ingU: 'ANCHOVY', c: '#8A4B3B', fg: '#F3EEE2', labelC: '#8A4B3B', tint: '#B86A55', dir: 'row-reverse', img: 'assets/illustrations/02-anchovy-build.png', line: 'Websites designed, built, hosted and looked after by the people who made them.', svc: 'Web design · Development · Hosting and care', svcs: ['Web design', 'Development', 'Hosting and care'] },
+      { n: '03', name: 'Grow', ingU: 'PEPPER', c: '#B8BC32', fg: '#24261A', labelC: '#24261A', tint: '#B8BC32', dir: 'row', img: 'assets/illustrations/03-pepper-grow.png', line: 'Social media run month by month. Twelve posts a month, planned by the 25th.', svc: 'Social media · Content · Campaigns', svcs: ['Social media', 'Content', 'Campaigns'] },
+    ];
+    const work = [
+      { num: '01', sector: 'CS Butcher · Retail, Malta', scope: 'Plan · Build · Grow', title: 'A local butcher, rebuilt around delivery and ordering at any hour.', dots: [O, A, P], href: 'Website - Projects.dc.html?project=cs#cs', go: () => { try { localStorage.setItem('gilda-open-project', 'cs'); } catch (e) {} } },
+      { num: '02', sector: 'Malta Business Network · Malta and UK', scope: 'Plan · Grow', title: 'Events and member communications for a network of senior leaders.', dots: [O, P], href: 'Website - Projects.dc.html?project=mbn#mbn', go: () => { try { localStorage.setItem('gilda-open-project', 'mbn'); } catch (e) {} } },
+      { num: '03', sector: 'Drapp fuq Drapp · Own venture', scope: 'Plan · Grow', title: 'From pandemic face masks to a lifestyle brand, grown on social media.', dots: [O, P], href: 'Website - Projects.dc.html?project=dfd#dfd', go: () => { try { localStorage.setItem('gilda-open-project', 'dfd'); } catch (e) {} } },
+    ];
+    const lite = { fg: '#F3EEE2', mark: '#B8BC32', acc: '#E6E5B4', rule: 'rgba(243,238,226,.35)' };
+    const Q = [
+      { ...lite, q: 'One call, one plan, and the opening went exactly as we had hoped.', name: 'Name Surname', biz: 'Restaurant · Valletta', branch: '01 / PLAN', bg: '#646E2C' },
+      { ...lite, q: 'The site was live in six weeks, and they still look after it.', name: 'Name Surname', biz: 'Boutique hotel · Gozo', branch: '02 / BUILD', bg: '#8A4B3B' },
+      { q: 'Posts go out on time, and we see the plan a month ahead.', name: 'Name Surname', biz: 'Café · Sliema', branch: '03 / GROW', bg: '#E6E5B4', fg: '#24261A', mark: '#646E2C', acc: '#646E2C', rule: 'rgba(36,38,26,.3)' },
+      { ...lite, q: 'We stopped juggling four suppliers. Now there is one invoice.', name: 'Name Surname', biz: "Startup · St Julian's", branch: 'ALL THREE', bg: '#24261A' },
+    ];
+    const QR = [
+      { q: 'Working with the team gave our business a new direction at a time when we really needed it. They took the time to understand our challenges and helped us find practical ways to adapt to how customers shop today. From introducing online ordering and home delivery to improving our social media presence and advertising, they helped us modernise while staying true to the quality and personal service we\'ve always been known for. Their support and fresh ideas have made a real difference to our business, and we\'re very happy with the results.', name: 'Carmelo Vella', biz: 'Owner, CS Butcher', href: 'Website - Projects.dc.html?project=cs#cs', go: () => { try { localStorage.setItem('gilda-open-project', 'cs'); } catch (e) {} } },
+      { q: 'Maronia is meticulous in her way, highly organised and well disciplined which for the assistance we need at the Malta Business Network works extremely well. She is highly proactive and responsive in ensuring deadlines are met.', name: 'Christopher Naudi', biz: 'Treasurer, Malta Business Network', href: 'Website - Projects.dc.html?project=mbn#mbn', go: () => { try { localStorage.setItem('gilda-open-project', 'mbn'); } catch (e) {} } },
+      { q: 'The MBN has been in existence since June 2013 and, during these last 13 years, we have never found someone like Maronia who is totally committed to ensuring that information is collated early enough to ensure the success of our events - be it our monthly networking events or hosting particular lunches.', name: 'Joseph Zammit Tabona', biz: 'Founder, Malta Business Network', href: 'Website - Projects.dc.html?project=mbn#mbn', go: () => { try { localStorage.setItem('gilda-open-project', 'mbn'); } catch (e) {} } },
+      { q: 'We have had the pleasure of working with Maronia the last three years and have always found her to be highly organised, proactive and dependable. She has a strong ability to manage projects while maintaining excellent communication. Maronia consistently delivers to a high standard, takes ownership of her work, and is a pleasure to work with. She has contributed significantly to the success of our UK monthly events.', name: 'Martin V. Zahra', biz: 'Chairman, Malta Business Network UK', href: 'Website - Projects.dc.html?project=mbn#mbn', go: () => { try { localStorage.setItem('gilda-open-project', 'mbn'); } catch (e) {} } },
+    ];
+    const qaI = this.state.qa, qcI = this.state.qc;
+    const cMarksL = ['#8A4B3B', '#646E2C', '#8A4B3B', '#B8BC32'];
+    const cMarks = ['#B86A55', '#8E9A3C', '#B86A55', '#B8BC32'];
+    return {
+      branches, work, work2: work.slice(1), quotes3: Q.slice(0, 3),
+      steps: [
+        { k: 'Week 1', t: 'Brief', d: 'One call to understand the business and the goal.' },
+        { k: 'Week 2', t: 'Plan', d: 'A single plan with owners and dates you can see.' },
+        { k: 'Ongoing', t: 'Make', d: 'Pages, event logistics and posts, made in parallel.' },
+        { k: 'The day', t: 'Launch', d: "Online, in the room, or both. We're there for it." },
+      ],
+      qa: Q[qaI],
+      tabsA: Q.map((x, i) => ({ num: '0' + (i + 1), biz: x.biz, op: i === qaI ? 1 : 0.5, onClick: () => this.setState({ qa: i }) })),
+      qc: QR[qcI], qcMark: cMarks[qcI], qcNum: '0' + (qcI + 1) + ' / 0' + QR.length,
+      qcMarkL: cMarksL[qcI],
+      dotsCL: QR.map((x, i) => ({ c: cMarksL[i], size: i === qcI ? '18px' : '10px', onClick: () => this.setState({ qc: i }) })),
+      dotsC: QR.map((x, i) => ({ c: cMarks[i], size: i === qcI ? '18px' : '10px', onClick: () => this.setState({ qc: i }) })),
+      fullW: { width: '100%' },
+      anchProps: { style: { background: '#8A4B3B', color: '#F3EEE2' } },
+      ...this.markVals(branches),
+    };
+  }
+}
+</script>
+</body>
+</html>

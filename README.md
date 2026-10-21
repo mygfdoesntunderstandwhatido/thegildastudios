@@ -41,6 +41,15 @@ npm run dev     # start the dev server at http://localhost:4321
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `check` and `build` on every pull request and on pushes to `main`.
 
+## Deploys
+
+The site is hosted on Netlify (team: Chris), building from this repo with the settings in `netlify.toml` (`npm run build` → `dist/`, Node from `.nvmrc`).
+
+- **Production:** every merge to `main` deploys to the Netlify production URL (`*.netlify.app` until the custom domain is connected in #33).
+- **Deploy Previews:** every pull request gets its own preview URL, posted on the PR as a check. Review visual work there before merging.
+- **Branch deploys:** every pushed branch gets a deploy too. Keystatic branch edits (#27) use these.
+- **Access:** the Netlify team owner (Chris) manages the project. The site is fully static: no functions are deployed until the Keystatic admin route arrives in #27.
+
 ## Where things go
 
 - `src/pages/`: routes. `src/layouts/`: page shells. `src/components/`: UI components. `src/styles/`: global CSS and tokens.

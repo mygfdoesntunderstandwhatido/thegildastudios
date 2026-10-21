@@ -1,0 +1,7 @@
+# Netlify build settings. Node comes from .nvmrc (24).
+# Deploy Previews (every PR) and branch deploys are switched on in the
+# Netlify UI: Project configuration > Build & deploy > Continuous deployment.
+
+[build]
+  command = "npm run build"
+  publish = "dist"

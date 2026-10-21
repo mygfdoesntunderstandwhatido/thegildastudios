@@ -41,6 +41,15 @@ npm run dev     # start the dev server at http://localhost:4321
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `check` and `build` on every pull request and on pushes to `main`.
 
+## Deploys
+
+The site is hosted on Netlify (team: Chris), building from this repo with the settings in `netlify.toml` (`npm run build` → `dist/`, Node from `.nvmrc`).
+
+- **Production:** every merge to `main` deploys to <https://thegildastudios.netlify.app>, until #33 connects `www.thegildastudios.com`. The domain is registered with Cloudflare and its DNS stays there; Netlify is connected as external DNS.
+- **Deploy Previews:** every pull request gets its own preview at `https://deploy-preview-<PR number>--thegildastudios.netlify.app`, posted on the PR by Netlify. The `netlify/thegildastudios/deploy-preview` check is required to merge into `main`, next to CI. Review visual work there before merging.
+- **Branch deploys:** every pushed branch gets a deploy too. Keystatic branch edits (#27) use these.
+- **Access:** the Netlify project is [thegildastudios](https://app.netlify.com/projects/thegildastudios) on the team owner's (Chris) personal team. The site is fully static: no functions are deployed until the Keystatic admin route arrives in #27.
+
 ## Where things go
 
 - `src/pages/`: routes. `src/layouts/`: page shells. `src/components/`: UI components. `src/styles/`: global CSS and tokens.

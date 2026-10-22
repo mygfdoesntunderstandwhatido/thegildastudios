@@ -1,0 +1,164 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionHeader from '../layout/SectionHeader.astro';
+import { orderBranches } from '../../lib/branches';
+
+interface Props {
+  phases: NonNullable<CollectionEntry<'services'>['data']['phases']>;
+  title: string;
+  id: string;
+}
+
+const { phases, title, id } = Astro.props;
+const branches = orderBranches();
+---
+
+<section class="timeline" aria-labelledby={id}>
+  <SectionHeader title={title} id={id} headingLevel={4} accent="anchovy" accentTitle />
+  <ol class="phases" role="list">
+    {phases.map((phase, index) => {
+      const branch = branches[index % branches.length];
+      return (
+        <li class="phase">
+          <span
+            class="phase-number"
+            aria-hidden="true"
+            style={`--phase-background: ${branch.color}; --phase-foreground: ${branch.foreground}`}
+          >
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div class="phase-copy">
+            <h5>{phase.title}</h5>
+            <p>{phase.description}</p>
+          </div>
+        </li>
+      );
+    })}
+  </ol>
+</section>
+
+<style>
+  .timeline {
+    --phase-dot-size: 44px;
+    --phase-number-size: 12px;
+    --phase-title-size: 28px;
+    --phase-description-size: 14px;
+    --phase-copy-gap: 14px;
+    --phase-line-size: 2px;
+    --phase-line-left: 22px;
+    --phase-line-top: 21px;
+    --phase-line-end: 40px;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .phases {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .phases::before {
+    position: absolute;
+    inset-block-start: var(--phase-line-top);
+    inset-inline: var(--phase-line-left) var(--phase-line-end);
+    block-size: var(--phase-line-size);
+    background: var(--phase-line);
+    content: '';
+  }
+
+  .phase {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--phase-copy-gap);
+    min-inline-size: 0;
+  }
+
+  .phase-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--phase-dot-size);
+    block-size: var(--phase-dot-size);
+    border-radius: 50%;
+    background: var(--phase-background);
+    color: var(--phase-foreground);
+    font: var(--type-label);
+    font-size: var(--phase-number-size);
+  }
+
+  .phase-copy {
+    display: contents;
+  }
+
+  h5 {
+    font-size: var(--phase-title-size);
+    line-height: 1;
+  }
+
+  p {
+    color: var(--ink-2);
+    font-size: var(--phase-description-size);
+    line-height: 1.55;
+  }
+
+  @media (width < 1200px) {
+    .timeline {
+      --phase-number-size: 11px;
+      --phase-title-size: 24px;
+      --phase-copy-gap: 6px;
+      --phase-line-left: 21px;
+      --phase-line-top: 9px;
+      --phase-phone-gap: 22px;
+      --phase-copy-padding: 10px;
+      --phase-label-size: 10px;
+
+      gap: var(--phase-phone-gap);
+      padding-block-start: var(--space-5);
+      border-block-start: var(--border-rule);
+    }
+
+    /* stylelint-disable selector-pseudo-class-no-unknown -- SectionHeader owns these elements. */
+    .timeline :global(.section-heading) {
+      font-size: var(--phase-label-size);
+    }
+
+    .timeline :global(.section-line) {
+      display: none;
+    }
+    /* stylelint-enable selector-pseudo-class-no-unknown */
+
+    .phases {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--phase-phone-gap);
+    }
+
+    .phases::before {
+      inset-block-end: var(--phase-line-end);
+      inset-inline-end: auto;
+      inline-size: var(--phase-line-size);
+      block-size: auto;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: var(--phase-dot-size) minmax(0, 1fr);
+      align-items: start;
+      gap: var(--space-4);
+    }
+
+    .phase-copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--phase-copy-gap);
+      padding-block-start: var(--phase-copy-padding);
+    }
+  }
+</style>

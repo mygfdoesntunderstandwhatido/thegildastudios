@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Disclosure from '../content/Disclosure.astro';
+import ServicePhases from './ServicePhases.astro';
 import { branches } from '../../lib/branches';
 import { contactHref } from '../../lib/contact';
 
@@ -16,32 +17,45 @@ const id = `service-${service.number.replace('.', '-')}`;
 ---
 
 <article
-  class:list={['service band', `band--${ground}`]}
+  class:list={['service band', `band--${ground}`, { 'service-with-phases': service.phases }]}
   id={id}
   aria-labelledby={`${id}-title`}
   style={`--service-accent: ${branch.color}; --service-label: ${branch.label}`}
 >
-  <div class="container service-grid">
-    <div class="service-copy">
-      <p class="number">{service.number}</p>
-      <h3 id={`${id}-title`}>{service.name}</h3>
-      <p class="description">{service.description}</p>
-      <a class="ask" href={contactHref({ service: service.number })} data-analytics-cta>
-        {labels.ask}
-      </a>
+  <div class="container service-content">
+    <div class="service-grid">
+      <div class="service-copy">
+        <p class="number">{service.number}</p>
+        <h3 id={`${id}-title`}>{service.name}</h3>
+        <p class="description">{service.description}</p>
+        <a class="ask" href={contactHref({ service: service.number })} data-analytics-cta>
+          {labels.ask}
+        </a>
+      </div>
+      <dl class="details">
+        <div class="detail-row">
+          <dt>{labels.bestFor}</dt>
+          <dd class="best-for">{service.bestFor}</dd>
+        </div>
+        {service.howItStarts && (
+          <div class="detail-row">
+            <dt>{labels.howItStarts}</dt>
+            <dd class="how-it-starts">{service.howItStarts}</dd>
+          </div>
+        )}
+        {service.included && (
+          <div class="detail-row">
+            <dt class="included-label">{labels.included}</dt>
+            <dd>
+              <Disclosure items={service.included} branch={service.branch} id={`${id}-included`} />
+            </dd>
+          </div>
+        )}
+      </dl>
     </div>
-    <dl class="details">
-      <div class="detail-row">
-        <dt>{labels.bestFor}</dt>
-        <dd class="best-for">{service.bestFor}</dd>
-      </div>
-      <div class="detail-row">
-        <dt class="included-label">{labels.included}</dt>
-        <dd>
-          <Disclosure items={service.included} branch={service.branch} id={`${id}-included`} />
-        </dd>
-      </div>
-    </dl>
+    {service.phases && (
+      <ServicePhases phases={service.phases} title={labels.phases} id={`${id}-phases`} />
+    )}
   </div>
 </article>
 
@@ -67,6 +81,12 @@ const id = `service-${service.number.replace('.', '-')}`;
     gap: var(--grid-gap-wide);
   }
 
+  .service-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
   .service-copy {
     display: flex;
     flex-direction: column;
@@ -88,10 +108,18 @@ const id = `service-${service.number.replace('.', '-')}`;
     line-height: 1.04;
   }
 
-  .description {
-    color: var(--ink-2);
+  .service-with-phases h3 {
+    text-wrap: wrap;
+  }
+
+  .description,
+  .how-it-starts {
     font-size: var(--service-description-size);
     line-height: 1.6;
+  }
+
+  .description {
+    color: var(--ink-2);
   }
 
   .ask {
@@ -154,6 +182,10 @@ const id = `service-${service.number.replace('.', '-')}`;
       gap: var(--space-4);
     }
 
+    .service-content {
+      gap: var(--space-4);
+    }
+
     h3 {
       line-height: 1.06;
       text-wrap: wrap;
@@ -170,6 +202,10 @@ const id = `service-${service.number.replace('.', '-')}`;
 
     .included-label {
       display: none;
+    }
+
+    .service-with-phases dt {
+      line-height: 1;
     }
 
     .best-for {

@@ -17,7 +17,13 @@ export const servicesPage = defineCollection({
     }),
     jump: z.object({ label: z.string(), lists: branchText }),
     branchIntros: branchText,
-    labels: z.object({ bestFor: z.string(), included: z.string(), ask: z.string() }),
+    labels: z.object({
+      bestFor: z.string(),
+      included: z.string(),
+      ask: z.string(),
+      howItStarts: z.string(),
+      phases: z.string(),
+    }),
     cta: ctaSchema,
   }),
 });

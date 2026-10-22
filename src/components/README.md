@@ -213,18 +213,22 @@ The branch cards share rows through subgrid, with an ordinary grid fallback.
 Each founder's `portrait` may be `null` until launch: a decorative SVG reserves
 the 4:5 slot. A real portrait requires alt text and is cropped into the same slot.
 
-## Services page and Plan (#21)
+## Services page (#21, #22, #23)
 
 `services/ServicesPage.astro` reads the `servicesPage` singleton and renders
-the branch jump cards, Plan and its ordered `services` entries. `BranchBand`
+the branch jump cards and all three branches, each with its ordered `services`
+entries. Branch order comes from code. `BranchBand`
 takes a `branch` and `intro`; `ServiceCard` takes a service entry, shared labels
 and an alternating `ground`. Each card reuses the disclosure and links to Contact
 with its stable service number. The page singleton previously called `services`
 is now `servicesPage`; `services` holds individual service records.
 
-Build and Grow have explicit anchor slots for #22 and #23. Replace the matching
-slot with its band and service content when that issue is ready. Branch
-illustrations are shared through `src/lib/branch-illustrations.ts`.
+Standard services provide `included` items. Build provides `howItStarts` and
+`phases` instead; `ServicePhases` renders a labelled ordered list, with a
+six-column timeline at desktop widths and a vertical timeline below 1200px.
+Phase numbers and cycling dot colours come from code and `branches.ts`.
+Grow reuses the standard card with Brine labels and Pepper decoration.
+Branch illustrations are shared through `src/lib/branch-illustrations.ts`.
 
 ## Previews
 

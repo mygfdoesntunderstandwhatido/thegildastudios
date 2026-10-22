@@ -2,7 +2,8 @@
 
 Implemented in PR #46 alongside #32 after the repo owner explicitly handed
 #20 and #21 to this Codex session. Both issues were ready and already marked
-in progress. Build and Grow service content remains in #22 and #23.
+in progress. Build and Grow were subsequently added to the same PR in #22 and
+#23; their checks are recorded in `22-23-build-grow.md`.
 
 ## Reference and content
 
@@ -11,7 +12,7 @@ in progress. Build and Grow service content remains in #22 and #23.
 - Literal copy was extracted from the artboard markup, and template data from
   the design's own `renderVals()` function. `design/` was not edited.
 - About uses the expanded `about` singleton and two typed `team` entries.
-- Services uses a `servicesPage` singleton and three typed `services` entries.
+- This initial batch added a `servicesPage` singleton and three typed `services` entries.
   Each service number must match its branch prefix. Contact prefill now reads
   these entries, including the full names of 01.1 and 01.3.
 
@@ -30,7 +31,8 @@ Chromium checks passed for:
 - Each disclosure opening with Enter, closing with Space, updating
   `aria-expanded`, referencing its own panel, and containing exactly five items.
 - Plan, Build and Grow jump cards reaching their own uncovered targets on both
-  desktop and phone. Build and Grow targets are labelled anchor slots.
+  desktop and phone. The initial Build and Grow anchor slots have since been
+  replaced by their complete branch bands in #22 and #23.
 - All three Ask links passing the service number, selecting Plan on Contact
   and prefilling the full service name in the message.
 - All 15 included items remaining visible with JavaScript disabled.

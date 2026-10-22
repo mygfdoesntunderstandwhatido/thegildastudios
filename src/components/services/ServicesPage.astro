@@ -12,9 +12,7 @@ const page = await getEntry('servicesPage', 'page');
 if (!page) throw new Error('Missing src/content/services-page/page.json');
 const copy = page.data;
 const branches = orderBranches();
-const plan = (await getCollection('services'))
-  .filter(({ data }) => data.branch === 'plan')
-  .sort((a, b) => a.data.order - b.data.order);
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <main class="services-page">
@@ -65,33 +63,16 @@ const plan = (await getCollection('services'))
     </div>
   </section>
 
-  <BranchBand branch="plan" intro={copy.branchIntros.plan} />
-  {plan.map(({ data }, index) => (
-    <ServiceCard service={data} labels={copy.labels} ground={index % 2 ? 'sand' : 'cream'} />
+  {branches.map((branch) => (
+    <>
+      <BranchBand branch={branch.key} intro={copy.branchIntros[branch.key]} />
+      {services
+        .filter(({ data }) => data.branch === branch.key)
+        .map(({ data }, index) => (
+          <ServiceCard service={data} labels={copy.labels} ground={index % 2 ? 'sand' : 'cream'} />
+        ))}
+    </>
   ))}
-
-  <!-- #22 replaces this anchor slot with the Build band, services and six phases. -->
-  <section
-    class="branch-slot band band--sand"
-    id="build"
-    aria-labelledby="build-slot-title"
-    data-service-slot="build"
-  >
-    <div class="container">
-      <h2 id="build-slot-title">{branches[1].name}</h2>
-    </div>
-  </section>
-  <!-- #23 replaces this anchor slot with the Grow band and its services. -->
-  <section
-    class="branch-slot band band--cream"
-    id="grow"
-    aria-labelledby="grow-slot-title"
-    data-service-slot="grow"
-  >
-    <div class="container">
-      <h2 id="grow-slot-title">{branches[2].name}</h2>
-    </div>
-  </section>
 
   <CtaBand content={copy.cta} variant="services" />
 </main>
@@ -231,12 +212,6 @@ const plan = (await getCollection('services'))
     block-size: 100%;
     max-block-size: var(--jump-image-height);
     object-fit: contain;
-  }
-
-  .branch-slot {
-    --band-padding: var(--space-10);
-
-    scroll-margin-block-start: var(--space-6);
   }
 
   @media (768px <= width < 1024px) {

@@ -1,0 +1,15 @@
+{
+  "branch": "grow",
+  "number": "03.2",
+  "name": "Marketing management",
+  "description": "Campaign ideas, taglines and messaging, and the decisions on what to lean on. We help you work out what to say, where to say it and what to focus on first.",
+  "bestFor": "Businesses with something to promote, such as a launch, a season or a new service, that need someone to shape the idea and see it through.",
+  "included": [
+    "Campaign ideas built around a clear goal and audience.",
+    "Taglines, key messages and copy direction.",
+    "Advice on which products, offers or stories to lean on.",
+    "Campaign planning across social, email and in-person channels.",
+    "A review of results and what to change next time."
+  ],
+  "order": 2
+}

@@ -1,0 +1,35 @@
+{
+  "branch": "build",
+  "number": "02.1",
+  "name": "Web design and development",
+  "description": "We design and build websites from the first conversation to the day you take over, and we can keep looking after them after launch.",
+  "bestFor": "Businesses that need a new website or a full rebuild, and want one team to design it, build it and look after it.",
+  "howItStarts": "With a call, or a meeting in person if you prefer, so we get to know each other and the business before anything is drawn.",
+  "phases": [
+    {
+      "title": "Brief",
+      "description": "Understanding what you want: the goals, the audience and what the site needs to do."
+    },
+    {
+      "title": "Moodboard",
+      "description": "We gather references and find out what you like, and what you don’t."
+    },
+    {
+      "title": "UX",
+      "description": "The page breakdown: what you want to show on each page. The skeleton of the website."
+    },
+    {
+      "title": "UI",
+      "description": "The skeleton gets its skin. Every page is designed and ready for your sign-off."
+    },
+    {
+      "title": "Development",
+      "description": "We build the site and test it on phones and desktops before it goes live."
+    },
+    {
+      "title": "Handover",
+      "description": "A recorded call showing you how to manage the site, or we take care of hosting and care."
+    }
+  ],
+  "order": 1
+}

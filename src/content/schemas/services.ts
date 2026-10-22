@@ -12,8 +12,16 @@ export const services = defineCollection({
       name: z.string(),
       description: z.string(),
       bestFor: z.string(),
-      included: z.array(z.string()).min(1),
+      included: z.array(z.string()).min(1).optional(),
+      howItStarts: z.string().optional(),
+      phases: z
+        .array(z.object({ title: z.string(), description: z.string() }))
+        .min(1)
+        .optional(),
       order: z.number().int(),
+    })
+    .refine((service) => service.included || service.howItStarts, {
+      message: 'A service needs included items or an explanation of how it starts.',
     })
     .refine((service) => service.number.startsWith(`${branches[service.branch].number}.`), {
       path: ['number'],

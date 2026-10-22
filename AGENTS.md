@@ -24,14 +24,14 @@ Each issue carries exactly one lane label:
 
 ## Before you start an issue
 
-1. The issue must have the `status:ready` label. A workflow adds it once every issue listed under **Depends on** is closed. If it's missing, don't start.
+1. The issue must have the `status:ready` label. A workflow adds it once every issue listed under **Depends on** is closed. If it's missing, don't start, with one exception: **you can keep going in the same PR.** If each open dependency is already done in the batch you're working on (same branch, same PR, in your lane), you can add the dependent issue to that batch and continue. Each issue still needs its own `Closes` line, acceptance criteria and scope in the PR. A dependency still in progress in another PR, or in the other agent's lane, doesn't count: wait for it to close.
 2. The issue must not have `status:in-progress`. When you start, add it, or ask the human to add it.
 3. Read the whole issue body. It's the spec: **Goal, Design reference, Scope, Out of scope, Acceptance criteria, Flag for review, Brand rules, Depends on.** Stay inside Scope. Anything listed under Out of scope belongs to another issue.
 4. Pull `main` and branch from it.
 
 ## Branches, commits, PRs
 
-- **Batch related, ready issues into one branch and one PR to reduce paid Netlify deploys.** This applies to both Codex and Claude Code. Keep each issue's lane, dependencies and scope intact.
+- **Batch related, ready issues into one branch and one PR to reduce paid Netlify deploys.** This applies to both Codex and Claude Code. Keep each issue's lane, dependencies and scope intact. A batch can also take an issue whose open dependencies it already covers (see step 1 above). Build the issues in dependency order.
 - Before opening a PR, check existing PRs for related work. Reuse the batch's PR for follow-up changes. Each batch has one owning agent; use separate worktrees and coordinate an explicit handoff before changing the other agent's branch.
 - Finish the local batch and run its checks before pushing. Batch follow-up fixes into as few pushes as practical: each push to an open PR can trigger another Netlify Deploy Preview.
 - Branch names: `claude/<issue>-<slug>` or `codex/<issue>-<slug>` using the first issue in the batch. Codex cloud's automatic `codex/…` names are fine.

@@ -13,7 +13,7 @@ Website for The Gilda Studios, a studio in Malta for digital and events. Built w
 Everything is a GitHub issue in phase order (milestones Phase 1–8). Each issue has:
 
 - a lane label: `agent:claude` or `agent:codex`
-- `status:ready` once its dependencies are closed (set automatically)
+- `status:ready` once its dependencies are closed (set automatically). An issue whose open dependencies are all done in the same batch PR can join that PR without waiting.
 - `status:in-progress` while someone is working on it
 
 Codex and Claude Code batch related, ready issues into one branch and one PR to reduce paid Netlify deploys. Each PR includes a separate `Closes #N` line and acceptance criteria for every issue. Both agents follow the lane and ownership rules in `AGENTS.md` and group local changes before pushing, since each push can trigger another preview deploy.

@@ -1,0 +1,324 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { Picture } from 'astro:assets';
+import base from '../../assets/logos/gilda-mark-on-dark.png';
+import olivePiece from '../../assets/logos/mark-piece-0.png';
+import anchovyPiece from '../../assets/logos/mark-piece-1.png';
+import pepperPiece from '../../assets/logos/mark-piece-2.png';
+// The hit-test map keeps its original bytes and 823 × 1000 coordinates.
+import mapUrl from '../../assets/logos/mark-piece-map.png?url';
+import { heroLabels } from '../../content/ui/hero';
+import { BRANCH_ORDER, branches } from '../../lib/branches';
+
+interface Props extends HTMLAttributes<'div'> {
+  alt: string;
+}
+
+const { alt, class: className, ...attrs } = Astro.props;
+
+// Piece shapes and scale origins from the 2a design script, in olive, anchovy, pepper order.
+const shapes = [
+  '0% 63%, 18% 55%, 20% 45%, 33% 41%, 47% 43%, 53% 53%, 50% 64%, 36% 68%, 22% 66%, 0% 66%',
+  '42% 30%, 48% 27%, 55% 32%, 62% 42%, 71% 57%, 73% 69%, 62% 73%, 53% 64%, 51% 56%, 46% 46%, 42% 37%',
+  '59% 0%, 64% 0%, 68% 10%, 75% 26%, 80% 40%, 100% 41%, 100% 46%, 83% 51%, 91% 68%, 94% 88%, 89% 100%, 81% 99%, 85% 86%, 80% 70%, 72% 57%, 66% 45%, 63% 31%, 62% 14%',
+];
+const origins = ['36% 55%', '57% 50%', '76% 50%'];
+const images = [olivePiece, anchovyPiece, pepperPiece];
+const pieces = BRANCH_ORDER.map((key, index) => ({
+  index,
+  image: images[index],
+  label: `${branches[key].ingredient}${heroLabels.pieceSeparator}${branches[key].name}`,
+  clip: `polygon(${shapes[index]})`,
+  points: shapes[index].replaceAll('%', '').replaceAll(',', ''),
+  origin: origins[index],
+}));
+
+// Desktop renders the mark at up to 708px wide; phone at 300px.
+const widths = [300, 600, 708, 823];
+const sizes = '(width < 768px) 300px, min(708px, 55.3vw)';
+---
+
+<gilda-hero-mark {...attrs} class:list={['hero-mark', className]} data-map={mapUrl}>
+  <span class="layer layer-base">
+    <Picture
+      src={base}
+      alt={alt}
+      formats={['avif', 'webp']}
+      fallbackFormat="png"
+      widths={widths}
+      sizes={sizes}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </span>
+  {pieces.map((piece) => (
+    <span
+      class="layer layer-piece"
+      data-piece={piece.index}
+      aria-hidden="true"
+      style={`--piece-origin: ${piece.origin}`}
+    >
+      <Picture
+        src={piece.image}
+        alt=""
+        formats={['avif', 'webp']}
+        fallbackFormat="png"
+        widths={widths}
+        sizes={sizes}
+      />
+    </span>
+  ))}
+  <span class="hit" aria-hidden="true" data-hit></span>
+  <div class="controls" role="group" aria-label={heroLabels.pieces}>
+    {pieces.map((piece) => (
+      <button
+        class="control"
+        type="button"
+        aria-pressed="false"
+        aria-label={piece.label}
+        data-control={piece.index}
+        style={`clip-path: ${piece.clip}`}
+      />
+    ))}
+  </div>
+  <svg class="outlines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    {pieces.map((piece) => (
+      <polygon points={piece.points} data-outline={piece.index} />
+    ))}
+  </svg>
+</gilda-hero-mark>
+
+<script>
+  import { onActiveBranch, setActiveBranch, type ActiveBranch } from '../../lib/branch-focus';
+
+  type HitMap = { width: number; height: number; data: Uint8ClampedArray };
+
+  class GildaHeroMark extends HTMLElement {
+    private map: HitMap | null = null;
+    private loading: Promise<void> | null = null;
+    private lastPointer: PointerEvent | null = null;
+    private hit: HTMLElement | null = null;
+    private controls: HTMLButtonElement[] = [];
+    private unsubscribe: (() => void) | null = null;
+
+    connectedCallback() {
+      this.hit = this.querySelector('[data-hit]');
+      this.controls = [...this.querySelectorAll<HTMLButtonElement>('[data-control]')];
+      this.hit?.addEventListener('pointerenter', this.loadMap);
+      this.hit?.addEventListener('pointerdown', this.loadMap);
+      this.hit?.addEventListener('pointermove', this.onPointerMove);
+      this.hit?.addEventListener('pointerleave', this.onPointerLeave);
+      this.hit?.addEventListener('pointerup', this.onTap);
+      document.addEventListener('pointerdown', this.onOutsidePointer);
+      this.controls.forEach((control, index) => {
+        control.addEventListener('focus', () => setActiveBranch(index as ActiveBranch));
+        control.addEventListener('blur', this.onControlBlur);
+        control.addEventListener('click', (event) => {
+          // Keyboard activation toggles the piece; pointer input goes through the map.
+          if (event.detail === 0) this.toggle(index as ActiveBranch);
+        });
+      });
+      this.unsubscribe = onActiveBranch(this.render);
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener('pointerdown', this.onOutsidePointer);
+      this.unsubscribe?.();
+    }
+
+    private render = (branch: ActiveBranch) => {
+      if (branch === null) this.removeAttribute('data-active');
+      else this.dataset.active = String(branch);
+      this.controls.forEach((control, index) => {
+        control.setAttribute('aria-pressed', String(index === branch));
+      });
+    };
+
+    private toggle(branch: ActiveBranch) {
+      setActiveBranch(this.dataset.active === String(branch) ? null : branch);
+    }
+
+    // The map loads on the first pointer contact, so it costs nothing until needed.
+    private loadMap = (): Promise<void> => {
+      if (this.loading) return this.loading;
+      const image = new Image();
+      image.src = this.dataset.map ?? '';
+      this.loading = image.decode().then(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context) return;
+        context.drawImage(image, 0, 0);
+        this.map = {
+          width: canvas.width,
+          height: canvas.height,
+          data: context.getImageData(0, 0, canvas.width, canvas.height).data,
+        };
+        if (this.lastPointer?.pointerType === 'mouse') this.onPointerMove(this.lastPointer);
+      });
+      return this.loading;
+    };
+
+    // Red marks the olive, green the anchovy and blue the pepper. Transparent
+    // pixels, including the skewer and the gaps, light nothing.
+    private pick(event: PointerEvent): ActiveBranch {
+      const map = this.map;
+      if (!map || !this.hit) return null;
+      const rect = this.hit.getBoundingClientRect();
+      const x = Math.floor(((event.clientX - rect.left) / rect.width) * map.width);
+      const y = Math.floor(((event.clientY - rect.top) / rect.height) * map.height);
+      if (x < 0 || y < 0 || x >= map.width || y >= map.height) return null;
+      const offset = (y * map.width + x) * 4;
+      if (map.data[offset + 3] < 128) return null;
+      if (map.data[offset] > 128) return 0;
+      if (map.data[offset + 1] > 128) return 1;
+      if (map.data[offset + 2] > 128) return 2;
+      return null;
+    }
+
+    private onPointerMove = (event: PointerEvent) => {
+      this.lastPointer = event;
+      if (event.pointerType !== 'mouse') return;
+      const branch = this.pick(event);
+      this.hit?.toggleAttribute('data-over', branch !== null);
+      setActiveBranch(branch);
+    };
+
+    private onPointerLeave = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') return;
+      this.hit?.removeAttribute('data-over');
+      setActiveBranch(null);
+    };
+
+    // A tap lights a piece; tapping it again or tapping a gap clears it.
+    private onTap = async (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') return;
+      this.lastPointer = event;
+      await this.loadMap();
+      const branch = this.pick(event);
+      setActiveBranch(branch === null || this.dataset.active === String(branch) ? null : branch);
+    };
+
+    private onOutsidePointer = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse' && !this.contains(event.target as Node)) {
+        setActiveBranch(null);
+      }
+    };
+
+    private onControlBlur = (event: FocusEvent) => {
+      if (!this.controls.includes(event.relatedTarget as HTMLButtonElement)) setActiveBranch(null);
+    };
+  }
+
+  if (!customElements.get('gilda-hero-mark')) {
+    customElements.define('gilda-hero-mark', GildaHeroMark);
+  }
+</script>
+
+<style>
+  .hero-mark {
+    --piece-scale: 1.04;
+    --piece-shadow: drop-shadow(0 12px 28px rgb(0 0 0 / 45%));
+    --piece-fade: 200ms;
+    --piece-grow: 250ms;
+    --dim-opacity: 0.15;
+
+    position: relative;
+    display: block;
+    aspect-ratio: 823 / 1000;
+  }
+
+  .layer,
+  .hit,
+  .controls,
+  .control,
+  .outlines {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .layer :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .layer-base {
+    transition: opacity var(--piece-fade) ease;
+  }
+
+  .hero-mark[data-active] .layer-base {
+    opacity: var(--dim-opacity);
+  }
+
+  .layer-piece {
+    opacity: 0;
+    transform-origin: var(--piece-origin);
+    pointer-events: none;
+    transition:
+      opacity var(--piece-fade) ease,
+      transform var(--piece-grow) ease;
+  }
+
+  /* The agreed exception to the flat brand: the lit piece casts a shadow. */
+  .hero-mark[data-active='0'] [data-piece='0'],
+  .hero-mark[data-active='1'] [data-piece='1'],
+  .hero-mark[data-active='2'] [data-piece='2'] {
+    opacity: 1;
+    filter: var(--piece-shadow);
+    transform: scale(var(--piece-scale));
+  }
+
+  .hit[data-over] {
+    cursor: pointer;
+  }
+
+  /* Keyboard controls sit over each piece. The map handles pointer input. */
+  .controls {
+    pointer-events: none;
+  }
+
+  .control {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .control:focus-visible {
+    outline: none;
+  }
+
+  /* The focus ring follows the piece's polygon, since clip-path would cut an outline. */
+  .outlines {
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .outlines polygon {
+    fill: none;
+    stroke: var(--cream);
+    stroke-width: 2px;
+    vector-effect: non-scaling-stroke;
+    visibility: hidden;
+  }
+
+  .hero-mark:has([data-control='0']:focus-visible) [data-outline='0'],
+  .hero-mark:has([data-control='1']:focus-visible) [data-outline='1'],
+  .hero-mark:has([data-control='2']:focus-visible) [data-outline='2'] {
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .layer-base,
+    .layer-piece {
+      transition: none;
+    }
+
+    .hero-mark[data-active] .layer-piece {
+      transform: none;
+    }
+  }
+</style>

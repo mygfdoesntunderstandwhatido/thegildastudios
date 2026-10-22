@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import OriginStory from '../../components/home/OriginStory.astro';
+import { pageBandsPreview as copy } from '../../content/dev/page-bands';
+---
+
+<Base title={copy.storyTitle}>
+  <main>
+    <header class="band band--cream">
+      <div class="container">
+        <h1>{copy.storyHeading}</h1>
+      </div>
+    </header>
+    <OriginStory />
+  </main>
+</Base>

@@ -1,0 +1,26 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/layout/CtaBand.astro';
+import { pageBandsPreview as copy } from '../../content/dev/page-bands';
+const variants = ['about', 'services', 'projects', 'case-study'] as const;
+const entries = await Promise.all([
+  getEntry('about', 'page'),
+  getEntry('services', 'page'),
+  getEntry('projects', 'page'),
+  getEntry('case_study', 'page'),
+]);
+---
+
+<Base title={copy.ctaTitle}>
+  <main>
+    <header class="band band--cream">
+      <div class="container">
+        <h1>{copy.ctaHeading}</h1>
+      </div>
+    </header>
+    {entries.map((entry, index) => (
+      <CtaBand content={entry!.data.cta} variant={variants[index]} />
+    ))}
+  </main>
+</Base>

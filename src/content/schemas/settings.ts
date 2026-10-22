@@ -17,5 +17,16 @@ export const settings = defineCollection({
     ),
     booking: link,
     email: z.email(),
+    phone: link,
+    footer: z.object({
+      navLabel: z.string(),
+      studioLabel: z.string(),
+      projectsLabel: z.string(),
+      contactLabel: z.string(),
+      studioLinks: z.array(link),
+      projectLinks: z.array(link).min(1),
+      copyright: z.string(),
+      copyrightShort: z.string(),
+    }),
   }),
 });

@@ -1,11 +1,75 @@
 {
   "nav": [
-    { "label": "About", "href": "/about/" },
-    { "label": "Plan", "href": "/services/#plan", "branch": "plan" },
-    { "label": "Build", "href": "/services/#build", "branch": "build" },
-    { "label": "Grow", "href": "/services/#grow", "branch": "grow" },
-    { "label": "Projects", "href": "/projects/" }
+    {
+      "label": "About",
+      "href": "/about/"
+    },
+    {
+      "label": "Plan",
+      "href": "/services/#plan",
+      "branch": "plan"
+    },
+    {
+      "label": "Build",
+      "href": "/services/#build",
+      "branch": "build"
+    },
+    {
+      "label": "Grow",
+      "href": "/services/#grow",
+      "branch": "grow"
+    },
+    {
+      "label": "Projects",
+      "href": "/projects/"
+    }
   ],
-  "booking": { "label": "Book a chat", "href": "/contact/" },
-  "email": "hello@thegildastudios.com"
+  "booking": {
+    "label": "Book a chat",
+    "href": "/contact/"
+  },
+  "email": "hello@thegildastudios.com",
+  "phone": {
+    "label": "+356 0000 0000",
+    "href": "tel:+35600000000"
+  },
+  "footer": {
+    "navLabel": "Footer navigation",
+    "studioLabel": "Studio",
+    "projectsLabel": "Projects",
+    "contactLabel": "Contact",
+    "studioLinks": [
+      {
+        "label": "About",
+        "href": "/about/"
+      },
+      {
+        "label": "Plan",
+        "href": "/services/#plan",
+        "branch": "plan"
+      },
+      {
+        "label": "Build",
+        "href": "/services/#build",
+        "branch": "build"
+      },
+      {
+        "label": "Grow",
+        "href": "/services/#grow",
+        "branch": "grow"
+      }
+    ],
+    "projectLinks": [
+      {
+        "label": "All projects",
+        "href": "/projects/"
+      },
+      {
+        "label": "Client words",
+        "href": "/#in-their-words"
+      }
+    ],
+    "copyright": "THE GILDA STUDIOS · MALTA",
+    "copyrightShort": "MALTA"
+  }
 }

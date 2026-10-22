@@ -4,7 +4,21 @@
     "eyebrowShort": "DIGITAL AND EVENTS · MALTA",
     "title": "The right ingredients.",
     "body": "Websites, projects, events and social media from one team. One contact, one plan, one invoice.",
-    "work": { "label": "See our work", "labelShort": "Our work", "href": "/projects/" },
+    "work": {
+      "label": "See our work",
+      "labelShort": "Our work",
+      "href": "/projects/"
+    },
     "markAlt": "The Gilda Studios mark"
+  },
+  "story": {
+    "label": "Where the name comes from",
+    "headline": "Three ingredients. One skewer.",
+    "body": "The name comes from the gilda, a Spanish tapa we were served in Seville: a green olive, a salt-cured anchovy and a pickled pepper on one skewer. Each ingredient is one branch of the studio. The skewer is the team that holds them together.",
+    "markAlt": "The gilda: an olive, an anchovy and a pickled pepper on one skewer",
+    "link": {
+      "label": "Read our story",
+      "href": "/about/"
+    }
   }
 }

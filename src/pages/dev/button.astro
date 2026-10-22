@@ -1,0 +1,99 @@
+---
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/core/Button.astro';
+import Label from '../../components/core/Label.astro';
+import { buttonPreview as content, previewGrounds } from '../../content/dev/primitives';
+---
+
+<Base title={content.title}>
+  <main>
+    <header id="button-top" class="band band--cream band--compact">
+      <div class="container stack">
+        <h1>{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </header>
+    {previewGrounds.map((ground) => (
+      <section class:list={['band', ground.className]} aria-labelledby={`buttons-${ground.id}`}>
+        <div class="container stack">
+          <h2 id={`buttons-${ground.id}`}>{ground.label}</h2>
+          {content.variants.map((variant) => (
+            <section class="stack" aria-label={variant.label}>
+              <Label as="h3" tone={ground.onDark ? 'on-dark' : 'accent'}>
+                {variant.label}
+              </Label>
+              <div
+                class:list={[
+                  'samples',
+                  {
+                    'swatch-dark': variant.value === 'outline-light',
+                    'swatch-light': variant.value === 'outline',
+                  },
+                ]}
+              >
+                {content.sizes.map((size) => (
+                  <div class="size-sample">
+                    <Button variant={variant.value} size={size.value} href="#button-top">
+                      {content.action}
+                    </Button>
+                    <span class="sample-note">{size.label}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+          <div class="samples">
+            <Button>{content.nativeButton}</Button>
+            <Button disabled>{content.disabledButton}</Button>
+            <Button href="#button-top" disabled>
+              {content.disabledLink}
+            </Button>
+          </div>
+        </div>
+      </section>
+    ))}
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .samples {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .swatch-dark,
+  .swatch-light {
+    padding: var(--space-4);
+  }
+
+  .swatch-dark {
+    --focus-color: var(--cream);
+
+    background: var(--brine);
+    color: var(--cream);
+  }
+
+  .swatch-light {
+    --focus-color: var(--brine);
+
+    background: var(--cream);
+    color: var(--brine);
+  }
+
+  .size-sample {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-2);
+  }
+
+  .sample-note {
+    font: var(--type-body-sm);
+  }
+</style>

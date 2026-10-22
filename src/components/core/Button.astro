@@ -1,0 +1,138 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { ButtonVariant, ControlSize } from './types';
+
+type CommonProps = {
+  variant?: ButtonVariant;
+  size?: ControlSize;
+  disabled?: boolean;
+  class?: string;
+};
+type Props = CommonProps &
+  (
+    | (Omit<HTMLAttributes<'a'>, 'class' | 'href' | 'type'> & { href: string })
+    | (Omit<HTMLAttributes<'button'>, 'class' | 'disabled'> & { href?: never })
+  );
+
+const {
+  variant = 'primary',
+  size = 'md',
+  disabled = false,
+  href,
+  class: className,
+  ...attrs
+} = Astro.props;
+---
+
+{href !== undefined ? (
+  <a
+    {...(attrs as HTMLAttributes<'a'>)}
+    href={disabled ? undefined : href}
+    role={disabled ? 'link' : attrs.role}
+    aria-disabled={disabled || undefined}
+    tabindex={disabled ? -1 : attrs.tabindex}
+    class:list={['button', className]}
+    data-variant={variant}
+    data-size={size}
+  >
+    <slot />
+  </a>
+) : (
+  <button
+    {...(attrs as HTMLAttributes<'button'>)}
+    type={(attrs as HTMLAttributes<'button'>).type ?? 'button'}
+    disabled={disabled}
+    class:list={['button', className]}
+    data-variant={variant}
+    data-size={size}
+  >
+    <slot />
+  </button>
+)}
+
+<style>
+  .button {
+    --button-size: 12px;
+    --button-pad-block: 14px;
+    --button-pad-inline: 22px;
+    --button-background: var(--olive);
+    --button-foreground: var(--cream);
+    --button-ring: none;
+    --button-disabled-opacity: 0.4;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    max-inline-size: 100%;
+    padding: var(--button-pad-block) var(--button-pad-inline);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--button-background);
+    box-shadow: var(--button-ring);
+    color: var(--button-foreground);
+    font-family: var(--font-body);
+    font-size: var(--button-size);
+    font-weight: var(--weight-semibold);
+    font-stretch: var(--stretch-button);
+    line-height: 1;
+    letter-spacing: var(--tracking-button);
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .button[data-size='sm'] {
+    --button-size: 11px;
+    --button-pad-block: 10px;
+    --button-pad-inline: var(--space-4);
+  }
+
+  .button[data-variant='anchovy'] {
+    --button-background: var(--anchovy);
+  }
+
+  .button[data-variant='dark'] {
+    --button-background: var(--brine);
+  }
+
+  .button[data-variant='light'] {
+    --button-background: var(--cream);
+    --button-foreground: var(--brine);
+  }
+
+  .button[data-variant='outline'] {
+    --button-background: transparent;
+    --button-foreground: var(--brine);
+    --button-ring: var(--ring-outline-button);
+  }
+
+  .button[data-variant='outline-light'] {
+    --button-background: transparent;
+    --button-ring: inset 0 0 0 1.5px var(--cream);
+  }
+
+  .button:hover {
+    color: var(--button-foreground);
+    opacity: var(--hover-opacity);
+  }
+
+  .button:is(:disabled, [aria-disabled='true']) {
+    opacity: var(--button-disabled-opacity);
+    cursor: default;
+  }
+
+  @media (any-pointer: coarse) {
+    .button {
+      min-block-size: var(--space-11);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button {
+      transition-duration: 0s;
+    }
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHeader from '../../components/layout/SectionHeader.astro';
+import { sectionHeaderPreview as content } from '../../content/dev/section-header';
+---
+
+<Base title={content.title}>
+  <main>
+    <header id="header-top" class="band band--cream band--compact">
+      <div class="container stack">
+        <h1>{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </header>
+    {content.grounds.map((ground) => (
+      <section class:list={['band', ground.className]} aria-labelledby={`headers-${ground.id}`}>
+        <div class="container stack">
+          <h2 id={`headers-${ground.id}`}>{ground.label}</h2>
+          {content.samples.map((sample) => (
+            <SectionHeader {...sample} headingLevel={3} onDark={ground.onDark} />
+          ))}
+        </div>
+      </section>
+    ))}
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-8);
+  }
+</style>

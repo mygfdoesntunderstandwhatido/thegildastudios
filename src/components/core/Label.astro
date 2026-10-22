@@ -1,0 +1,83 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { ControlSize, LabelTone, LabelTracking } from './types';
+
+interface Props extends HTMLAttributes<'span'> {
+  as?: 'span' | 'p' | 'div' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  size?: ControlSize;
+  tone?: LabelTone;
+  tracking?: LabelTracking;
+}
+
+const {
+  as: Tag = 'span',
+  size = 'md',
+  tone = 'accent',
+  tracking = 'label',
+  class: className,
+  ...attrs
+} = Astro.props;
+---
+
+<Tag
+  {...attrs}
+  class:list={['mono-label', className]}
+  data-size={size}
+  data-tone={tone}
+  data-tracking={tracking}
+>
+  <slot />
+</Tag>
+
+<style>
+  .mono-label {
+    --label-small-phone: 10px;
+
+    color: var(--olive);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .mono-label[data-size='sm'] {
+    font: var(--type-label-sm);
+  }
+
+  .mono-label[data-tracking='running'] {
+    letter-spacing: var(--tracking-running);
+  }
+
+  .mono-label[data-tone='ink'] {
+    color: var(--brine);
+  }
+
+  .mono-label[data-tone='muted'] {
+    color: var(--ink-3);
+  }
+
+  .mono-label[data-tone='on-dark'] {
+    color: var(--cream-2);
+  }
+
+  .mono-label[data-tone='on-dark-accent'] {
+    color: var(--pepper);
+  }
+
+  .mono-label[data-tone='on-dark-muted'] {
+    color: var(--salt);
+  }
+
+  .mono-label[data-tone='inherit'] {
+    color: inherit;
+  }
+
+  @media (width < 768px) {
+    .mono-label {
+      font-size: var(--label-phone-size);
+    }
+
+    .mono-label[data-size='sm'] {
+      font-size: var(--label-small-phone);
+    }
+  }
+</style>

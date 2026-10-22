@@ -1,0 +1,130 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Label from '../core/Label.astro';
+
+interface Props extends HTMLAttributes<'div'> {
+  title: string;
+  number?: string;
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
+  onDark?: boolean;
+  accent?: 'olive' | 'anchovy';
+  accentTitle?: boolean;
+  link?: { label: string; href: string };
+}
+
+const {
+  title,
+  id,
+  number,
+  headingLevel = 2,
+  onDark = false,
+  accent = 'olive',
+  accentTitle = false,
+  link,
+  class: className,
+  ...attrs
+} = Astro.props;
+const headingTag = `h${headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+---
+
+<div
+  {...attrs}
+  class:list={['section-header', className]}
+  data-on-dark={onDark}
+  data-accent={accent}
+  data-accent-title={accentTitle}
+>
+  <Label id={id} as={headingTag} tone="inherit" class="section-heading">
+    {number && <span class="section-number">{number}</span>}
+    <span class="section-title">{title}</span>
+  </Label>
+  <span class="section-line" aria-hidden="true"></span>
+  {link && (
+    <a class="section-link" href={link.href}>
+      {link.label}
+    </a>
+  )}
+</div>
+
+<style>
+  .section-header {
+    --section-accent: var(--olive);
+    --section-rule-width: 1px;
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    color: var(--brine);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .section-header[data-on-dark='true'] {
+    --section-accent: var(--pepper);
+
+    color: var(--cream);
+  }
+
+  .section-header[data-accent='anchovy'] {
+    --section-accent: var(--anchovy);
+  }
+
+  .section-header[data-accent='anchovy'][data-on-dark='true'] {
+    --section-accent: var(--anchovy-on-dark);
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro scopes the parent and forwards this class to Label. */
+  .section-header :global(.section-heading) {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    max-inline-size: 100%;
+  }
+
+  .section-number,
+  .section-header[data-accent-title='true'] .section-title {
+    color: var(--section-accent);
+  }
+
+  .section-line {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: var(--section-rule-width);
+    background: var(--rule-light);
+  }
+
+  .section-header[data-on-dark='true'] .section-line {
+    background: var(--rule-dark);
+  }
+
+  .section-link,
+  .section-link:hover {
+    flex: none;
+    color: var(--section-accent);
+    font: inherit;
+  }
+
+  @media (width < 768px) {
+    .section-header {
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      font-size: var(--label-phone-size);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's global selector targets the child Label. */
+    .section-header :global(.section-heading) {
+      flex-shrink: 1;
+      gap: var(--space-3);
+    }
+
+    .section-line {
+      min-inline-size: var(--space-3);
+    }
+
+    .section-link {
+      margin-inline-start: auto;
+    }
+  }
+</style>

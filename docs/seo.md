@@ -21,9 +21,8 @@ Social profiles populate `sameAs` only when supplied.
 
 ## Production domain and previews
 
-The public site address starts as `https://thegildastudios.netlify.app`, the
-production origin before the move to Cloudflare Workers (#51). Change it to the
-Worker's `workers.dev` address once production deploys there, and to
+The public site address is the Worker's address,
+`https://thegildastudios.chris-aa-vella.workers.dev` (#51). Change it to
 `https://www.thegildastudios.com` when #33 connects the custom domain, then
 rebuild. This single setting updates Astro's site URL, canonicals, cards,
 JSON-LD, sitemap and robots. Never enter a preview or content branch URL there.

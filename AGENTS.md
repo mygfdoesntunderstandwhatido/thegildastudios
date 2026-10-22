@@ -80,7 +80,8 @@ A PR is ready only when `lint`, `format:check`, `check` and `build` all pass. Pr
 
 ## Code conventions
 
-- **All copy lives in `src/content`** (content collections and singleton data files with typed schemas), never hard-coded in a component. Keystatic is layered over these files in #27.
+- **All copy lives in `src/content`** (content collections and singleton data files with typed schemas), never hard-coded in a component. The Keystatic admin edits these files.
+- **Keep `keystatic.config.ts` in step with the schemas.** Any field added to, renamed in or removed from `src/content/schemas/` needs the same change in `keystatic.config.ts`, with a plain-language description, or editors can't reach it. Required Astro fields use `text` from `schemas/shared.ts` and `isRequired` in the admin. Keystatic writes the content JSON in its own layout, so `src/content/**/*.json` is excluded from Prettier; don't hand-format it.
 - Use tokens (`var(--…)`) for every colour, size and space. No raw hex outside `src/styles/tokens/`.
 - Branch definitions (colours, order, numbering) stay in code, in one `branches.ts`, never in the CMS.
 - Only the interactive islands ship JavaScript: the hero mark, branch strip, rotator, filters, disclosures and the mobile menu. No React on public pages.

@@ -123,3 +123,7 @@ content expansion leaves the entire page at a fixed height.
 The accessibility pass (#29) fixed the olive-on-sand contrast that held
 home, About and Services at 95–96. Every audited page now scores 100, and the
 gate requires it. See [the accessibility record](a11y.md).
+
+## Contact verification (#52)
+
+When `PUBLIC_TURNSTILE_SITE_KEY` is configured, Contact loads Cloudflare’s Turnstile script. The asset budget report lists this exact URL separately as `remoteScripts`; first-party JavaScript budgets remain unchanged. Those byte totals exclude the remote script and challenge iframe. Run a live Lighthouse check with the real widget before launch; a build without the site key does not measure verification overhead.

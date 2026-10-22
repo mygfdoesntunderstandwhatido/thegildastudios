@@ -16,7 +16,7 @@ Closes #<!-- issue number -->
 
 ## Design check
 
-<!-- For visual issues: screenshots at 1280 and 390 next to the design artboard, taken from the Netlify Deploy Preview. Write "n/a" otherwise. -->
+<!-- For visual issues: screenshots at 1280 and 390 next to the design artboard, taken from the Cloudflare preview. Write "n/a" otherwise. -->
 
 ## Flags for review
 

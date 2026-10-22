@@ -4,19 +4,19 @@ Instructions for every coding agent working in this repo. This project is built 
 
 ## The project
 
-The website for **The Gilda Studios**, a Malta studio with three branches: Plan (events and projects), Build (websites) and Grow (social media). Every piece of work is a GitHub issue: 33 of them, in 8 phases, each one with its own milestone.
+The website for **The Gilda Studios**, a Malta studio with three branches: Plan (events and projects), Build (websites) and Grow (social media). Every piece of work is a GitHub issue, grouped into phase milestones.
 
-- **Stack:** Astro 7 (static output) with plain CSS custom properties. Content is managed by Keystatic in GitHub mode, and the site is hosted on Netlify. The decision is recorded in issue #1.
+- **Stack:** Astro 7 (static output) with plain CSS custom properties. Content is managed by Keystatic in GitHub mode, and the site is hosted on Cloudflare Workers. The original stack decision is in #1; the hosting migration is in #50 and #51.
 - **Design source of truth:** `design/`, exported from Claude Design. It is **read-only**: never edit, move or reformat anything inside it.
 
 ## Work split: fixed lanes
 
 Each issue carries exactly one lane label:
 
-| Label          | Agent                                                          | Typical work                                                                                                  |
-| -------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `agent:claude` | Claude Code (local, in a git worktree, with a browser preview) | Interactive and visual work, setup that needs accounts (Netlify, the GitHub App), design proposals, visual QA |
-| `agent:codex`  | Codex cloud (runs from GitHub)                                 | Well-specified builds: tokens, assets, static components, content-heavy pages, SEO, performance               |
+| Label          | Agent                                                          | Typical work                                                                                                     |
+| -------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `agent:claude` | Claude Code (local, in a git worktree, with a browser preview) | Interactive and visual work, setup that needs accounts (Cloudflare, the GitHub App), design proposals, visual QA |
+| `agent:codex`  | Codex cloud (runs from GitHub)                                 | Well-specified builds: tokens, assets, static components, content-heavy pages, SEO, performance                  |
 
 `docs/agents/lanes.md` lists every issue's lane and the order in which work can run in parallel.
 
@@ -31,9 +31,9 @@ Each issue carries exactly one lane label:
 
 ## Branches, commits, PRs
 
-- **Batch related, ready issues into one branch and one PR to reduce paid Netlify deploys.** This applies to both Codex and Claude Code. Keep each issue's lane, dependencies and scope intact. A batch can also take an issue whose open dependencies it already covers (see step 1 above). Build the issues in dependency order.
+- **Batch related, ready issues into one branch and one PR to reduce review load.** This applies to both Codex and Claude Code. Keep each issue's lane, dependencies and scope intact. A batch can also take an issue whose open dependencies it already covers (see step 1 above). Build the issues in dependency order.
 - Before opening a PR, check existing PRs for related work. Reuse the batch's PR for follow-up changes. Each batch has one owning agent; use separate worktrees and coordinate an explicit handoff before changing the other agent's branch.
-- Finish the local batch and run its checks before pushing. Batch follow-up fixes into as few pushes as practical: each push to an open PR can trigger another Netlify Deploy Preview.
+- Finish the local batch and run its checks before pushing. Batch follow-up fixes into as few pushes as practical: each push to an open PR can trigger another Cloudflare preview.
 - Branch names: `claude/<issue>-<slug>` or `codex/<issue>-<slug>` using the first issue in the batch. Codex cloud's automatic `codex/…` names are fine.
 - PR title: describe the combined changes and list all issue numbers. For a single issue, use its title plus the number.
 - The PR body uses `.github/pull_request_template.md` and must contain a separate `Closes #<issue>` line for every issue in the batch.
@@ -95,11 +95,11 @@ The two lanes run at the same time, so keep shared files conflict-free:
 - **Content schemas:** one file per collection in `src/content/schemas/<name>.ts`. `src/content.config.ts` only imports and registers them, one line per collection.
 - **Styles:** use scoped `<style>` in each component. Global CSS (`src/styles/`) belongs to issues #3, #4 and #6. Other issues change it only if their scope says so.
 - **Dependencies:** add packages only when the issue needs them, and mention each new package in the PR. Codex cloud has no internet during a task by default, so new packages have to be installed by its setup script (`docs/agents/codex-cloud.md`).
-- **Shared config files** (`package.json`, `astro.config.mjs`, `netlify.toml`): keep edits small and rebase right before opening the PR.
+- **Shared config files** (`package.json`, `astro.config.mjs`, `wrangler.jsonc`): keep edits small and rebase right before opening the PR.
 
 ## Done means
 
 - Every acceptance criterion in the issue is met and ticked in the PR.
-- For visual issues: screenshots at 1280 and 390 are attached next to the matching artboard, checked on the Netlify Deploy Preview.
+- For visual issues: screenshots at 1280 and 390 are attached next to the matching artboard, checked on the Cloudflare preview.
 - Every **Flag for review** item is either resolved, or called out in the PR for the human to decide.
 - CI is green. The PR is reviewed by the other agent or the human before merging.

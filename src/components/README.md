@@ -201,7 +201,7 @@ JavaScript, the island shows inline errors (`aria-invalid`, `aria-describedby`),
 focuses the first invalid field and announces a count. It also reads
 `?service=01.2` or `?branch=grow` to prefill the form. Build links with
 `contactHref()` from `src/lib/contact.ts`. Service numbers and prefill names
-come from the typed `services` collection. #32 wires Netlify delivery, the
+come from the typed `services` collection. #52 wires Cloudflare email delivery and Turnstile, the
 honeypot, retry behavior and `/contact/thanks/`; see `docs/operations.md`.
 
 ## About page (#20)

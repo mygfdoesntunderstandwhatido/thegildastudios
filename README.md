@@ -1,6 +1,6 @@
 # The Gilda Studios
 
-Website for The Gilda Studios, a studio in Malta for digital and events. Built with Astro 7, edited with Keystatic and hosted on Netlify (see issue #1).
+Website for The Gilda Studios, a studio in Malta for digital and events. Built with Astro 7, edited with Keystatic and hosted on Cloudflare Workers (see issues #1, #50 and #51).
 
 ## What's in this repo
 
@@ -16,7 +16,7 @@ Everything is a GitHub issue in phase order (milestones Phase 1–8). Each issue
 - `status:ready` once its dependencies are closed (set automatically). An issue whose open dependencies are all done in the same batch PR can join that PR without waiting.
 - `status:in-progress` while someone is working on it
 
-Codex and Claude Code batch related, ready issues into one branch and one PR to reduce paid Netlify deploys. Each PR includes a separate `Closes #N` line and acceptance criteria for every issue. Both agents follow the lane and ownership rules in `AGENTS.md` and group local changes before pushing, since each push can trigger another preview deploy.
+Codex and Claude Code batch related, ready issues into one branch and one PR to reduce review load. Each PR includes a separate `Closes #N` line and acceptance criteria for every issue. Both agents follow the lane and ownership rules in `AGENTS.md` and group local changes before pushing, since each push can trigger another preview deploy.
 
 ## Getting started
 
@@ -43,12 +43,17 @@ CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `check` and `build`
 
 ## Deploys
 
-The site is hosted on Netlify (team: Chris), building from this repo with the settings in `netlify.toml` (`npm run build` → `dist/`, Node from `.nvmrc`).
+The site runs as the `thegildastudios` Cloudflare Worker in Chris’s account. Node is pinned in `.nvmrc`. Workers Builds runs `npm run build`, which writes static files to `dist/client/` and the Worker and generated configuration to `dist/server/`. Wrangler finds that configuration automatically.
 
-- **Production:** every merge to `main` deploys to <https://thegildastudios.netlify.app>, until #33 connects `www.thegildastudios.com`. The domain is registered with Cloudflare and its DNS stays there; Netlify is connected as external DNS.
-- **Deploy Previews:** every pull request gets its own preview at `https://deploy-preview-<PR number>--thegildastudios.netlify.app`, posted on the PR by Netlify. The `netlify/thegildastudios/deploy-preview` check is required to merge into `main`, next to CI. Review visual work there before merging.
-- **Branch deploys:** switched on for all branches, but `scripts/netlify-ignore.sh` skips every branch except Keystatic content branches (`content-*`), which get a preview at `https://<branch>--thegildastudios.netlify.app`. Other branches already have a Deploy Preview from their pull request.
-- **Access:** the Netlify project is [thegildastudios](https://app.netlify.com/projects/thegildastudios) on the team owner's (Chris) personal team. Every public page is prerendered. The only function is the Keystatic admin, `/keystatic` and `/api/keystatic/*`, served through `@astrojs/netlify`.
+- **Production:** branch `main`, deploy command `npx wrangler deploy`, at <https://thegildastudios.chris-aa-vella.workers.dev> until #33 connects the production domain. DNS stays in Cloudflare.
+- **PR previews:** every other branch uses `npx wrangler preview`. Cloudflare posts the actual preview URL on the PR. Check `Workers Builds: thegildastudios` alongside GitHub CI before merging.
+- **Content previews:** `content-spring-update` is available at `https://content-spring-update-thegildastudios.chris-aa-vella.workers.dev`. Use short lowercase branch names with letters, numbers and hyphens; long names are shortened with a hash. `PUBLIC_WORKERS_SUBDOMAIN=chris-aa-vella` supplies the admin’s preview links.
+- **Build context:** `WORKERS_CI_BRANCH=main` enables production indexing and configured analytics. Other branches are noindex and disable analytics by default. `SITE_CONTEXT=production|preview` is an explicit override for local checks. See [operations](docs/operations.md).
+- **Access:** Chris owns the Cloudflare account and manages Worker settings, Builds, domains and secrets. GitHub repository write access does not grant Cloudflare access. The admin lives on the production address; its secrets are configured for Production. Contact delivery also needs configuration for Previews when testing it.
+
+Every public page is prerendered. `/keystatic`, `/api/keystatic/*` and `/api/contact` run in the Worker. The form uses Turnstile and the email binding described in [operations](docs/operations.md).
+
+The migration record is [PR #55](https://github.com/mygfdoesntunderstandwhatido/thegildastudios/pull/55). Its account follow-ups (production branch, required build check and content preview verification) must be checked in the dashboards; merging code alone does not prove those settings.
 
 ## Where things go
 

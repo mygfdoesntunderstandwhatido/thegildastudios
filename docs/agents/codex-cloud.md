@@ -35,6 +35,6 @@ When done, open a PR titled "<issue title> (#<N>)" whose body follows
 
 ## Before merging a Codex PR
 
-- CI is green, and the Netlify Deploy Preview builds.
+- CI is green, and the Cloudflare preview builds.
 - For visual issues, Claude Code (or you) checks the preview against the design artboards at 1280 and 390.
 - Every acceptance criterion is ticked, and every **Flag for review** item is resolved or raised in the PR.

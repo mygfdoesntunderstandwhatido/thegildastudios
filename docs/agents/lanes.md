@@ -23,6 +23,8 @@ The live source of truth is GitHub: the `status:ready` label means every depende
 | 13   | #31           | —                  |
 | 14   | #33           | —                  |
 
+Hosting follow-up waves: #50 (Claude, no dependencies), then #51 (Claude, after #50, #28 and #30), then #52 (Codex takeover, after #51), then #53 (Codex, after #51 and #52). Launch #33 also waits for #51, #52 and #53.
+
 A wave can start early if its own dependencies are already closed. `status:ready` tracks this per issue. A batch PR can also run on into the next wave: if it already covers an issue's open dependencies in the same lane, that issue joins the same PR (`AGENTS.md`, step 1).
 
 ## Files to watch for conflicts in the same wave
@@ -67,11 +69,17 @@ A wave can start early if its own dependencies are already closed. `status:ready
 | #30   | Claude | [7.2] Run a performance pass to Lighthouse 95+                                             | #28                              |
 | #31   | Claude | [7.3] Run cross-browser and device QA against the design at 375, 768, 1280 and 1440px      | #29, #30                         |
 | #32   | Codex  | [8.1] Set up the contact form backend, analytics, a 404 page and redirects                 | #2, #26                          |
-| #33   | Claude | [8.2] Write a launch checklist and go live on the production domain                        | #31, #32                         |
+| #33   | Claude | [8.2] Write a launch checklist and go live on the production domain                        | #31, #32, #51, #52, #53          |
+| #50   | Claude | [8.3] Test the site and Keystatic on Cloudflare Workers                                    | —                                |
+| #51   | Claude | [8.4] Move hosting and previews to Cloudflare Workers                                      | #50, #28, #30                    |
+| #52   | Codex  | [8.5] Contact delivery and Turnstile                                                       | #51                              |
+| #53   | Codex  | [8.6] Update hosting docs and agent rules                                                  | #51, #52                         |
+
+The user authorised Codex to take over #52 on 22 October 2026 after Claude capacity ran out. #53 can follow in the same batch once its implementation dependency is covered; live email verification remains a review gate.
 
 ## Why the lanes are split this way
 
-- **Claude Code** runs locally, with a browser preview and access to your Netlify and GitHub accounts. So it takes:
+- **Claude Code** runs locally, with a browser preview and access to your Cloudflare and GitHub accounts. So it takes:
   - account setup: #1, #2, #27, #33
   - the interactive pieces: #9 mobile menu, #12 disclosures, #15 and #17 hero mark and strip, #18 rotator, #24 and #25 case studies with filters
   - the undesigned contact page (#26)

@@ -1,127 +1,58 @@
 # Forms, analytics and routing
 
-Implementation for #32. The code is prepared; the account configuration and live
-checks below are still required before the issue can be considered complete.
+Cloudflare hosting comes from merged [PR #55](https://github.com/mygfdoesntunderstandwhatido/thegildastudios/pull/55) (#50/#51). Contact delivery is implemented in #52. Account setup and real delivery checks below remain required before launch.
 
 ## Contact form
 
-`/contact/` contains the static `contact` form, with `data-netlify="true"`,
-`form-name=contact` and the `bot-field` honeypot. Enable **form detection** in the
-Netlify project and deploy this branch. Netlify must list a form named `contact`
-before testing delivery. Netlify performs spam filtering; the hidden honeypot
-field is submitted with both enhanced and native submissions.
+`/contact/` posts URL-encoded fields to the on-demand Astro route `/api/contact`. `wrangler.jsonc` sends this path to the Worker before static asset handling. The server validates required fields, email, a phone when Call is selected, known service numbers and branch selections. It derives branch values from the validated needs, including for native forms. Every email labels `name`, `email`, `business`, `phone`, repeated `needs`, `preferred`, `message`, `service` and `branch`.
 
-The stored fields are `name`, `email`, `business`, `phone`, repeated `needs`
-values, `preferred`, `message`, `service` and `branch`. The last two contain a
-validated prefilled service number and the selected branch keys. Deselecting a
-service's branch clears the hidden service number. Query-string prefill requires
-JavaScript; without it, the visitor can select needs and submit the native form.
-Service numbers and names come from the typed `services` collection, so the
-homepage's shorter branch summaries cannot change a service's prefilled name.
+The hidden `bot-field` honeypot discards filled submissions without email. Turnstile is verified on the server, including hostname and the `contact` action. Missing, expired or failed tokens send no email. HTTP, network and delivery errors keep the enhanced form’s values and enable retry; the widget resets because tokens are single-use. Requests time out in the browser after 20 seconds. No submitted values or provider errors are logged by the handler.
 
-With JavaScript, the form posts URL-encoded data to `/contact/thanks/`. It prevents
-duplicate requests, waits for a successful response before displaying the approved
-success message, and preserves values on HTTP, network or timeout errors. Requests
-time out after 20 seconds. Without JavaScript, Netlify redirects the native POST
-to the same confirmation page. The confirmation page itself is not evidence that
-a particular submission was received.
+Successful enhanced submissions show the existing confirmation; `Form submitted` is emitted only after the email binding accepts the send. A provider acceptance is not proof of inbox delivery. Native submissions with a valid Turnstile token receive a 303 to `/contact/thanks/`. **With JavaScript completely disabled, Turnstile cannot issue a token.** The page explains the email alternative, and the server rejects a missing token. This is an explicit deviation from #52’s full no-JavaScript criterion; do not bypass spam protection to make it pass.
 
-In Netlify's form notifications, add email notifications for `contact` to
-`hello@thegildastudios.com` **and a working backup inbox supplied by Chris**. The
-backup is needed until domain email is configured in #33. No email notification
-has been configured from this workspace, and a backup address has not been
-selected. The #26 review approved a request form with no scheduling embed:
-[recorded decision](https://github.com/mygfdoesntunderstandwhatido/thegildastudios/pull/45#issuecomment-6339440553).
+The user chose Cloudflare Email Routing (free forwarding) and supplied a backup inbox on 22 October 2026. Set that address in `CONTACT_BACKUP_EMAIL`; keep it out of public content and client bundles. Delivery uses `CONTACT_EMAIL`, a `send_email` binding, with sender `website@thegildastudios.com`, recipients `hello@thegildastudios.com` and the backup, and the visitor’s address as Reply-To. Addresses never come from a visitor-controlled recipient field. This is email-only: no D1 copy, dashboard submission archive or automatic retry queue. A response lost after acceptance can lead to a duplicate if the visitor retries.
+
+### One-time setup (Chris)
+
+1. Enable Email Routing for `thegildastudios.com` in Cloudflare. Add the required DNS records from the dashboard and configure `hello@` forwarding to a working, verified destination. Verify receiving mail before testing the form.
+2. Verify both `hello@thegildastudios.com` (through its forwarding inbox) and the backup as destination addresses. The unrestricted binding can send only to account-verified destinations on the free routing setup. Onboard the sender domain as required by the email dashboard. Do not enable a paid sending plan for this implementation.
+3. Set the Worker variable/secret `CONTACT_BACKUP_EMAIL` to the supplied address for **Production and Previews**. `CONTACT_EMAIL` is declared in `wrangler.jsonc`. Both recipients are sent in one binding call. Check both inboxes and spam folders.
+4. Create a **Managed** Turnstile widget for the production and intended preview hostnames. Keep **pre-clearance disabled**: pre-clearance issues a `cf_clearance` cookie. Set `PUBLIC_TURNSTILE_SITE_KEY` as a public Workers Builds variable and `TURNSTILE_SECRET_KEY` as a Worker secret for Production and Previews. Rebuild after changing the site key. Never use dummy test keys on a deployed site.
+5. Test the PR preview at 390 and 1280, then send a clearly labelled test enquiry. Confirm both inboxes receive all fields and Reply-To works. Confirm failed verification and a filled honeypot send nothing. Inspect actual browser cookies/storage before signing off the no-cookie requirement.
+
+Cloudflare’s current [email pricing](https://developers.cloudflare.com/email-service/platform/pricing/) says sends to verified destinations are free even with routing only. See [binding configuration](https://developers.cloudflare.com/email-service/configuration/send-bindings/) and the [Workers API](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/). The structured API supplies plain text and Reply-To without constructing MIME headers by hand. Turnstile [requires server validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/); [pre-clearance](https://developers.cloudflare.com/turnstile/additional-configuration/hostname-management/pre-clearance/) controls its clearance cookie.
+
+### Local checks
+
+- `node --test scripts/contact.test.ts` exercises validation, spoofed services, honeypot, token checks, email payloads and provider failures with injected stubs; it sends no real email.
+- `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build` includes Cloudflare’s public dummy widget for local browser checks only.
+- `npx playwright test tests/contact` exercises the enhanced UI with an intercepted widget and POSTs.
+- `npx wrangler dev --port 8787` serves the built Worker. Use an ignored `.dev.vars` for local test configuration, never real visitor data. Email is simulated locally. Dummy Turnstile tokens still need the corresponding test secret and Siteverify connectivity; local stubs do not establish real spam protection or email delivery.
 
 ## Optional Plausible integration
 
-The provider choice remains a review decision from #32. Plausible is prepared
-because it supports page views and the required custom events. No subscription
-has been started or activated. Analytics is disabled until the installation
-script URL is configured.
+Plausible remains an unactivated provider choice from #32. Configure `PUBLIC_PLAUSIBLE_SCRIPT_URL` with its account-specific HTTPS script URL in Workers Builds to enable it. Create the goals `Book a chat`, `Book a call`, `Ask about this service` and `Form submitted`; disable automatic form-submission tracking. No subscription has been created by this work.
 
-If Plausible is chosen:
+Production is selected by `WORKERS_CI_BRANCH=main`; other branches are previews. `SITE_CONTEXT=production|preview` overrides this for testing. Development and previews do not load analytics by default. The existing `PLAUSIBLE_INCLUDE_PREVIEWS=true` override is for deliberate verification only; leave it unset in deployed previews. Local builds count as production but load nothing without a script URL.
 
-1. Add the site to the Plausible account and copy the account-specific HTTPS
-   script URL from its current installation snippet (`…/js/pa-….js`). The
-   integration uses the current `plausible.init` API, not the legacy
-   `data-domain` snippet.
-2. Set the public build variable `PUBLIC_PLAUSIBLE_SCRIPT_URL` in Netlify and
-   rebuild. It contains a public script URL, never an API key.
-3. Add these custom event goals, matching names exactly: `Book a chat`,
-   `Book a call`, `Ask about this service`, `Form submitted`.
-4. In the provider's measurements, keep automatic form submissions disabled:
-   this form explicitly records `Form submitted` only after an accepted POST.
-5. Confirm page views and all four goals in Plausible. Check DevTools for cookies
-   and storage. Test failures must not produce a `Form submitted` conversion.
+Event payloads contain only names. URL queries and hashes are removed. Form values never go to analytics. The implementation uses no browser storage; verify the configured provider on production before launch.
 
-Contact links rendered by `Button` are marked automatically for click tracking,
-including future service links built with `contactHref({ service: '01.2' })`.
-The form's submit button records `Book a call` clicks independently of whether
-validation succeeds. Accepted submissions record `Form submitted` once. Event
-calls contain only the event name. Form values are never passed to analytics;
-the initialization transform removes query strings and hashes from page URLs.
-The integration does not use cookies or browser storage.
+## Missing pages, redirects and caching
 
-Development, Netlify branch deploys and Deploy Previews do not load the remote
-tracker by default. To verify on a Deploy Preview, set the build variable
-`PLAUSIBLE_INCLUDE_PREVIEWS=true` for that context and rebuild; remove it when
-verification is finished. If no Netlify `CONTEXT` is present, a local production
-build with an explicit script URL also enables the integration for local testing.
+Astro writes `dist/client/404.html`. Workers assets uses `not_found_handling: "404-page"` to return it with status 404 for unknown routes. No catch-all 200 rewrite is used.
 
-## Missing pages and redirects
+`public/_redirects` maps `/work` and named case studies to their Projects equivalents with 301 redirects. The migration used exact case-study paths because placeholder rules behaved differently on the deployed Worker. Check query-string preservation on the preview.
 
-Astro emits the branded `dist/404.html`. Netlify uses it with status 404 for
-unknown URLs. There is no catch-all rewrite to a 200 page. The header and footer
-are shared with the rest of the site, and page copy is in the typed
-`systemPages` content collection.
+Astro uses `trailingSlash: 'ignore'` for admin compatibility; public links keep their slash, and Workers `html_handling: "auto-trailing-slash"` normalizes directory routes. `public/_headers` caches `/_astro/*` for a year as immutable and `/fonts/*` for a week. Other static responses use Workers’ default revalidation. Worker contact responses explicitly use `Cache-Control: no-store`.
 
-`public/_redirects` preserves the old `/work` and `/work/*` paths with 301
-redirects to Projects. Query strings are preserved by Netlify. Astro uses
-`trailingSlash: 'always'` and Netlify's Pretty URLs normalizes directory routes;
-there is no wildcard slash redirect that could loop. Verify `/projects` and
-`/contact` redirect to their slash equivalents on the Deploy Preview.
+Production custom domains, apex-to-www redirects, HTTPS and HSTS belong to #33. Use Cloudflare Worker Custom Domains and a Cloudflare Redirect Rule; do not redirect preview hosts to production.
 
-The apex-to-`www` redirect belongs to the primary-domain configuration in #33.
-No hostname redirect is forced here: it would redirect away from working
-preview URLs before the production domain is set up. Confirm that Netlify
-redirects the apex once `www.thegildastudios.com` is its primary domain.
+## Remaining live checks
 
-## Verification record
-
-Local Chromium checks use intercepted POST responses and a mocked provider;
-they do not demonstrate real Netlify delivery, spam rejection or dashboard data.
-
-- Invalid fields prevent a request and focus the first error; choosing Call
-  requires a phone number.
-- HTTP and network failures retain values, show a focused error and enable retry.
-  Repeated submission while a request is pending produces one POST.
-- A successful POST hides the form, focuses confirmation and emits one conversion.
-- Unicode, `&` and `+` values and repeated branch fields survive URL encoding.
-- Service and branch prefill, branch deselection and malformed/unknown service
-  values are checked.
-- With JavaScript disabled, the native POST fields and the confirmation redirect
-  are checked against an intercepted backend.
-- The 404 and confirmation pages reflow at 320, 375, 390, 768, 1280 and 1440px;
-  Contact reflows at 375, 390, 768, 1280 and 1440px. Local 390/1280 screenshots
-  were taken. **Existing #26 issue for device QA #31:** the Contact intro's
-  fixed 52px phone headline overflows the viewport by 12px at 320px. The form
-  and the new system pages fit.
-- With analytics enabled in a local production build, each CTA queues the correct
-  event, invalid submissions do not emit conversions, one accepted submission
-  emits one conversion, URLs lose queries/hashes, and no cookies or local storage
-  are created. The provider script is mocked, so actual page views and dashboard
-  receipt remain unverified.
-
-Before marking #32 complete, verify on its Deploy Preview:
-
-- [ ] Form detection lists `contact` and a real submission includes branch/service.
-- [ ] The submission arrives in the dashboard and both email inboxes.
-- [ ] A filled honeypot is rejected as spam, with no email notification.
-- [ ] The chosen analytics provider receives page views and all four event goals,
-      with no cookies or submitted personal information.
-- [ ] An unknown nested URL returns the branded page with status 404.
-- [ ] `/work` and `/work/cs-butcher` return 301 to `/projects/` and
-      `/projects/cs-butcher/`, including query-string preservation.
-- [ ] Directory routes normalize trailing slashes without a loop.
-- [ ] The 404 and confirmation pages are visually reviewed at 1280 and 390px.
+- [ ] Email Routing, both destination verifications and both Worker secrets/variables are configured.
+- [ ] Real preview enquiry arrives in both inboxes with correct Reply-To, branch and service.
+- [ ] Honeypot and failed Turnstile checks send no email.
+- [ ] Real widget is reviewed at 390 and 1280 and creates no cookies with pre-clearance disabled.
+- [ ] Full no-JavaScript requirement is resolved with the human; current fallback is email.
+- [ ] Production analytics receives configured goals without personal data.
+- [ ] Unknown nested paths return 404; redirects preserve queries and directory slashes do not loop.

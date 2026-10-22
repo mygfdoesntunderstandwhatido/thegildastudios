@@ -1,7 +1,7 @@
 # Editing the site
 
 All the words and images on the site are edited in the admin at
-**<https://thegildastudios.netlify.app/keystatic>** (on the live domain once it moves, #33). You don’t
+**<https://thegildastudios.chris-aa-vella.workers.dev/keystatic>** (on the live domain once it moves, #33). You don’t
 need to touch any code.
 
 Every change goes through three steps: **start a branch, save, publish.** A branch is a private copy of
@@ -18,7 +18,7 @@ you publish it.
 
 1. Click the branch name at the top left (it says **main**) and choose **New branch**.
 2. Give it a short name in lower case with dashes, such as `spring-update`. The admin adds `content-` in
-   front, so the branch is `content-spring-update`.
+   front, so the branch is `content-spring-update`. Use only lowercase letters, numbers and hyphens, and keep your chosen name under 30 characters. Longer names can produce a shortened preview address that the admin cannot link to.
 
 The live site is protected, so saving straight onto **main** won’t work. Always start a branch first.
 You can reuse one branch for a whole batch of changes.
@@ -91,7 +91,7 @@ they belong to.
 
 A minute or two after you save, your branch has its own copy of the site at:
 
-`https://content-<your-branch>--thegildastudios.netlify.app`
+`https://content-<your-branch>-thegildastudios.chris-aa-vella.workers.dev`
 
 The open-in-new-tab icon at the top right of a page or case study takes you straight to it. If it still
 shows the old version, wait a minute and reload: each save rebuilds the preview.
@@ -104,8 +104,7 @@ shows the old version, wait a minute and reload: each save rebuilds the preview.
    entry and field to fix. Fix it in the admin on the same branch and save.
 4. Choose **Merge pull request**, then **Confirm**. The live site updates a few minutes later.
 
-Open the pull request when you’re ready to publish, not before: once it’s open, every save builds a
-preview twice. Afterwards, start a new branch for the next round of changes.
+Open the pull request when the changes are ready for review. Each save rebuilds the branch preview. Afterwards, start a new branch for the next round of changes.
 
 ---
 
@@ -118,21 +117,11 @@ These steps connect the admin to GitHub. They need the repository owner’s acco
    create it on the account that owns the repository and install it on `thegildastudios` only.
    Keystatic writes the four values below into a local `.env` file. Never commit it.
 2. **Add the production callback.** In the app’s settings on GitHub, add the callback URL
-   `https://thegildastudios.netlify.app/api/keystatic/github/oauth/callback` (and the same path on
+   `https://thegildastudios.chris-aa-vella.workers.dev/api/keystatic/github/oauth/callback` (and the same path on
    `www.thegildastudios.com` once #33 connects it).
-3. **Add the Netlify environment variables** (Project configuration → Environment variables), for all
-   deploy contexts:
-   - `KEYSTATIC_GITHUB_CLIENT_ID` and `KEYSTATIC_GITHUB_CLIENT_SECRET`: marked as secret, scope
-     **Functions**.
-   - `KEYSTATIC_SECRET`: marked as secret, scope **Functions**.
-   - `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`: scope **Builds**. It’s read when the site builds.
-
-   Then redeploy production.
-
-4. **Give access.** Invite Maronia to the repository as a collaborator with **Write** access, and make
-   sure the app is installed for the repository. Chris already has access as the owner.
-5. **Branch deploys** are already on for all branches. `scripts/netlify-ignore.sh` builds only the
-   `content-*` ones, so the agents’ branches don’t build twice.
+3. **Add Cloudflare settings.** In Worker → Settings → Builds, set the public build variables `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` and `PUBLIC_WORKERS_SUBDOMAIN=chris-aa-vella`. Set `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET` and `KEYSTATIC_SECRET` as Worker secrets for **Production**, then redeploy. Never put these secrets in public build variables. The admin is used on the main address; preview admin access is not configured.
+4. **Give access.** Invite Maronia to the repository as a collaborator with **Write** access, and make sure the app is installed for the repository. Chris already has access as the owner.
+5. **Branch previews:** Workers Builds uses `main` for production (`npx wrangler deploy`) and `npx wrangler preview` for other branches, including `content-*`. Confirm a saved content branch opens at the preview link before briefing editors.
 
 To edit locally without GitHub, run `npm run dev` and open <http://127.0.0.1:4321/keystatic>: changes
 are written straight to the files in your checkout.

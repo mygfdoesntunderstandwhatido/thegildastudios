@@ -4,3 +4,7 @@ dist/
 .astro/
 node_modules/
 package-lock.json
+# Content JSON is written by the Keystatic admin, whose layout is the source of
+# truth. Prettier would reformat it and fail CI on every editor's change.
+src/content/**/*.json
+.netlify/

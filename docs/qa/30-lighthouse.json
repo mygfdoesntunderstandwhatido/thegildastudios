@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-10-22T16:42:03.216Z",
+  "measuredAt": "2026-10-22T17:22:02.018Z",
   "lighthouseVersion": "12.6.1",
   "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
   "formFactor": "mobile",
@@ -24,7 +24,7 @@
       },
       "lcpMs": 1957,
       "cls": 0,
-      "lcpRangeMs": [1734, 1957, 1959],
+      "lcpRangeMs": [1957, 1955, 1961],
       "clsValues": [0, 0, 0]
     },
     {
@@ -36,23 +36,23 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1806,
+      "lcpMs": 1802,
       "cls": 0,
-      "lcpRangeMs": [1732, 1806, 1807],
+      "lcpRangeMs": [1802, 1809, 1729],
       "clsValues": [0, 0, 0]
     },
     {
       "path": "/services/",
       "runs": 3,
       "scores": {
-        "performance": 99,
+        "performance": 100,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1880,
+      "lcpMs": 1731,
       "cls": 0,
-      "lcpRangeMs": [1880, 1881, 1878],
+      "lcpRangeMs": [1728, 1878, 1731],
       "clsValues": [0, 0, 0]
     },
     {
@@ -66,7 +66,7 @@
       },
       "lcpMs": 1805,
       "cls": 0,
-      "lcpRangeMs": [1805, 1808, 1803],
+      "lcpRangeMs": [1805, 1805, 1804],
       "clsValues": [0, 0, 0]
     },
     {
@@ -78,9 +78,9 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1655,
+      "lcpMs": 1656,
       "cls": 0,
-      "lcpRangeMs": [1655, 1804, 1654],
+      "lcpRangeMs": [1658, 1656, 1655],
       "clsValues": [0, 0, 0]
     },
     {
@@ -92,9 +92,9 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1653,
+      "lcpMs": 1504,
       "cls": 0,
-      "lcpRangeMs": [1653, 1653, 1655],
+      "lcpRangeMs": [1504, 1653, 1503],
       "clsValues": [0, 0, 0]
     }
   ]

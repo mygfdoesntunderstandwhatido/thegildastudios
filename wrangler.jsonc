@@ -14,10 +14,17 @@
     // slash, and unknown URLs get the branded dist/client/404.html with 404.
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
-    // Only the Keystatic admin runs as Worker code. Without this, a browser
+    // The admin and contact handler run as Worker code. Without this, a browser
     // opening /keystatic matches no file and gets the 404 page instead.
-    "run_worker_first": ["/keystatic", "/keystatic/*", "/api/keystatic/*"],
+    "run_worker_first": [
+      "/keystatic",
+      "/keystatic/*",
+      "/api/keystatic/*",
+      "/api/contact",
+      "/api/contact/",
+    ],
   },
+  "send_email": [{ "name": "CONTACT_EMAIL" }],
   "workers_dev": true,
   "preview_urls": true,
   // Branch Previews use the same settings as production. Secrets are set

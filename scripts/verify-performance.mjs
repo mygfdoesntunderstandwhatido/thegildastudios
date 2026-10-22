@@ -69,7 +69,12 @@ for (const path of paths) {
       await external(posix.resolve(posix.dirname(file), dependency));
     }
   }
+  const remoteScripts = [];
   async function external(url) {
+    if (path === '/contact/' && url === 'https://challenges.cloudflare.com/turnstile/v0/api.js') {
+      remoteScripts.push(url);
+      return;
+    }
     assert.ok(url.startsWith('/_astro/'), `${path}: unexpected script URL ${url}`);
     if (seen.has(url)) return;
     seen.add(url);
@@ -89,6 +94,7 @@ for (const path of paths) {
     jsGzip: gzip,
     cssGzip: gzipSync(css).length,
     scripts,
+    remoteScripts,
   });
 }
 
@@ -96,5 +102,8 @@ await mkdir('.lighthouseci', { recursive: true });
 await writeFile('.lighthouseci/assets.json', `${JSON.stringify(report, null, 2)}\n`);
 console.table(
   report.map(({ path, jsBytes, jsGzip, cssGzip }) => ({ path, jsBytes, jsGzip, cssGzip })),
+);
+console.log(
+  'Remote scripts are listed separately; their transferred bytes require a live browser audit.',
 );
 console.log('Public-page image, font, CSS and per-component JS budgets passed.');

@@ -27,6 +27,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run format:check
+      - run: node --test scripts/contact.test.ts
       - run: npm run check
       - run: npm run build
       - run: npm run test:seo

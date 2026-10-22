@@ -774,6 +774,16 @@ const contact = singleton({
         submit: required('Send button'),
         sending: required('Send button while sending'),
         submissionError: required('Message when sending fails', { multiline: true }),
+        verificationRequired: required('Message while spam verification is incomplete'),
+        noJavaScript: required('Email fallback when JavaScript is disabled'),
+        delivery: fields.object(
+          {
+            subject: required('Subject of enquiry notification emails'),
+            service: required('Service field label in notification emails'),
+            branch: required('Branch field label in notification emails'),
+          },
+          { label: 'Enquiry notification email' },
+        ),
         honeypot: required('Spam trap label (hidden)'),
         servicePrefill: required('Message from a service link', {
           description:

@@ -7,7 +7,7 @@ export const prerender = true;
 export const GET: APIRoute = async () => {
   const { seo } = await getSettings();
   const rules =
-    import.meta.env.DEV || isPreviewBuild(process.env.CONTEXT)
+    import.meta.env.DEV || isPreviewBuild()
       ? ['Disallow: /']
       : [
           'Allow: /',

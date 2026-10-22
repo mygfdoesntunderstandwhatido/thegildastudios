@@ -2,11 +2,13 @@
 node_modules/
 dist/
 .astro/
-.netlify/
+.wrangler/
 
 # Keystatic GitHub App credentials (docs/editing.md). Never commit them.
 .env
 .env.*
+.dev.vars
+.dev.vars.*
 
 # Local performance and browser test artifacts.
 .lighthouseci/

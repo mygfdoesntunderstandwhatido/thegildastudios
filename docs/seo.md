@@ -21,14 +21,18 @@ Social profiles populate `sameAs` only when supplied.
 
 ## Production domain and previews
 
-The public site address starts as `https://thegildastudios.netlify.app`, the
-current production origin recorded in README.md. When #33 connects the custom
-domain, change it to `https://www.thegildastudios.com` and rebuild. This single
-setting updates Astro's site URL, canonicals, cards, JSON-LD, sitemap and robots.
-Never enter a Deploy Preview or content branch URL there.
+The public site address is the Worker's address,
+`https://thegildastudios.chris-aa-vella.workers.dev` (#51). Change it to
+`https://www.thegildastudios.com` when #33 connects the custom domain, then
+rebuild. This single setting updates Astro's site URL, canonicals, cards,
+JSON-LD, sitemap and robots. Never enter a preview or content branch URL there.
 
-Netlify Deploy Previews and branch deploys emit `noindex, follow` and
-`Disallow: /`. Their canonical and image URLs still point to production.
+Cloudflare Workers previews (every branch except `main`) emit
+`noindex, follow` and `Disallow: /`. Their canonical and image URLs still point
+to production. `src/lib/seo-policy.mjs` decides this from the branch Workers
+Builds reports (`WORKERS_CI_BRANCH`). Set `SITE_CONTEXT` to `production` or
+`preview` to override it, for example to check a preview build locally with
+`SITE_CONTEXT=preview npm run build` and `SITE_CONTEXT=preview npm run test:seo`.
 Development pages, the 404 page and the contact confirmation are always
 noindex. The sitemap contains only the eight current public pages, with new
 published case studies added automatically. Admin/API routes, development

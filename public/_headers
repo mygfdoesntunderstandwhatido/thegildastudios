@@ -1,0 +1,12 @@
+# Cache rules for Cloudflare Workers static assets. Every other file keeps
+# Workers' default, `public, max-age=0, must-revalidate`: HTML, metadata and
+# stable-name artwork revalidate on every request. Workers joins the values
+# of every matching rule, so don't add a catch-all Cache-Control rule here.
+
+# Content hashes change whenever these generated assets change.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Font names are stable: cache for a week, without immutable so updates expire.
+/fonts/*
+  Cache-Control: public, max-age=604800

@@ -1,14 +1,13 @@
 ---
-import { getSecret } from 'astro:env/server';
+import { isPreviewBuild } from '../../lib/seo-policy.mjs';
 
 // Use the account-specific script URL from Plausible's installation snippet.
 // Previews and local development do not send traffic unless explicitly enabled.
 const scriptUrl = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_URL;
-const context = getSecret('CONTEXT');
 const enabled =
   Boolean(scriptUrl) &&
   import.meta.env.PROD &&
-  (!context || context === 'production' || getSecret('PLAUSIBLE_INCLUDE_PREVIEWS') === 'true');
+  (!isPreviewBuild() || process.env.PLAUSIBLE_INCLUDE_PREVIEWS === 'true');
 
 if (enabled) {
   const url = new URL(scriptUrl);
@@ -69,7 +68,7 @@ if (enabled) {
       }
     });
 
-    // The form emits this only after Netlify accepts the POST. No field values
+    // The form emits this only after the form handler accepts the POST. No field values
     // are passed to analytics, and failed attempts are not conversions.
     document.addEventListener('gilda:form-submitted', () => track('Form submitted'));
   }

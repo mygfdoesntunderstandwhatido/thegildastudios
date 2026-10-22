@@ -1,0 +1,49 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { BRANCH_ORDER, orderBranches, type BranchKey } from '../../lib/branches';
+import BranchDot from './BranchDot.astro';
+import type { DotSize } from './types';
+
+interface Props extends Omit<HTMLAttributes<'span'>, 'role' | 'style'> {
+  /** Any subset of the branches. They always render olive, anchovy, pepper. */
+  branches?: readonly BranchKey[];
+  onDark?: boolean;
+  size?: DotSize;
+  /** Gap in px. Defaults to half the dot size, as on the homepage cards. */
+  gap?: number;
+  /** Accessible name, such as "Plan and Grow". Decorative when omitted. */
+  label?: string;
+}
+
+const {
+  branches = BRANCH_ORDER,
+  onDark = false,
+  size = 10,
+  gap = Math.round(size / 2),
+  label,
+  class: className,
+  ...attrs
+} = Astro.props;
+---
+
+<span
+  {...attrs}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  class:list={['branch-dots', className]}
+  style={`--dots-gap: ${gap}px`}
+>
+  {orderBranches(branches).map((branch) => (
+    <BranchDot branch={branch.key} onDark={onDark} size={size} />
+  ))}
+</span>
+
+<style>
+  .branch-dots {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--dots-gap);
+  }
+</style>

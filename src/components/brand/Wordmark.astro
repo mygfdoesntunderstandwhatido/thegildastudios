@@ -1,0 +1,49 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { brandCopy } from '../../content/ui/brand';
+
+interface Props extends Omit<HTMLAttributes<'span'>, 'style'> {
+  /** line = one line; stacked = The / Gilda / Studios at .95 leading. */
+  layout?: 'line' | 'stacked';
+  /** Type size in px. Always the three words at one size and weight. */
+  size?: number;
+}
+
+const { layout = 'line', size = 26, class: className, ...attrs } = Astro.props;
+---
+
+<span
+  {...attrs}
+  class:list={['wordmark', className]}
+  data-layout={layout}
+  style={`--wordmark-size: ${size}px`}
+>
+  {layout === 'stacked'
+    ? brandCopy.stacked.map((word, index) => (
+        <>
+          {index > 0 && ' '}
+          <span class="wordmark-word">{word}</span>
+        </>
+      ))
+    : brandCopy.name}
+</span>
+
+<style>
+  .wordmark {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: var(--wordmark-font-size, var(--wordmark-size));
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .wordmark[data-layout='stacked'] {
+    line-height: var(--wordmark-leading);
+  }
+
+  .wordmark-word {
+    display: block;
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { branches, type BranchKey } from '../../lib/branches';
+import type { DotSize } from './types';
+
+interface Props extends Omit<HTMLAttributes<'span'>, 'style'> {
+  branch: BranchKey;
+  /** Use the lighter tints on Brine and other dark grounds. */
+  onDark?: boolean;
+  size?: DotSize;
+}
+
+const { branch, onDark = false, size = 10, class: className, ...attrs } = Astro.props;
+const definition = branches[branch];
+const color = onDark ? definition.onDark : definition.color;
+---
+
+<span
+  aria-hidden="true"
+  {...attrs}
+  class:list={['branch-dot', className]}
+  data-branch={branch}
+  data-ring={!onDark && definition.ring}
+  style={`--dot-color: ${color}; --dot-size: ${size}px`}
+></span>
+
+<style>
+  .branch-dot {
+    display: inline-block;
+    flex: none;
+    inline-size: var(--dot-size);
+    block-size: var(--dot-size);
+    border-radius: 50%;
+    background: var(--dot-color);
+  }
+
+  .branch-dot[data-ring='true'] {
+    box-shadow: var(--ring-dot-pepper);
+  }
+</style>

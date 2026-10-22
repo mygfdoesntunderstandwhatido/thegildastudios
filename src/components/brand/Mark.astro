@@ -1,0 +1,105 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { Picture } from 'astro:assets';
+import fullColour from '../../assets/logos/gilda-mark-full-colour.png';
+import fullColourOnDark from '../../assets/logos/gilda-mark-on-dark.png';
+import { brandCopy } from '../../content/ui/brand';
+import Monogram from './Monogram.astro';
+import type { MarkTone } from './types';
+
+// The logo rules: a fixed 823:1000 ratio, and the GS monogram below 48px.
+const MARK_MIN_HEIGHT = 48;
+const MARK_RATIO = 823 / 1000;
+const MARK_NATIVE_WIDTH = 823;
+
+interface Props extends Omit<HTMLAttributes<'span'>, 'role' | 'style'> {
+  /** full = the colour illustration; single = one colour through the engraved mask. */
+  variant?: 'full' | 'single';
+  /** Rendered height in px. Width always follows the 823:1000 ratio. */
+  height?: number;
+  /** Alt text, or the accessible name of a single-colour mark. Empty for decorative uses. */
+  alt?: string;
+  /** Use the full-colour file prepared for dark grounds. */
+  onDark?: boolean;
+  /** Single-colour fill: a colour token, or the current text colour by default. */
+  tone?: MarkTone;
+  /** Override the image `sizes` when a parent changes the height responsively. */
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  variant = 'full',
+  height = 96,
+  alt = brandCopy.markLabel,
+  onDark = false,
+  tone = 'current',
+  sizes,
+  loading = 'lazy',
+  class: className,
+  ...attrs
+} = Astro.props;
+
+const decorative = alt === '';
+const width = Math.round(height * MARK_RATIO);
+const widths = [...new Set([width, Math.min(width * 2, MARK_NATIVE_WIDTH)])];
+const fill = tone === 'current' ? 'currentcolor' : `var(--${tone})`;
+const monogramVariant = variant === 'single' ? 'outline' : onDark ? 'tile' : 'dark';
+---
+
+{height < MARK_MIN_HEIGHT ? (
+  <Monogram
+    {...attrs}
+    size={height}
+    variant={monogramVariant}
+    alt={alt}
+    class={className}
+    fill={variant === 'single' && tone !== 'current' ? fill : undefined}
+  />
+) : (
+  <span
+    {...attrs}
+    role={variant === 'single' && !decorative ? 'img' : undefined}
+    aria-label={variant === 'single' && !decorative ? alt : undefined}
+    aria-hidden={variant === 'single' && decorative ? 'true' : undefined}
+    class:list={['mark', className]}
+    data-variant={variant}
+    style={`--mark-height: ${height}px; --mark-fill: ${fill}`}
+  >
+    {variant === 'full' && (
+      <Picture
+        src={onDark ? fullColourOnDark : fullColour}
+        alt={alt}
+        formats={['avif', 'webp']}
+        fallbackFormat="png"
+        width={width}
+        height={height}
+        widths={widths}
+        sizes={sizes ?? `${width}px`}
+        loading={loading}
+        decoding="async"
+      />
+    )}
+  </span>
+)}
+
+<style>
+  .mark {
+    display: inline-block;
+    flex: none;
+    block-size: var(--mark-block-size, var(--mark-height));
+    aspect-ratio: 823 / 1000;
+    vertical-align: top;
+  }
+
+  .mark[data-variant='single'] {
+    background: var(--mark-fill);
+    mask: url('../../assets/logos/mask-engraved.png') center / contain no-repeat;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .mark :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+</style>

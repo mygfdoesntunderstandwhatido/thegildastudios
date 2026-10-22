@@ -1,0 +1,403 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import plan from '../../assets/illustrations/01-olive-plan.png';
+import build from '../../assets/illustrations/02-anchovy-build.png';
+import grow from '../../assets/illustrations/03-pepper-grow.png';
+import { disclosureLabels } from '../../content/ui/disclosure';
+import { heroLabels } from '../../content/ui/hero';
+import { branches, type BranchKey } from '../../lib/branches';
+import { uniqueId } from '../../lib/ids';
+import BranchDot from '../branch/BranchDot.astro';
+
+interface Props {
+  pillars: { branch: BranchKey; groups: { title: string; items: string[] }[] }[];
+  /** Count templates. {n} is the number of items. */
+  count: { many: string; one: string };
+  /** Heading level of each card, one below its section. */
+  headingLevel?: 3 | 4;
+}
+
+const { pillars, count, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h3' | 'h4';
+const illustrations: Record<BranchKey, ImageMetadata> = { plan, build, grow };
+const id = uniqueId('pillars');
+const cards = pillars.map((pillar, index) => {
+  const branch = branches[pillar.branch];
+  const total = pillar.groups.reduce((sum, group) => sum + group.items.length, 0);
+  return {
+    ...pillar,
+    branch,
+    panelId: `${id}-${index}`,
+    label: `${branch.number}${heroLabels.labelSeparator}${branch.ingredient}`,
+    count: (total === 1 ? count.one : count.many).replaceAll('{n}', String(total)),
+    illustration: illustrations[pillar.branch],
+    layout: pillar.groups.length > 1 ? 'groups' : 'items',
+  };
+});
+---
+
+<gilda-pillars class="pillars">
+  {cards.map((card) => (
+    <div class="pillar" data-pillar data-layout={card.layout}>
+      <Heading class="pillar-heading">
+        <button
+          class="pillar-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls={card.panelId}
+        >
+          <span class="pillar-text">
+            <span class="pillar-label">
+              <BranchDot branch={card.branch.key} size={12} />
+              {card.label}
+            </span>
+            <span class="pillar-name">{card.branch.name}</span>
+            <span class="pillar-count">{card.count}</span>
+          </span>
+          <span class="pillar-art" aria-hidden="true">
+            <Picture
+              class="pillar-image"
+              src={card.illustration}
+              alt=""
+              formats={['avif', 'webp']}
+              fallbackFormat="png"
+              widths={[84, 168]}
+              sizes="84px"
+            />
+            <span class="sign">
+              <span class="sign-closed">{disclosureLabels.closed}</span>
+              <span class="sign-open">{disclosureLabels.open}</span>
+            </span>
+          </span>
+        </button>
+      </Heading>
+      <div class="pillar-panel" id={card.panelId}>
+        <div class="pillar-groups">
+          {card.groups.map((group) => (
+            <div class="pillar-group">
+              <p class="group-title">{group.title}</p>
+              <ul class="group-items">
+                {group.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ))}
+</gilda-pillars>
+
+<script>
+  // Only one card is open at a time; the open card spans the row and moves first.
+  class GildaPillars extends HTMLElement {
+    private triggers: HTMLButtonElement[] = [];
+
+    connectedCallback() {
+      this.triggers = [...this.querySelectorAll<HTMLButtonElement>('.pillar-trigger')];
+      this.triggers.forEach((trigger) => trigger.addEventListener('click', this.toggle));
+    }
+
+    disconnectedCallback() {
+      this.triggers.forEach((trigger) => trigger.removeEventListener('click', this.toggle));
+    }
+
+    private toggle = (event: Event) => {
+      const current = event.currentTarget as HTMLButtonElement;
+      const opening = current.getAttribute('aria-expanded') !== 'true';
+      this.triggers.forEach((trigger) => {
+        const open = trigger === current && opening;
+        trigger.setAttribute('aria-expanded', String(open));
+        trigger.closest('[data-pillar]')?.toggleAttribute('data-open', open);
+      });
+    };
+  }
+
+  if (!customElements.get('gilda-pillars')) {
+    customElements.define('gilda-pillars', GildaPillars);
+  }
+</script>
+
+<style>
+  .pillars {
+    --pillar-duration: 200ms;
+    --pillar-rule: color-mix(in srgb, var(--brine) 25%, transparent);
+    --pillar-item-rule: color-mix(in srgb, var(--brine) 15%, transparent);
+    --pillar-name-size: var(--display-52);
+    --pillar-art-height: 96px;
+    --pillar-art-width: 84px;
+    --pillar-sign: 32px;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-8);
+    margin-block-start: var(--space-3);
+  }
+
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+    border-block: 1px solid var(--pillar-rule);
+    border-block-start: 2px solid var(--brine);
+  }
+
+  .pillar[data-open] {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+  .pillar-heading {
+    font: inherit;
+  }
+
+  .pillar-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    inline-size: 100%;
+    padding: var(--space-6) 0;
+    border: 0;
+    background: none;
+    color: var(--brine);
+    text-align: start;
+    cursor: pointer;
+  }
+
+  /* The text keeps its width; in a narrow card the illustration gives way. */
+  .pillar-text {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .pillar-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .pillar-name {
+    font-family: var(--font-display);
+    font-size: var(--pillar-name-size);
+    line-height: 1;
+  }
+
+  .pillar-count {
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    font-size: 10px;
+    letter-spacing: var(--tracking-label);
+  }
+
+  .pillar-art {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    min-inline-size: 0;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the picture. */
+  .pillar-art :global(picture) {
+    display: flex;
+    flex: 0 1 auto;
+    min-inline-size: 0;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .pillar-art :global(.pillar-image) {
+    inline-size: auto;
+    max-inline-size: min(var(--pillar-art-width), 100%);
+    block-size: var(--pillar-art-height);
+    object-fit: contain;
+  }
+
+  .sign {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--pillar-sign);
+    block-size: var(--pillar-sign);
+    border-radius: 50%;
+    background: var(--brine);
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .pillar-trigger:hover .sign {
+    opacity: var(--hover-opacity);
+  }
+
+  .sign-open,
+  [aria-expanded='true'] .sign-closed {
+    display: none;
+  }
+
+  [aria-expanded='true'] .sign-open {
+    display: inline;
+  }
+
+  /* Collapse by animating the row track, as the disclosure (#12) does, so a
+     closed panel takes no space and stays out of the tab order. */
+  .pillar-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--pillar-duration) ease,
+      visibility var(--pillar-duration);
+  }
+
+  .pillar[data-open] .pillar-panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  .pillar-groups {
+    display: grid;
+    gap: var(--space-2) var(--space-10);
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .pillar[data-open] .pillar-groups {
+    padding-block-end: var(--space-5);
+  }
+
+  .group-items {
+    display: grid;
+    column-gap: var(--space-10);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pillar[data-open][data-layout='groups'] .pillar-groups,
+  .pillar[data-open][data-layout='items'] .group-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .group-title {
+    padding-block: 14px 10px;
+    font-family: var(--font-display);
+    font-size: var(--display-26);
+    line-height: 1.15;
+  }
+
+  .group-items li {
+    padding-block: 11px;
+    border-block-start: 1px solid var(--pillar-item-rule);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  /* Without JavaScript every card is open, one per row. */
+  @media (scripting: none) {
+    .pillar {
+      grid-column: 1 / -1;
+    }
+
+    .sign {
+      display: none;
+    }
+
+    .pillar-panel {
+      grid-template-rows: 1fr;
+      visibility: visible;
+    }
+
+    .pillar-groups {
+      padding-block-end: var(--space-5);
+    }
+  }
+
+  @media (width < 768px) {
+    .pillars {
+      --pillar-name-size: var(--display-36);
+      --pillar-art-height: 64px;
+      --pillar-art-width: 58px;
+      --pillar-sign: 28px;
+
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      margin-block-start: 0;
+    }
+
+    .pillar {
+      border-block-end: 0;
+    }
+
+    .pillar[data-open] {
+      order: 0;
+    }
+
+    .pillar-trigger {
+      padding-block: 14px;
+    }
+
+    .pillar-text {
+      gap: var(--space-2);
+    }
+
+    .pillar-label {
+      font-size: 10px;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Phone dots are 9px. */
+    .pillar-label :global(.branch-dot) {
+      inline-size: 9px;
+      block-size: 9px;
+    }
+
+    .pillar-count {
+      display: none;
+    }
+
+    .pillar-art {
+      gap: var(--space-3);
+    }
+
+    .pillar-groups {
+      gap: 0;
+    }
+
+    .pillar[data-open] .pillar-groups {
+      padding-block-end: var(--space-4);
+    }
+
+    .pillar[data-open][data-layout='groups'] .pillar-groups,
+    .pillar[data-open][data-layout='items'] .group-items {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .group-title {
+      padding-block: var(--space-3) 6px;
+      font-size: 21px;
+    }
+
+    .group-items li {
+      padding-block: 9px;
+      font-size: 15px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pillar-panel,
+    .sign {
+      transition: none;
+    }
+  }
+</style>

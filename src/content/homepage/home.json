@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "The Gilda Studios · Studio for digital and events, Malta",
+    "description": "Websites, projects, events and social media from one team in Malta. One contact, one plan, one invoice."
+  },
   "hero": {
     "eyebrow": "Studio for digital and events · Malta",
     "eyebrowShort": "DIGITAL AND EVENTS · MALTA",
@@ -10,6 +14,14 @@
       "href": "/projects/"
     },
     "markAlt": "The Gilda Studios mark"
+  },
+  "work": {
+    "label": "Selected work",
+    "link": {
+      "label": "All projects",
+      "href": "/projects/"
+    },
+    "cardLink": "Read the case study"
   },
   "story": {
     "label": "Where the name comes from",

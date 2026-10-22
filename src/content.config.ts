@@ -14,7 +14,13 @@ import { projects } from './content/schemas/projects';
 
 import { case_study } from './content/schemas/case-study';
 
+import { caseStudies } from './content/schemas/case-studies';
+
+import { contact } from './content/schemas/contact';
+
 export const collections = {
+  contact,
+  caseStudies,
   case_study,
   projects,
   services,

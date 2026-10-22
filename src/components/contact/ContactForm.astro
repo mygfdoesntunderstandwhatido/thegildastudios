@@ -1,0 +1,508 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Button from '../core/Button.astro';
+import { orderBranches, type BranchKey } from '../../lib/branches';
+import { serviceNumbers } from '../../lib/contact';
+
+const page = await getEntry('contact', 'page');
+if (!page) throw new Error('Missing the contact singleton: src/content/contact/page.json');
+const { form } = page.data;
+const branchCopy = await getCollection('branches');
+const services = serviceNumbers(
+  Object.fromEntries(branchCopy.map((entry) => [entry.id, entry.data.services])) as Record<
+    BranchKey,
+    string[]
+  >,
+);
+
+const needs = [
+  ...orderBranches().map((branch) => ({ value: branch.key, label: branch.name, dot: branch.key })),
+  { value: 'unsure', label: form.needs.unsure, dot: undefined },
+];
+const preferred = (['email', 'call', 'meeting'] as const).map((value) => ({
+  value,
+  label: form.preferred[value],
+}));
+const text = [
+  { name: 'name', type: 'text', autocomplete: 'name', required: true },
+  { name: 'email', type: 'email', autocomplete: 'email', required: true },
+  { name: 'business', type: 'text', autocomplete: 'organization', required: false },
+  { name: 'phone', type: 'tel', autocomplete: 'tel', required: false },
+] as const;
+---
+
+<gilda-contact-form
+  class="contact-form"
+  data-services={JSON.stringify(services)}
+  data-prefill={form.servicePrefill}
+  data-errors={JSON.stringify(form.errors)}
+  data-summary-one={form.summary.one}
+  data-summary-many={form.summary.many}
+>
+  <form method="post" data-form>
+    <div class="fields">
+      {text.map((field) => {
+        const copy = form.fields[field.name];
+        return (
+          <div class="field" data-field={field.name}>
+            <label class="field-label" for={`contact-${field.name}`}>
+              {copy.label}
+              {!field.required && <span class="optional">{form.optional}</span>}
+            </label>
+            <input
+              id={`contact-${field.name}`}
+              name={field.name}
+              type={field.type}
+              autocomplete={field.autocomplete}
+              required={field.required}
+              aria-describedby={[
+                copy.hint && `contact-${field.name}-hint`,
+                `contact-${field.name}-error`,
+              ]
+                .filter(Boolean)
+                .join(' ')}
+            />
+            {copy.hint && (
+              <p class="hint" id={`contact-${field.name}-hint`}>
+                {copy.hint}
+              </p>
+            )}
+            <p class="error" id={`contact-${field.name}-error`} data-error />
+          </div>
+        );
+      })}
+
+      <fieldset class="choices">
+        <legend class="field-label">{form.needs.legend}</legend>
+        <div class="choice-row">
+          {needs.map((need) => (
+            <label class="choice" data-dot={need.dot}>
+              <input type="checkbox" name="needs" value={need.value} />
+              <span>{need.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="choices">
+        <legend class="field-label">{form.preferred.legend}</legend>
+        <div class="choice-row">
+          {preferred.map((option, index) => (
+            <label class="choice">
+              <input type="radio" name="preferred" value={option.value} checked={index === 0} />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="field field-wide" data-field="message">
+        <label class="field-label" for="contact-message">
+          {form.fields.message.label}
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows="6"
+          required
+          aria-describedby="contact-message-hint contact-message-error"
+        ></textarea>
+        <p class="hint" id="contact-message-hint">
+          {form.fields.message.hint}
+        </p>
+        <p class="error" id="contact-message-error" data-error></p>
+      </div>
+    </div>
+    <div class="actions">
+      <Button type="submit">{form.submit}</Button>
+      <p class="summary" role="status" data-summary></p>
+    </div>
+  </form>
+  <div class="success" tabindex="-1" hidden data-success>
+    <h3>{form.success.title}</h3>
+    <p>{form.success.body}</p>
+  </div>
+</gilda-contact-form>
+
+<script>
+  type Errors = Record<'name' | 'email' | 'emailFormat' | 'phone' | 'message', string>;
+  type Services = Record<string, { branch: string; name: string }>;
+
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  class GildaContactForm extends HTMLElement {
+    private form: HTMLFormElement | null = null;
+    private errors = {} as Errors;
+    private touched = new Set<string>();
+
+    connectedCallback() {
+      this.form = this.querySelector('[data-form]');
+      if (!this.form) return;
+      this.errors = JSON.parse(this.dataset.errors ?? '{}') as Errors;
+      // Our own inline errors replace the browser's bubbles once scripts run.
+      this.form.noValidate = true;
+      this.form.addEventListener('submit', this.onSubmit);
+      this.form.addEventListener('input', this.onInput);
+      this.form.addEventListener('change', this.onChange);
+      this.prefill();
+    }
+
+    private field(name: string) {
+      return this.form?.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
+    }
+
+    // ?service=01.2 selects the branch and names the service in the message;
+    // ?branch=grow selects that chip.
+    private prefill() {
+      const params = new URLSearchParams(window.location.search);
+      const services = JSON.parse(this.dataset.services ?? '{}') as Services;
+      const service = services[params.get('service') ?? ''];
+      const branch = service?.branch ?? params.get('branch');
+      const chip = this.form?.querySelector<HTMLInputElement>(
+        `input[name="needs"][value="${CSS.escape(branch ?? '')}"]`,
+      );
+      if (chip && branch !== 'unsure') chip.checked = true;
+      const message = this.field('message');
+      if (service && message && !message.value) {
+        message.value = (this.dataset.prefill ?? '').replace('{service}', service.name);
+      }
+    }
+
+    private messageFor(name: string): string {
+      const value = this.field(name)?.value.trim() ?? '';
+      switch (name) {
+        case 'name':
+          return value ? '' : this.errors.name;
+        case 'email':
+          if (!value) return this.errors.email;
+          return EMAIL.test(value) ? '' : this.errors.emailFormat;
+        case 'phone':
+          return this.preferred() === 'call' && !value ? this.errors.phone : '';
+        case 'message':
+          return value ? '' : this.errors.message;
+        default:
+          return '';
+      }
+    }
+
+    private preferred() {
+      return this.form?.querySelector<HTMLInputElement>('input[name="preferred"]:checked')?.value;
+    }
+
+    private show(name: string): boolean {
+      const message = this.messageFor(name);
+      const control = this.field(name);
+      const slot = this.querySelector<HTMLElement>(`[data-field="${name}"] [data-error]`);
+      if (control) {
+        if (message) control.setAttribute('aria-invalid', 'true');
+        else control.removeAttribute('aria-invalid');
+      }
+      if (slot) slot.textContent = message;
+      return !message;
+    }
+
+    private onSubmit = (event: SubmitEvent) => {
+      event.preventDefault();
+      const names = ['name', 'email', 'phone', 'message'];
+      names.forEach((name) => this.touched.add(name));
+      const invalid = names.filter((name) => !this.show(name));
+      const summary = this.querySelector<HTMLElement>('[data-summary]');
+      if (invalid.length) {
+        const template = invalid.length === 1 ? this.dataset.summaryOne : this.dataset.summaryMany;
+        if (summary) summary.textContent = (template ?? '').replace('{n}', String(invalid.length));
+        this.field(invalid[0])?.focus();
+        return;
+      }
+      if (summary) summary.textContent = '';
+      // Sending is wired up with the form backend in #32. Until then the
+      // proposed success state replaces the form.
+      const success = this.querySelector<HTMLElement>('[data-success]');
+      if (this.form && success) {
+        this.form.hidden = true;
+        success.hidden = false;
+        success.focus();
+      }
+    };
+
+    // Once a field has shown an error, it re-checks as the visitor types.
+    private onInput = (event: Event) => {
+      const name = (event.target as HTMLInputElement).name;
+      if (this.touched.has(name)) this.show(name);
+    };
+
+    private onChange = (event: Event) => {
+      const input = event.target as HTMLInputElement;
+      // "Not sure yet" and the branches exclude each other.
+      if (input.name === 'needs' && input.checked) {
+        this.form?.querySelectorAll<HTMLInputElement>('input[name="needs"]').forEach((other) => {
+          if ((input.value === 'unsure') !== (other.value === 'unsure')) other.checked = false;
+        });
+      }
+      if (input.name === 'preferred' && this.touched.has('phone')) this.show('phone');
+    };
+  }
+
+  if (!customElements.get('gilda-contact-form')) {
+    customElements.define('gilda-contact-form', GildaContactForm);
+  }
+</script>
+
+<style>
+  .contact-form {
+    --field-rule: var(--brine);
+    --field-gap: var(--space-8);
+
+    display: block;
+  }
+
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--field-gap) var(--space-8);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-inline-size: 0;
+  }
+
+  .field-wide,
+  .choices {
+    grid-column: 1 / -1;
+  }
+
+  .field-label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    color: var(--brine);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .optional {
+    color: var(--ink-3);
+  }
+
+  input:not([type='checkbox'], [type='radio']),
+  textarea {
+    inline-size: 100%;
+    padding: 10px 0;
+    border: 0;
+    border-block-end: 1px solid var(--field-rule);
+    border-radius: 0;
+    background: transparent;
+    color: var(--brine);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  textarea {
+    min-block-size: 9em;
+  }
+
+  [aria-invalid='true'] {
+    --field-rule: var(--anchovy);
+
+    border-block-end-width: 2px;
+  }
+
+  .hint {
+    color: var(--ink-3);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .error {
+    color: var(--anchovy);
+    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    line-height: 1.5;
+  }
+
+  .error:empty {
+    display: none;
+  }
+
+  .choices {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .choices .field-label {
+    margin-block-end: var(--space-3);
+  }
+
+  .choice-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Native checkboxes and radios dressed as the toggle chip (#7), so the
+     choices submit with the form and work without JavaScript. */
+  .choice {
+    --choice-dot: transparent;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: var(--space-10);
+    padding: 0 18px;
+    border-radius: var(--radius-pill);
+    box-shadow: inset 0 0 0 1.5px var(--brine);
+    color: var(--brine);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .choice:hover {
+    opacity: var(--hover-opacity);
+  }
+
+  .choice input {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .choice[data-dot]::before {
+    flex: none;
+    inline-size: 9px;
+    block-size: 9px;
+    border-radius: 50%;
+    background: var(--choice-dot);
+    content: '';
+  }
+
+  .choice[data-dot='plan'] {
+    --choice-dot: var(--olive);
+  }
+
+  .choice[data-dot='build'] {
+    --choice-dot: var(--anchovy);
+  }
+
+  .choice[data-dot='grow'] {
+    --choice-dot: var(--pepper);
+  }
+
+  .choice[data-dot='grow']::before {
+    box-shadow: var(--ring-dot-pepper);
+  }
+
+  .choice:has(input:checked) {
+    background: var(--brine);
+    color: var(--cream);
+  }
+
+  .choice[data-dot='plan']:has(input:checked) {
+    --choice-dot: var(--olive-on-dark);
+  }
+
+  .choice[data-dot='build']:has(input:checked) {
+    --choice-dot: var(--anchovy-on-dark);
+  }
+
+  .choice:has(input:focus-visible) {
+    outline: var(--focus-width) solid var(--focus-color, var(--brine));
+    outline-offset: var(--focus-offset);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    margin-block-start: var(--space-10);
+  }
+
+  .summary {
+    color: var(--anchovy);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .success {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block-start: var(--space-6);
+    border-block-start: 2px solid var(--brine);
+  }
+
+  .success[hidden] {
+    display: none;
+  }
+
+  .success h3 {
+    font-size: var(--display-48);
+    line-height: 1.04;
+  }
+
+  .success p {
+    max-inline-size: 560px;
+    color: var(--ink-2);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  @media (any-pointer: coarse) {
+    .choice {
+      min-block-size: var(--space-11);
+    }
+  }
+
+  @media (width < 768px) {
+    .contact-form {
+      --field-gap: var(--space-6);
+    }
+
+    .fields {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .field-label {
+      font-size: 10px;
+    }
+
+    input:not([type='checkbox'], [type='radio']),
+    textarea {
+      font-size: 16px;
+    }
+
+    .actions {
+      margin-block-start: var(--space-8);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The submit fills the phone width. */
+    .actions :global(.button) {
+      inline-size: 100%;
+    }
+
+    .success h3 {
+      font-size: 34px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .choice {
+      transition: none;
+    }
+  }
+</style>

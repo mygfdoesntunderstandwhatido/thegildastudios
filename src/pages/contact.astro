@@ -1,0 +1,195 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import Chip from '../components/core/Chip.astro';
+
+const page = await getEntry('contact', 'page');
+const site = await getEntry('settings', 'site');
+if (!page || !site) throw new Error('Missing the contact or settings singleton in src/content');
+const copy = page.data;
+const { email, phone } = site.data;
+---
+
+<Base title={copy.meta.title} description={copy.meta.description} header="sand">
+  <main>
+    <section class="opening band band--cream" aria-labelledby="contact-title">
+      <div class="container opening-grid">
+        <div class="opening-copy">
+          <Chip variant="filled">{copy.eyebrow}</Chip>
+          <h1 id="contact-title">{copy.headline}</h1>
+          <p class="body">{copy.body}</p>
+        </div>
+        <dl class="direct" aria-label={copy.direct.label}>
+          <div class="direct-row">
+            <dt>{copy.direct.email}</dt>
+            <dd>
+              <a href={`mailto:${email}`}>{email}</a>
+            </dd>
+          </div>
+          <div class="direct-row">
+            <dt>{copy.direct.phone}</dt>
+            <dd>
+              <a href={phone.href}>{phone.label}</a>
+            </dd>
+          </div>
+          <div class="direct-row">
+            <dt>{copy.direct.based}</dt>
+            <dd>{copy.direct.basedValue}</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="form-band band band--sand" aria-labelledby="contact-form-title">
+      <div class="container form-grid">
+        <div class="form-head">
+          <h2 id="contact-form-title">{copy.form.title}</h2>
+          <p>{copy.form.intro}</p>
+        </div>
+        <ContactForm />
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .opening {
+    --band-padding: var(--space-14) var(--space-12);
+  }
+
+  .opening-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: var(--space-12);
+  }
+
+  .opening-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-7);
+  }
+
+  h1 {
+    font-size: var(--display-104);
+    line-height: 1;
+  }
+
+  .body {
+    max-inline-size: 520px;
+    color: var(--ink-2);
+    font-size: 19px;
+    line-height: 1.6;
+  }
+
+  .direct {
+    border-block-end: 1px solid var(--rule-light);
+  }
+
+  .direct-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-4);
+    border-block-start: 1px solid var(--rule-light);
+  }
+
+  dt {
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  dd {
+    font-size: 17px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  dd a {
+    color: var(--brine);
+  }
+
+  .form-band {
+    --band-padding: 88px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--grid-gap-wide);
+  }
+
+  .form-head {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    gap: var(--space-4);
+    padding-block-start: 18px;
+    border-block-start: 2px solid var(--brine);
+  }
+
+  .form-head h2 {
+    font-size: var(--display-48);
+    line-height: 1.04;
+  }
+
+  .form-head p {
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  @media (width < 768px) {
+    .opening {
+      --band-padding: var(--space-8) var(--space-12);
+    }
+
+    .opening-grid,
+    .form-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .opening-grid {
+      gap: var(--space-10);
+    }
+
+    .opening-copy {
+      gap: var(--space-5);
+    }
+
+    h1 {
+      font-size: 52px;
+      line-height: 1.02;
+    }
+
+    .body {
+      font-size: 16px;
+    }
+
+    dd {
+      font-size: 16px;
+    }
+
+    .form-band {
+      --band-padding: 48px;
+    }
+
+    .form-grid {
+      gap: var(--space-8);
+    }
+
+    .form-head {
+      padding-block-start: 14px;
+    }
+
+    .form-head h2 {
+      font-size: 34px;
+      line-height: 1.06;
+    }
+  }
+</style>

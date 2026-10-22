@@ -1,0 +1,195 @@
+{
+  "name": "CS Butcher",
+  "slug": "cs-butcher",
+  "order": 1,
+  "featured": true,
+  "homeTitle": "A local butcher, rebuilt around delivery and ordering at any hour.",
+  "homeSector": "CS Butcher · Retail, Malta",
+  "branches": ["plan", "build", "grow"],
+  "sector": "RETAIL · INDEPENDENT BUTCHER · MALTA",
+  "accent": "anchovy",
+  "short": "A traditional butcher on the verge of closing, repositioned around convenience with delivery and online ordering.",
+  "summary": "At a time when the business was on the verge of shutting down, we were brought in to identify opportunities for innovation, reposition the offering, and develop a strategy to reconnect the business with modern consumer habits.",
+  "facts": [
+    {
+      "k": "CLIENT",
+      "v": "CS Butcher"
+    },
+    {
+      "k": "SECTOR",
+      "v": "Independent retail"
+    },
+    {
+      "k": "BRANCHES",
+      "v": "Plan · Build · Grow"
+    },
+    {
+      "k": "SERVICES",
+      "v": "Strategy · Website and online ordering · Social media · Paid ads"
+    }
+  ],
+  "cover": {
+    "src": "../../assets/graphics/photo-placeholder-feed.png",
+    "alt": ""
+  },
+  "hero": {
+    "src": "../../assets/graphics/photo-placeholder-feed.png",
+    "alt": ""
+  },
+  "gallery": [
+    {
+      "src": "../../assets/graphics/photo-placeholder-feed.png",
+      "alt": ""
+    },
+    {
+      "src": "../../assets/graphics/photo-placeholder-feed.png",
+      "alt": ""
+    },
+    {
+      "src": "../../assets/graphics/photo-placeholder-feed.png",
+      "alt": ""
+    }
+  ],
+  "sections": [
+    {
+      "title": "Overview",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Independent butcher shops in Malta have increasingly faced pressure from supermarkets offering convenience, extended opening hours, and one-stop shopping experiences. Like many traditional businesses, CS Butcher was experiencing declining momentum and was approaching a critical stage in its operations."
+        }
+      ]
+    },
+    {
+      "title": "The challenge",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Through research and discussion, it became clear that the issue was not customer loyalty, but accessibility and convenience. A key problem quickly emerged:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Most customers work until after 6:00 PM, while butcher shops traditionally close by 4:00 PM, making it difficult for customers to shop during operating hours."
+        },
+        {
+          "type": "paragraph",
+          "text": "At the same time, supermarkets had become the preferred option due to convenience, despite customers often valuing the higher quality and personalised service offered by local butchers."
+        },
+        {
+          "type": "paragraph",
+          "text": "The challenge was to modernise the customer experience without losing the core identity of the business."
+        }
+      ]
+    },
+    {
+      "title": "The strategy",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Rather than competing directly with supermarkets, the strategy focused on solving the customer problem. We repositioned the business around convenience, accessibility, and quality, introducing:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Home delivery services for customers unable to visit during opening hours",
+            "An online ordering platform allowing customers to place orders at any time",
+            "A clearer digital presence focused on communicating convenience and premium product quality",
+            "Stronger promotional offers and messaging tailored to busy households and working professionals"
+          ]
+        },
+        {
+          "type": "highlight",
+          "label": "THE GOAL",
+          "text": "The goal was simple: make shopping from a local butcher as easy as shopping from a supermarket, while maintaining a far superior product and service experience."
+        }
+      ]
+    },
+    {
+      "title": "Our role",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We managed the project end-to-end, supporting both the strategic direction and execution."
+        },
+        {
+          "type": "pillars",
+          "pillars": [
+            {
+              "branch": "plan",
+              "groups": [
+                {
+                  "title": "Business and digital strategy",
+                  "items": [
+                    "Identified customer pain points and opportunities for innovation",
+                    "Developed a customer-focused repositioning strategy",
+                    "Brainstormed offers and service models to drive adoption",
+                    "Defined messaging pillars centred around convenience and quality"
+                  ]
+                }
+              ]
+            },
+            {
+              "branch": "build",
+              "groups": [
+                {
+                  "title": "Website development and online ordering",
+                  "items": [
+                    "Gathered requirements and project specifications",
+                    "Managed the website build process from concept to launch",
+                    "Oversaw functionality requirements for online ordering and delivery",
+                    "Ensured the platform aligned with customer behaviour and business needs"
+                  ]
+                }
+              ]
+            },
+            {
+              "branch": "grow",
+              "groups": [
+                {
+                  "title": "Social media and content strategy",
+                  "items": [
+                    "Developed the social media strategy and content calendar",
+                    "Designed branded post templates",
+                    "Created social media copy and captions focused on reinforcing key messaging",
+                    "Consistently communicated the value proposition and convenience factor to customers"
+                  ]
+                },
+                {
+                  "title": "Paid advertising",
+                  "items": [
+                    "Set up and managed Meta Ads campaigns",
+                    "Implemented Google Ads to increase visibility and drive conversions",
+                    "Used paid media to support awareness, online orders, and service adoption"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Outcome",
+      "featured": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "By shifting the focus from a traditional retail model to a convenience-driven service, CS Butcher was able to modernise its customer experience and strengthen its relevance in a changing market."
+        },
+        {
+          "type": "paragraph",
+          "text": "The project transformed the business from relying solely on footfall to offering a digital-first, customer-centric solution that aligned with contemporary consumer behaviour."
+        }
+      ]
+    },
+    {
+      "title": "In their words",
+      "blocks": [
+        {
+          "type": "quote",
+          "testimonial": "carmelo-vella"
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,9 @@
 # Shared components
 
 All visible copy is supplied by props or slots from typed data in `src/content`.
-The components use Astro and scoped CSS. Only toggle chips, disclosures, the
-testimonial rotator and the mobile menu, the hero mark and the branch strip ship JavaScript.
+The components use Astro and scoped CSS. Only toggle chips, disclosures (including the
+case-study pillar cards), the testimonial rotator, the project filters, the
+mobile menu, the hero mark, the branch strip and the contact form ship JavaScript.
 
 ## Button (#7)
 
@@ -155,6 +156,51 @@ the static stacked list.
 
 The mark and the strip share state through `src/lib/branch-focus.ts`, which
 also dispatches a `gilda:branch-focus` event on `document`.
+
+## SelectedWork and the homepage (#19)
+
+`home/SelectedWork.astro` is the cream "01 Selected work" band. Its cards are
+the `featured` case studies in `order`, using each entry's `homeTitle` and
+`homeSector` (falling back to `short` and `sector`). `src/pages/index.astro` assembles the hero, Selected work, the
+rotator and the origin story; the footer comes from `Base`.
+
+## Case study template (#24)
+
+`case-study/CaseStudy.astro` renders one `caseStudies` entry (schema in
+`src/content/schemas/case-studies.ts`): the cream intro, numbered sections
+(sand, cream, sand…, or Pepper pale when `featured`), the gallery, the Next
+project band and the CTA band. Shared labels live in the `case_study` singleton.
+`case-study/Blocks.astro` renders the block types: `paragraph`, `list`,
+`callout`, `highlight`, `quote` (a `testimonials` reference, shown as the light
+Testimonial without its project link), `groups` and `pillars`.
+
+`case-study/Pillars.astro` is the branch-card island. It follows the disclosure
+pattern (#12): native buttons with `aria-expanded` and `aria-controls`, and a
+row-track collapse. Only one card is open; the open card spans the row and
+moves first. Without JavaScript every card is open.
+
+`src/lib/case-studies.ts` lists published entries in `order`, drafts aside, and
+works out the Next project loop. `src/pages/projects/[slug].astro` builds one
+page per published entry, and fails the build if a quote's testimonial links to
+another case study. Entries with `draft: true` get no page.
+
+## ProjectIndex (#25)
+
+`projects/ProjectIndex.astro` is the `/projects/` opening and card grid, with
+copy from the `projects` singleton. The ALL / PLAN / BUILD / GROW toggle chips
+(#7) filter the cards in place: one is pressed at a time, the count chip
+updates, and a polite live region announces the result. Without JavaScript the
+filters are hidden and every project shows.
+
+## Contact form (#26)
+
+`contact/ContactForm.astro` is the rule-led form on `/contact/`. Copy comes from
+the `contact` singleton. The choices are native checkboxes and radios dressed
+as toggle chips, so they submit with the form and work without JavaScript. With
+JavaScript, the island shows inline errors (`aria-invalid`, `aria-describedby`),
+focuses the first invalid field and announces a count. It also reads
+`?service=01.2` or `?branch=grow` to prefill the form. Build links with
+`contactHref()` from `src/lib/contact.ts`. Sending arrives with #32.
 
 ## Previews
 

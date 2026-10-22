@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "title": "Contact · The Gilda Studios",
+    "description": "Tell us what you're planning and we'll take it from there. Email, call or meet the studio in Malta."
+  },
+  "eyebrow": "CONTACT · BOOK A CALL",
+  "headline": "Start with a conversation.",
+  "body": "Tell us what you're planning and we'll take it from there.",
+  "direct": {
+    "label": "Contact details",
+    "email": "EMAIL",
+    "phone": "PHONE",
+    "based": "BASED IN",
+    "basedValue": "Malta"
+  },
+  "form": {
+    "title": "Send us a message.",
+    "intro": "A few lines are enough. Tell us what you need and when, and how you'd like us to reply.",
+    "optional": "OPTIONAL",
+    "fields": {
+      "name": { "label": "NAME" },
+      "email": { "label": "EMAIL" },
+      "business": { "label": "BUSINESS NAME" },
+      "phone": { "label": "PHONE", "hint": "Needed if you'd like a call." },
+      "message": {
+        "label": "MESSAGE",
+        "hint": "What you're planning, and any dates we should know."
+      }
+    },
+    "needs": {
+      "legend": "WHAT DO YOU NEED?",
+      "unsure": "Not sure yet"
+    },
+    "preferred": {
+      "legend": "PREFERRED CONTACT",
+      "email": "Email",
+      "call": "Call",
+      "meeting": "Meeting in person"
+    },
+    "submit": "Book a call",
+    "servicePrefill": "I'd like to ask about {service}.",
+    "errors": {
+      "name": "Add your name, so we know who to reply to.",
+      "email": "Add your email address.",
+      "emailFormat": "Check the email address. It should look like name@example.com.",
+      "phone": "Add a phone number, so we can call you.",
+      "message": "Tell us a little about what you need."
+    },
+    "summary": {
+      "one": "One field needs attention.",
+      "many": "{n} fields need attention."
+    },
+    "success": {
+      "title": "Thank you. Your message is with us.",
+      "body": "We'll reply by the contact you chose."
+    }
+  }
+}

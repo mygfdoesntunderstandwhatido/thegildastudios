@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import CaseStudy from '../../components/case-study/CaseStudy.astro';
+import { getCaseStudies, nextCaseStudy, type CaseStudy as Entry } from '../../lib/case-studies';
+
+// One page per published case study. Drafts and removed entries get no page
+// and drop out of the Next project loop.
+export const getStaticPaths = (async () => {
+  const entries = await getCaseStudies();
+  return entries.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: { entry, next: nextCaseStudy(entries, index) },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  entry: Entry;
+  next?: Entry;
+}
+
+const { entry, next } = Astro.props;
+---
+
+<Base title={entry.data.name} description={entry.data.short} header="sand">
+  <main>
+    <CaseStudy entry={entry} next={next} />
+  </main>
+</Base>

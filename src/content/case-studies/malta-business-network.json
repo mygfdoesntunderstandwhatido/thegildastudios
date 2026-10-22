@@ -1,0 +1,144 @@
+{
+  "name": "Malta Business Network",
+  "slug": "malta-business-network",
+  "order": 2,
+  "featured": true,
+  "homeTitle": "Events and member communications for a network of senior leaders.",
+  "homeSector": "Malta Business Network · Malta and UK",
+  "branches": ["plan", "grow"],
+  "sector": "BUSINESS NETWORK · MALTA AND UK",
+  "accent": "olive",
+  "short": "Project and social media management for a network of senior leaders, across dozens of events in Malta and the UK.",
+  "summary": "We offer project and social media management to MBN. This includes end-to-end coordination, planning, and execution of events and member communications, ensuring every initiative is delivered professionally, efficiently, and in line with the organisation’s brand and tone of voice.",
+  "facts": [
+    {
+      "k": "CLIENT",
+      "v": "Malta Business Network (MBN MT and MBN UK)"
+    },
+    {
+      "k": "SECTOR",
+      "v": "Professional business organisation"
+    },
+    {
+      "k": "BRANCHES",
+      "v": "Plan · Grow"
+    },
+    {
+      "k": "SERVICES",
+      "v": "Event project management · Copywriting · Website · Email marketing"
+    }
+  ],
+  "cover": {
+    "src": "../../assets/graphics/photo-placeholder-feed.png",
+    "alt": ""
+  },
+  "hero": {
+    "src": "../../assets/graphics/photo-placeholder-feed.png",
+    "alt": ""
+  },
+  "gallery": [
+    {
+      "src": "../../assets/graphics/photo-placeholder-feed.png",
+      "alt": ""
+    },
+    {
+      "src": "../../assets/graphics/photo-placeholder-feed.png",
+      "alt": ""
+    },
+    {
+      "src": "../../assets/graphics/photo-placeholder-feed.png",
+      "alt": ""
+    }
+  ],
+  "sections": [
+    {
+      "title": "Overview",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The Malta Business Network (MBN) is a professional business organisation connecting senior leaders, entrepreneurs, investors, and professionals through high-level networking events, exclusive lunches, international delegations, and thought leadership initiatives across Malta and the UK."
+        },
+        {
+          "type": "paragraph",
+          "text": "We manage end-to-end coordination, planning, and execution of events and member communications, ensuring every initiative is delivered professionally, efficiently, and in line with the organisation’s brand and tone of voice."
+        }
+      ]
+    },
+    {
+      "title": "The challenge",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "MBN hosts a diverse calendar of events involving high-profile speakers, government officials, business leaders, diplomatic stakeholders, and international delegates."
+        },
+        {
+          "type": "paragraph",
+          "text": "Given the pace and complexity of delivery, MBN required dedicated support to:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Coordinate event logistics and timelines across multiple stakeholders",
+            "Manage communications with speakers, sponsors, directors, and members",
+            "Develop consistent, professional event communications aligned with the MBN brand",
+            "Execute marketing activity across email, web, ticketing, and social platforms",
+            "Ensure smooth operational delivery while maintaining a premium member experience"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Our role",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We act as an operational and communications lead across multiple touchpoints of the organisation, managing projects from concept to execution. These services include:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Event project management",
+            "Strategic copywriting",
+            "Brand tone management",
+            "Website management",
+            "Email marketing"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Key outcomes",
+      "blocks": [
+        {
+          "type": "callout",
+          "text": "Throughout our work with both MBN MT and MBN UK, we have delivered high-quality communications across dozens of events in Malta and the UK, ensuring a consistent and premium tone of voice across all member-facing materials."
+        },
+        {
+          "type": "paragraph",
+          "text": "We have also supported the promotion of high-profile events involving ministers, international business delegations, senior executives, and subject matter experts, helping position them effectively for the target audience. In doing so, we have streamlined event execution through proactive coordination and structured processes, contributing to smoother delivery and improved turnaround times."
+        },
+        {
+          "type": "paragraph",
+          "text": "Finally, we have focused on improving the speed and consistency of marketing and event communications, while maintaining a strong focus on quality and detail throughout."
+        }
+      ]
+    },
+    {
+      "title": "In their words",
+      "blocks": [
+        {
+          "type": "quote",
+          "testimonial": "christopher-naudi"
+        },
+        {
+          "type": "quote",
+          "testimonial": "joseph-zammit-tabona"
+        },
+        {
+          "type": "quote",
+          "testimonial": "martin-v-zahra"
+        }
+      ]
+    }
+  ]
+}

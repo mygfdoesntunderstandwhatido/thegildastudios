@@ -1,13 +1,4 @@
 {
-  "cta": {
-    "eyebrow": "We'll take it from here.",
-    "headline": "Start with a conversation.",
-    "body": "Tell us what you're planning and we'll take it from there.",
-    "booking": {
-      "label": "Book a call",
-      "href": "/contact/"
-    }
-  },
   "meta": {
     "title": "About · The Gilda Studios",
     "description": "One day we were in Seville, enjoying tapas and listening to live music, talking about what was next and how to grow the business. Then the waiter dropped off our first tapa: the gilda."
@@ -50,17 +41,29 @@
     "copy": {
       "plan": {
         "description": "We plan and run projects and events from the first brief to the last guest leaving. One plan, with owners and dates you can see.",
-        "services": ["Project management", "Event management", "On-the-day coordination"],
+        "services": [
+          "Project management",
+          "Event management",
+          "On-the-day coordination"
+        ],
         "servicesShort": "Project management · Event management · On the day"
       },
       "build": {
         "description": "We design, build and host your website, then look after it. The people who made it are the people who fix it.",
-        "services": ["Web design", "Development", "Hosting and care"],
+        "services": [
+          "Web design",
+          "Development",
+          "Hosting and care"
+        ],
         "servicesShort": "Web design · Development · Hosting and care"
       },
       "grow": {
         "description": "We run your social media and marketing month by month: the posts, the captions and the campaigns.",
-        "services": ["Social media management", "Marketing management", "Campaigns"],
+        "services": [
+          "Social media management",
+          "Marketing management",
+          "Campaigns"
+        ],
         "servicesShort": "Social media · Marketing · Campaigns"
       }
     }
@@ -70,5 +73,14 @@
     "label": "WHO WE ARE",
     "headline": "Two founders, and the right people around them.",
     "body": "When a project needs more hands, we bring in freelancers we trust: designers, photographers, videographers, drone operators and more. You still deal only with us, and it all comes on one invoice."
+  },
+  "cta": {
+    "eyebrow": "We'll take it from here.",
+    "headline": "Start with a conversation.",
+    "body": "Tell us what you're planning and we'll take it from there.",
+    "booking": {
+      "label": "Book a call",
+      "href": "/contact/"
+    }
   }
 }

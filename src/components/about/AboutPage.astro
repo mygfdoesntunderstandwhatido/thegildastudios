@@ -142,7 +142,7 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
               style={`--role-color: ${affiliations[0].label}`}
               aria-labelledby={`founder-${id}`}
             >
-              <div class="portrait" data-placeholder={person.portrait === null}>
+              <div class="portrait" data-placeholder={!person.portrait}>
                 {person.portrait ? (
                   <Picture
                     src={person.portrait}

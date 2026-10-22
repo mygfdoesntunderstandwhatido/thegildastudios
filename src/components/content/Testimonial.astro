@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { testimonialLabels } from '../../content/ui/testimonial';
+import { getSettings } from '../../lib/settings';
+import { typography } from '../../lib/typography';
 
 interface Props extends Omit<HTMLAttributes<'figure'>, 'role'> {
   quote: string;
@@ -27,6 +28,7 @@ const {
   'aria-label': ariaLabel,
   ...attrs
 } = Astro.props;
+const testimonialLabels = (await getSettings()).labels.testimonial;
 const href = `/projects/${encodeURIComponent(caseStudy.slug)}/`;
 ---
 
@@ -38,7 +40,7 @@ const href = `/projects/${encodeURIComponent(caseStudy.slug)}/`;
   data-mark={markColor}
 >
   <span class="quote-mark" aria-hidden="true">
-    {testimonialLabels.mark}
+    {typography.quoteMark}
   </span>
   <blockquote class="quote-body" cite={href}>
     <p>{quote}</p>

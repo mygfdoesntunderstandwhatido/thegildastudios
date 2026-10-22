@@ -5,7 +5,10 @@
 [build]
   command = "npm run build"
   publish = "dist"
+  # Only Keystatic content branches get branch deploys (see the script).
+  ignore = "bash scripts/netlify-ignore.sh"
 
 # Directory routes use one trailing slash; keep Netlify's native 404 handling.
 [build.processing.html]
   pretty_urls = true
+

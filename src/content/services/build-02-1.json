@@ -1,9 +1,11 @@
 {
+  "name": "Web design and development",
   "branch": "build",
   "number": "02.1",
-  "name": "Web design and development",
+  "order": 1,
   "description": "We design and build websites from the first conversation to the day you take over, and we can keep looking after them after launch.",
   "bestFor": "Businesses that need a new website or a full rebuild, and want one team to design it, build it and look after it.",
+  "included": [],
   "howItStarts": "With a call, or a meeting in person if you prefer, so we get to know each other and the business before anything is drawn.",
   "phases": [
     {
@@ -30,6 +32,5 @@
       "title": "Handover",
       "description": "A recorded call showing you how to manage the site, or we take care of hosting and care."
     }
-  ],
-  "order": 1
+  ]
 }

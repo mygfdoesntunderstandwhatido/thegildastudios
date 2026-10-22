@@ -1,7 +1,8 @@
 {
+  "name": "Ongoing project management",
   "branch": "plan",
   "number": "01.1",
-  "name": "Ongoing project management",
+  "order": 1,
   "description": "A project manager on hand for as long as you need one, across every project you have running. Useful for small and medium-sized businesses, studios and agencies that need senior delivery support without a full-time hire.",
   "bestFor": "Small and medium-sized businesses, creative studios and agencies with steady project flow and uneven capacity.",
   "included": [
@@ -11,5 +12,5 @@
     "Standing weekly review with you and your team leads.",
     "Clean exit plan available at any point with 30 days' notice."
   ],
-  "order": 1
+  "phases": []
 }

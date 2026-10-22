@@ -1,7 +1,8 @@
 {
+  "name": "Brand and naming projects",
   "branch": "plan",
   "number": "01.3",
-  "name": "Brand and naming projects",
+  "order": 3,
   "description": "Day-to-day project management for brand identity, naming, and visual system engagements. From discovery and research through to final delivery, with stakeholders aligned at every step.",
   "bestFor": "Studios, agencies, and in-house teams running brand identity or naming projects who need a senior project manager to hold the structure.",
   "included": [
@@ -11,5 +12,5 @@
     "Scope changes documented, costed, and approved before they begin.",
     "Final delivery, handover, and asset organisation."
   ],
-  "order": 3
+  "phases": []
 }

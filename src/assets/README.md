@@ -12,7 +12,8 @@ variant's dimensions and byte size. Paths in that file are relative to this fold
 | `logos/mark-piece-map.png`                                                      | Hero hit testing; red = olive, green = anchovy, blue = pepper, transparent = none       |
 | `logos/mask-engraved.png`, `mask-outline.png`                                   | Single-colour CSS masks for brand components                                            |
 | `illustrations/01-olive-plan.png`, `02-anchovy-build.png`, `03-pepper-grow.png` | About, Services, homepage branch sections and case-study pillars                        |
-| `graphics/photo-placeholder-feed.png`                                           | Homepage Selected work cards                                                            |
+| `graphics/photo-placeholder-feed.png`                                           | Source of the case-study placeholder images in `content/`                               |
+| `content/`                                                                      | Images uploaded through the Keystatic admin, one folder per entry                       |
 | `logos/app-icon-mark.png`                                                       | Reserved original for #28 app / site icons                                              |
 | `logos/monogram-gs-*.png`                                                       | Reserved originals for #28 social metadata                                              |
 | `logos/profile-picture-*.png`                                                   | Reserved originals for #28 social metadata                                              |

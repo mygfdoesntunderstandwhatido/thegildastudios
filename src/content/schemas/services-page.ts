@@ -1,28 +1,29 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { text } from './shared';
 import { ctaSchema } from './cta';
 
-const branchText = z.object({ plan: z.string(), build: z.string(), grow: z.string() });
+const branchText = z.object({ plan: text, build: text, grow: text });
 
 export const servicesPage = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/services-page' }),
   schema: z.object({
-    meta: z.object({ title: z.string(), description: z.string() }),
+    meta: z.object({ title: text, description: text }),
     opening: z.object({
-      eyebrow: z.string(),
-      eyebrowShort: z.string(),
-      headline: z.string(),
-      body: z.string(),
+      eyebrow: text,
+      eyebrowShort: text,
+      headline: text,
+      body: text,
     }),
-    jump: z.object({ label: z.string(), lists: branchText }),
+    jump: z.object({ label: text, lists: branchText }),
     branchIntros: branchText,
     labels: z.object({
-      bestFor: z.string(),
-      included: z.string(),
-      ask: z.string(),
-      howItStarts: z.string(),
-      phases: z.string(),
+      bestFor: text,
+      included: text,
+      ask: text,
+      howItStarts: text,
+      phases: text,
     }),
     cta: ctaSchema,
   }),

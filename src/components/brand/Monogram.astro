@@ -1,6 +1,6 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { brandCopy } from '../../content/ui/brand';
+import { getSettings } from '../../lib/settings';
 
 interface Props extends Omit<HTMLAttributes<'span'>, 'role' | 'style'> {
   /** Tile size in px. The monogram stands in for the mark below 48px. */
@@ -13,10 +13,11 @@ interface Props extends Omit<HTMLAttributes<'span'>, 'role' | 'style'> {
   fill?: string;
 }
 
+const { brand } = await getSettings();
 const {
   size = 48,
   variant = 'tile',
-  alt = brandCopy.markLabel,
+  alt = brand.markLabel,
   fill,
   class: className,
   ...attrs
@@ -33,7 +34,7 @@ const decorative = alt === '';
   data-variant={variant}
   style={`--monogram-size: ${size}px${fill ? `; color: ${fill}` : ''}`}
 >
-  {brandCopy.monogram}
+  {brand.monogram}
 </span>
 
 <style>

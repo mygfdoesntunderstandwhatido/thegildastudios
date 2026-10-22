@@ -1,34 +1,49 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { text } from './shared';
 
 // A singleton: the only entry is src/content/homepage/home.json.
 export const homepage = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/homepage' }),
   schema: z.object({
     /** Page metadata. Placeholders until the SEO pass (#28). */
-    meta: z.object({ title: z.string(), description: z.string() }),
+    meta: z.object({ title: text, description: text }),
     work: z.object({
-      label: z.string(),
-      link: z.object({ label: z.string(), href: z.string() }),
+      number: text,
+      label: text,
+      link: z.object({ label: text, href: text }),
       /** The card's "Read the case study" line, shown on desktop. */
-      cardLink: z.string(),
+      cardLink: text,
+    }),
+    /** The "In their words" rotator. In slideLabel, {index}, {total} and {name} are filled in. */
+    testimonials: z.object({
+      number: text,
+      title: text,
+      roleDescription: text,
+      slideRoleDescription: text,
+      slideLabel: text,
+      controlsLabel: text,
+      pause: text,
+      play: text,
+      pauseLabel: text,
+      playLabel: text,
     }),
     story: z.object({
-      label: z.string(),
-      headline: z.string(),
-      body: z.string(),
-      markAlt: z.string(),
-      link: z.object({ label: z.string(), href: z.string() }),
+      label: text,
+      headline: text,
+      body: text,
+      markAlt: text,
+      link: z.object({ label: text, href: text }),
     }),
     hero: z.object({
-      eyebrow: z.string(),
+      eyebrow: text,
       /** The shorter eyebrow on phone. */
-      eyebrowShort: z.string(),
-      title: z.string(),
-      body: z.string(),
-      work: z.object({ label: z.string(), labelShort: z.string(), href: z.string() }),
-      markAlt: z.string(),
+      eyebrowShort: text,
+      title: text,
+      body: text,
+      work: z.object({ label: text, labelShort: text, href: text }),
+      markAlt: text,
     }),
   }),
 });

@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 import { Picture } from 'astro:assets';
 import fullColour from '../../assets/logos/gilda-mark-full-colour.png';
 import fullColourOnDark from '../../assets/logos/gilda-mark-on-dark.png';
-import { brandCopy } from '../../content/ui/brand';
+import { getSettings } from '../../lib/settings';
 import Monogram from './Monogram.astro';
 import type { MarkTone } from './types';
 
@@ -28,10 +28,11 @@ interface Props extends Omit<HTMLAttributes<'span'>, 'role' | 'style'> {
   loading?: 'lazy' | 'eager';
 }
 
+const { brand } = await getSettings();
 const {
   variant = 'full',
   height = 96,
-  alt = brandCopy.markLabel,
+  alt = brand.markLabel,
   onDark = false,
   tone = 'current',
   sizes,

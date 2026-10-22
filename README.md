@@ -47,10 +47,10 @@ The site is hosted on Netlify (team: Chris), building from this repo with the se
 
 - **Production:** every merge to `main` deploys to <https://thegildastudios.netlify.app>, until #33 connects `www.thegildastudios.com`. The domain is registered with Cloudflare and its DNS stays there; Netlify is connected as external DNS.
 - **Deploy Previews:** every pull request gets its own preview at `https://deploy-preview-<PR number>--thegildastudios.netlify.app`, posted on the PR by Netlify. The `netlify/thegildastudios/deploy-preview` check is required to merge into `main`, next to CI. Review visual work there before merging.
-- **Branch deploys:** every pushed branch gets a deploy too. Keystatic branch edits (#27) use these.
-- **Access:** the Netlify project is [thegildastudios](https://app.netlify.com/projects/thegildastudios) on the team owner's (Chris) personal team. The site is fully static: no functions are deployed until the Keystatic admin route arrives in #27.
+- **Branch deploys:** switched on for all branches, but `scripts/netlify-ignore.sh` skips every branch except Keystatic content branches (`content-*`), which get a preview at `https://<branch>--thegildastudios.netlify.app`. Other branches already have a Deploy Preview from their pull request.
+- **Access:** the Netlify project is [thegildastudios](https://app.netlify.com/projects/thegildastudios) on the team owner's (Chris) personal team. Every public page is prerendered. The only function is the Keystatic admin, `/keystatic` and `/api/keystatic/*`, served through `@astrojs/netlify`.
 
 ## Where things go
 
 - `src/pages/`: routes. `src/layouts/`: page shells. `src/components/`: UI components. `src/styles/`: global CSS and tokens.
-- `src/content/`: **all site copy.** Content collections with typed schemas, one schema file per collection in `src/content/schemas/`, registered in `src/content.config.ts`. Copy is never hard-coded in components, and Keystatic is layered over these files in #27.
+- `src/content/`: **all site copy.** Content collections with typed schemas, one schema file per collection in `src/content/schemas/`, registered in `src/content.config.ts`. Copy is never hard-coded in components. The Keystatic admin at `/keystatic` edits these files (`keystatic.config.ts`); see [`docs/editing.md`](docs/editing.md).

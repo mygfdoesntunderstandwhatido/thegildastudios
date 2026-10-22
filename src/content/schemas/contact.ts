@@ -1,8 +1,9 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { optionalText, text } from './shared';
 
-const field = z.object({ label: z.string(), hint: z.string().optional() });
+const field = z.object({ label: text, hint: optionalText });
 
 // A singleton: the only entry is src/content/contact/page.json. The email and
 // phone number come from the settings singleton; branch names from branches.ts.
@@ -10,21 +11,21 @@ export const contact = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/contact' }),
   schema: z.object({
     /** Page metadata. Placeholders until the SEO pass (#28). */
-    meta: z.object({ title: z.string(), description: z.string() }),
-    eyebrow: z.string(),
-    headline: z.string(),
-    body: z.string(),
+    meta: z.object({ title: text, description: text }),
+    eyebrow: text,
+    headline: text,
+    body: text,
     direct: z.object({
-      label: z.string(),
-      email: z.string(),
-      phone: z.string(),
-      based: z.string(),
-      basedValue: z.string(),
+      label: text,
+      email: text,
+      phone: text,
+      based: text,
+      basedValue: text,
     }),
     form: z.object({
-      title: z.string(),
-      intro: z.string(),
-      optional: z.string(),
+      title: text,
+      intro: text,
+      optional: text,
       fields: z.object({
         name: field,
         email: field,
@@ -32,29 +33,29 @@ export const contact = defineCollection({
         phone: field,
         message: field,
       }),
-      needs: z.object({ legend: z.string(), unsure: z.string() }),
+      needs: z.object({ legend: text, unsure: text }),
       preferred: z.object({
-        legend: z.string(),
-        email: z.string(),
-        call: z.string(),
-        meeting: z.string(),
+        legend: text,
+        email: text,
+        call: text,
+        meeting: text,
       }),
-      submit: z.string(),
-      sending: z.string(),
-      submissionError: z.string(),
-      honeypot: z.string(),
+      submit: text,
+      sending: text,
+      submissionError: text,
+      honeypot: text,
       /** Message prefill for ?service=01.2. {service} is the service name. */
-      servicePrefill: z.string(),
+      servicePrefill: text,
       errors: z.object({
-        name: z.string(),
-        email: z.string(),
-        emailFormat: z.string(),
-        phone: z.string(),
-        message: z.string(),
+        name: text,
+        email: text,
+        emailFormat: text,
+        phone: text,
+        message: text,
       }),
       /** Announced when a submit finds errors. {n} is the number of fields. */
-      summary: z.object({ one: z.string(), many: z.string() }),
-      success: z.object({ title: z.string(), body: z.string() }),
+      summary: z.object({ one: text, many: text }),
+      success: z.object({ title: text, body: text }),
     }),
   }),
 });

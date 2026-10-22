@@ -7,14 +7,16 @@ import anchovyPiece from '../../assets/logos/mark-piece-1.png';
 import pepperPiece from '../../assets/logos/mark-piece-2.png';
 // The hit-test map keeps its original bytes and 823 × 1000 coordinates.
 import mapUrl from '../../assets/logos/mark-piece-map.png?url';
-import { heroLabels } from '../../content/ui/hero';
 import { BRANCH_ORDER, branches } from '../../lib/branches';
+import { getSettings } from '../../lib/settings';
+import { typography } from '../../lib/typography';
 
 interface Props extends HTMLAttributes<'div'> {
   alt: string;
 }
 
 const { alt, class: className, ...attrs } = Astro.props;
+const heroLabels = (await getSettings()).labels.hero;
 
 // Piece shapes and scale origins from the 2a design script, in olive, anchovy, pepper order.
 const shapes = [
@@ -27,7 +29,7 @@ const images = [olivePiece, anchovyPiece, pepperPiece];
 const pieces = BRANCH_ORDER.map((key, index) => ({
   index,
   image: images[index],
-  label: `${branches[key].ingredient}${heroLabels.pieceSeparator}${branches[key].name}`,
+  label: `${branches[key].ingredient} ${typography.dot} ${branches[key].name}`,
   clip: `polygon(${shapes[index]})`,
   points: shapes[index].replaceAll('%', '').replaceAll(',', ''),
   origin: origins[index],

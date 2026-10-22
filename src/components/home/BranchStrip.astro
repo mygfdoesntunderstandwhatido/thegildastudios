@@ -1,21 +1,23 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import { heroLabels } from '../../content/ui/hero';
+import { getCollection } from 'astro:content';
 import { orderBranches } from '../../lib/branches';
+import { getSettings } from '../../lib/settings';
+import { typography } from '../../lib/typography';
 
-const site = await getEntry('settings', 'site');
+const site = await getSettings();
+const heroLabels = site.labels.hero;
 const copy = new Map((await getCollection('branches')).map((entry) => [entry.id, entry.data]));
 
 const items = orderBranches().map((branch, index) => {
   const text = copy.get(branch.key);
   if (!text) throw new Error(`Missing branch copy: src/content/branches/${branch.key}.json`);
-  const link = site?.data.nav.find((item) => item.branch === branch.key);
+  const link = site.nav.find((item) => item.branch === branch.key);
   return {
     ...branch,
     index,
     href: link?.href ?? `/services/#${branch.key}`,
     line: text.line,
-    services: text.services.join(heroLabels.servicesSeparator),
+    services: text.services.join(` ${typography.dot} `),
     style: `--branch-fill: ${branch.color}; --branch-fg: ${branch.foreground}; --branch-tint: ${branch.onDark}`,
   };
 });
@@ -29,7 +31,7 @@ const items = orderBranches().map((branch, index) => {
           <span class="meta" aria-hidden="true">
             <span class="dot" />
             <span>
-              {`${item.number}${heroLabels.labelSeparator}`}
+              {`${item.number}${typography.slash}`}
               <span class="ingredient">{item.ingredient}</span>
             </span>
           </span>

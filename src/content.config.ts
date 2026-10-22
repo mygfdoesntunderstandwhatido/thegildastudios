@@ -17,8 +17,14 @@ import { case_study } from './content/schemas/case-study';
 import { caseStudies } from './content/schemas/case-studies';
 
 import { contact } from './content/schemas/contact';
+import { systemPages } from './content/schemas/system-pages';
+import { team } from './content/schemas/team';
+import { servicesPage } from './content/schemas/services-page';
 
 export const collections = {
+  team,
+  servicesPage,
+  systemPages,
   contact,
   caseStudies,
   case_study,

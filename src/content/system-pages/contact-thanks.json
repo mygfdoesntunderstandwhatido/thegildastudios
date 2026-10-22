@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "Message sent · The Gilda Studios",
+    "description": "Thank you for contacting The Gilda Studios. We'll reply by the contact you chose."
+  },
+  "eyebrow": "CONTACT · MESSAGE SENT",
+  "headline": "Thank you. Your message is with us.",
+  "body": "We'll reply by the contact you chose.",
+  "navLabel": "Continue browsing",
+  "links": [
+    { "label": "Home", "href": "/" },
+    { "label": "Projects", "href": "/projects/" }
+  ]
+}

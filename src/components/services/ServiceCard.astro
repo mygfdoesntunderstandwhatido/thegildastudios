@@ -1,0 +1,215 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Disclosure from '../content/Disclosure.astro';
+import ServicePhases from './ServicePhases.astro';
+import { branches } from '../../lib/branches';
+import { contactHref } from '../../lib/contact';
+
+interface Props {
+  service: CollectionEntry<'services'>['data'];
+  labels: CollectionEntry<'servicesPage'>['data']['labels'];
+  ground?: 'cream' | 'sand';
+}
+
+const { service, labels, ground = 'cream' } = Astro.props;
+const branch = branches[service.branch];
+const id = `service-${service.number.replace('.', '-')}`;
+---
+
+<article
+  class:list={['service band', `band--${ground}`, { 'service-with-phases': service.phases }]}
+  id={id}
+  aria-labelledby={`${id}-title`}
+  style={`--service-accent: ${branch.color}; --service-label: ${branch.label}`}
+>
+  <div class="container service-content">
+    <div class="service-grid">
+      <div class="service-copy">
+        <p class="number">{service.number}</p>
+        <h3 id={`${id}-title`}>{service.name}</h3>
+        <p class="description">{service.description}</p>
+        <a class="ask" href={contactHref({ service: service.number })} data-analytics-cta>
+          {labels.ask}
+        </a>
+      </div>
+      <dl class="details">
+        <div class="detail-row">
+          <dt>{labels.bestFor}</dt>
+          <dd class="best-for">{service.bestFor}</dd>
+        </div>
+        {service.howItStarts && (
+          <div class="detail-row">
+            <dt>{labels.howItStarts}</dt>
+            <dd class="how-it-starts">{service.howItStarts}</dd>
+          </div>
+        )}
+        {service.included && (
+          <div class="detail-row">
+            <dt class="included-label">{labels.included}</dt>
+            <dd>
+              <Disclosure items={service.included} branch={service.branch} id={`${id}-included`} />
+            </dd>
+          </div>
+        )}
+      </dl>
+    </div>
+    {service.phases && (
+      <ServicePhases phases={service.phases} title={labels.phases} id={`${id}-phases`} />
+    )}
+  </div>
+</article>
+
+<style>
+  .service {
+    --service-rule-padding: 18px;
+    --service-label-width: 160px;
+    --service-best-size: 24px;
+    --service-description-size: 17px;
+    --service-title-size: var(--display-48);
+    --service-copy-gap: var(--space-5);
+    --service-label-size: 11px;
+    --service-number-size: 12px;
+    --service-link-padding: 10px;
+    --service-link-rule: 1.5px;
+
+    scroll-margin-block-start: var(--space-6);
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--grid-gap-wide);
+  }
+
+  .service-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .service-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--service-copy-gap);
+    padding-block-start: var(--service-rule-padding);
+    border-block-start: var(--border-rule-strong);
+  }
+
+  .number {
+    color: var(--service-label);
+    font: var(--type-label);
+    font-size: var(--service-number-size);
+    letter-spacing: var(--tracking-label);
+  }
+
+  h3 {
+    font-size: var(--service-title-size);
+    line-height: 1.04;
+  }
+
+  .service-with-phases h3 {
+    text-wrap: wrap;
+  }
+
+  .description,
+  .how-it-starts {
+    font-size: var(--service-description-size);
+    line-height: 1.6;
+  }
+
+  .description {
+    color: var(--ink-2);
+  }
+
+  .ask {
+    margin-block-start: var(--space-2);
+    padding-block: var(--service-link-padding);
+    border-block-end: var(--service-link-rule) solid var(--service-accent);
+    color: var(--brine);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-decoration: none;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-9);
+  }
+
+  .detail-row {
+    display: grid;
+    grid-template-columns: var(--service-label-width) minmax(0, 1fr);
+    gap: var(--space-6);
+    padding-block-start: var(--service-rule-padding);
+    border-block-start: var(--border-rule);
+  }
+
+  dt {
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    font-size: var(--service-label-size);
+    line-height: 1.6;
+    letter-spacing: var(--tracking-label);
+  }
+
+  dd {
+    min-inline-size: 0;
+  }
+
+  .best-for {
+    font-family: var(--font-display);
+    font-size: var(--service-best-size);
+    line-height: 1.3;
+    text-wrap: pretty;
+  }
+
+  @media (width < 768px) {
+    .service {
+      --band-padding: var(--space-10);
+      --service-rule-padding: 14px;
+      --service-best-size: 20px;
+      --service-description-size: 15px;
+      --service-title-size: 32px;
+      --service-copy-gap: var(--space-3);
+      --service-label-size: 10px;
+      --service-number-size: 11px;
+    }
+
+    .service-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+
+    .service-content {
+      gap: var(--space-4);
+    }
+
+    h3 {
+      line-height: 1.06;
+      text-wrap: wrap;
+    }
+
+    .details {
+      gap: var(--space-4);
+    }
+
+    .detail-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
+    }
+
+    .included-label {
+      display: none;
+    }
+
+    .service-with-phases dt {
+      line-height: 1;
+    }
+
+    .best-for {
+      text-wrap: wrap;
+    }
+  }
+</style>

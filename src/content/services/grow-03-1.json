@@ -1,0 +1,15 @@
+{
+  "branch": "grow",
+  "number": "03.1",
+  "name": "Social media management",
+  "description": "Management and growing of social media presence through strategic content creation, consistent brand storytelling, and data-driven engagement to increase reach, audience interaction, and overall brand visibility.",
+  "bestFor": "Small to medium-sized businesses who do not have an in-house creative or marketing strategy team, and need end-to-end support with their social media presence.",
+  "included": [
+    "Briefing and scope definition to understand brand goals, audience, and tone of voice.",
+    "Content planning and strategy development aligned with business objectives.",
+    "Content scheduling and publishing across agreed platforms.",
+    "Optional: Ongoing community awareness and engagement support.",
+    "Performance reporting with insights and recommendations for improvement."
+  ],
+  "order": 1
+}

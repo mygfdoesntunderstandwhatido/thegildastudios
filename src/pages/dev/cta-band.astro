@@ -6,7 +6,7 @@ import { pageBandsPreview as copy } from '../../content/dev/page-bands';
 const variants = ['about', 'services', 'projects', 'case-study'] as const;
 const entries = await Promise.all([
   getEntry('about', 'page'),
-  getEntry('services', 'page'),
+  getEntry('servicesPage', 'page'),
   getEntry('projects', 'page'),
   getEntry('case_study', 'page'),
 ]);

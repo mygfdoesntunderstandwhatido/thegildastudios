@@ -1,0 +1,12 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageMessage from '../../components/layout/PageMessage.astro';
+
+const page = await getEntry('systemPages', 'contact-thanks');
+if (!page) throw new Error('Missing src/content/system-pages/contact-thanks.json');
+---
+
+<Base title={page.data.meta.title} description={page.data.meta.description}>
+  <PageMessage content={page.data} />
+</Base>

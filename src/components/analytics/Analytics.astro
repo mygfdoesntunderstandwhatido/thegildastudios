@@ -1,0 +1,76 @@
+---
+import { getSecret } from 'astro:env/server';
+
+// Use the account-specific script URL from Plausible's installation snippet.
+// Previews and local development do not send traffic unless explicitly enabled.
+const scriptUrl = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_URL;
+const context = getSecret('CONTEXT');
+const enabled =
+  Boolean(scriptUrl) &&
+  import.meta.env.PROD &&
+  (!context || context === 'production' || getSecret('PLAUSIBLE_INCLUDE_PREVIEWS') === 'true');
+
+if (enabled) {
+  const url = new URL(scriptUrl);
+  if (url.protocol !== 'https:' || url.username || url.password) {
+    throw new Error('PUBLIC_PLAUSIBLE_SCRIPT_URL must be an HTTPS script URL without credentials.');
+  }
+}
+---
+
+{enabled && (
+  <>
+    <script is:inline>
+      window.plausible =
+        window.plausible ||
+        function (...args) {
+          (window.plausible.q = window.plausible.q || []).push(args);
+        };
+      window.plausible.init =
+        window.plausible.init ||
+        function (options) {
+          window.plausible.o = options || {};
+        };
+      window.plausible.init({
+        // Never include contact prefill or other query strings in page URLs.
+        transformRequest: function (payload) {
+          const url = new URL(payload.u);
+          url.search = '';
+          url.hash = '';
+          payload.u = url.href;
+          return payload;
+        },
+      });
+    </script>
+    <script is:inline async src={scriptUrl} data-gilda-analytics></script>
+  </>
+)}
+
+<script>
+  type AnalyticsWindow = Window & { plausible?: (name: string) => void };
+
+  if (document.querySelector('[data-gilda-analytics]')) {
+    const track = (name: string) => (window as AnalyticsWindow).plausible?.(name);
+
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const trigger = event.target.closest<HTMLAnchorElement | HTMLButtonElement>(
+        '[data-analytics-cta]',
+      );
+      if (!trigger) return;
+      if (
+        trigger instanceof HTMLAnchorElement &&
+        new URL(trigger.href).searchParams.has('service')
+      ) {
+        track('Ask about this service');
+      } else {
+        const label = trigger.textContent?.replace(/\s+/g, ' ').trim();
+        track(label === 'Book a call' ? 'Book a call' : 'Book a chat');
+      }
+    });
+
+    // The form emits this only after Netlify accepts the POST. No field values
+    // are passed to analytics, and failed attempts are not conversions.
+    document.addEventListener('gilda:form-submitted', () => track('Form submitted'));
+  }
+</script>

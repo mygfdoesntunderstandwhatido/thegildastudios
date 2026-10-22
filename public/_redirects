@@ -1,0 +1,3 @@
+# Keep legacy work links, including case studies. Netlify preserves query strings.
+/work     /projects/         301
+/work/*   /projects/:splat   301

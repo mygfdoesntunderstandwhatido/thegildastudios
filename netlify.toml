@@ -5,3 +5,7 @@
 [build]
   command = "npm run build"
   publish = "dist"
+
+# Directory routes use one trailing slash; keep Netlify's native 404 handling.
+[build.processing.html]
+  pretty_urls = true

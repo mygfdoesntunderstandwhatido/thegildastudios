@@ -200,7 +200,35 @@ as toggle chips, so they submit with the form and work without JavaScript. With
 JavaScript, the island shows inline errors (`aria-invalid`, `aria-describedby`),
 focuses the first invalid field and announces a count. It also reads
 `?service=01.2` or `?branch=grow` to prefill the form. Build links with
-`contactHref()` from `src/lib/contact.ts`. Sending arrives with #32.
+`contactHref()` from `src/lib/contact.ts`. Service numbers and prefill names
+come from the typed `services` collection. #32 wires Netlify delivery, the
+honeypot, retry behavior and `/contact/thanks/`; see `docs/operations.md`.
+
+## About page (#20)
+
+`about/AboutPage.astro` assembles the 1a story-first layout from the `about`
+singleton and the `team` collection, sorted by `order`. Branch metadata and
+colours come from `branches.ts`; copy and service rows come from the singleton.
+The branch cards share rows through subgrid, with an ordinary grid fallback.
+Each founder's `portrait` may be `null` until launch: a decorative SVG reserves
+the 4:5 slot. A real portrait requires alt text and is cropped into the same slot.
+
+## Services page (#21, #22, #23)
+
+`services/ServicesPage.astro` reads the `servicesPage` singleton and renders
+the branch jump cards and all three branches, each with its ordered `services`
+entries. Branch order comes from code. `BranchBand`
+takes a `branch` and `intro`; `ServiceCard` takes a service entry, shared labels
+and an alternating `ground`. Each card reuses the disclosure and links to Contact
+with its stable service number. The page singleton previously called `services`
+is now `servicesPage`; `services` holds individual service records.
+
+Standard services provide `included` items. Build provides `howItStarts` and
+`phases` instead; `ServicePhases` renders a labelled ordered list, with a
+six-column timeline at desktop widths and a vertical timeline below 1200px.
+Phase numbers and cycling dot colours come from code and `branches.ts`.
+Grow reuses the standard card with Brine labels and Pepper decoration.
+Branch illustrations are shared through `src/lib/branch-illustrations.ts`.
 
 ## Previews
 

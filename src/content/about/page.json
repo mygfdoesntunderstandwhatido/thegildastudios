@@ -7,5 +7,68 @@
       "label": "Book a call",
       "href": "/contact/"
     }
+  },
+  "meta": {
+    "title": "About · The Gilda Studios",
+    "description": "One day we were in Seville, enjoying tapas and listening to live music, talking about what was next and how to grow the business. Then the waiter dropped off our first tapa: the gilda."
+  },
+  "opening": {
+    "eyebrow": "ABOUT · WHY THE GILDA STUDIOS",
+    "headline": "It started with a tapa in Seville.",
+    "body": "One day we were in Seville, enjoying tapas and listening to live music, talking about what was next and how to grow the business. Then the waiter dropped off our first tapa: the gilda.",
+    "markAlt": "The gilda: an olive, an anchovy and a pickled pepper on one skewer"
+  },
+  "gilda": {
+    "label": "01 · THE GILDA",
+    "body": "A gilda is a Spanish tapa: a skewer and three simple ingredients. A green olive, a salt-cured Cantabrian anchovy and a pickled guindilla pepper.",
+    "statement": "One skewer was holding three completely different ingredients, and together they made one balanced tapa. That was the studio we wanted to build."
+  },
+  "studio": {
+    "number": "02",
+    "label": "ONE STUDIO",
+    "headline": "Three different services. One place to go for all of them.",
+    "pillars": [
+      {
+        "title": "One team.",
+        "body": "Events, websites, social media and marketing, handled by the same studio."
+      },
+      {
+        "title": "One invoice.",
+        "body": "Every service on the same bill."
+      },
+      {
+        "title": "One contact.",
+        "body": "Whatever you need, you send it to us. We pass it to the right person."
+      }
+    ]
+  },
+  "branches": {
+    "number": "03",
+    "label": "PLAN · BUILD · GROW",
+    "headline": "Each ingredient is one branch of the studio.",
+    "body": "The skewer is the team that holds them together. You can use one branch or all three. Either way you have one contact, one plan and one invoice.",
+    "copy": {
+      "plan": {
+        "description": "We plan and run projects and events from the first brief to the last guest leaving. One plan, with owners and dates you can see.",
+        "services": ["Project management", "Event management", "On-the-day coordination"],
+        "servicesShort": "Project management · Event management · On the day"
+      },
+      "build": {
+        "description": "We design, build and host your website, then look after it. The people who made it are the people who fix it.",
+        "services": ["Web design", "Development", "Hosting and care"],
+        "servicesShort": "Web design · Development · Hosting and care"
+      },
+      "grow": {
+        "description": "We run your social media and marketing month by month: the posts, the captions and the campaigns.",
+        "services": ["Social media management", "Marketing management", "Campaigns"],
+        "servicesShort": "Social media · Marketing · Campaigns"
+      }
+    }
+  },
+  "team": {
+    "number": "04",
+    "label": "WHO WE ARE",
+    "headline": "Two founders, and the right people around them.",
+    "body": "When a project needs more hands, we bring in freelancers we trust: designers, photographers, videographers, drone operators and more. You still deal only with us, and it all comes on one invoice."
   }
 }

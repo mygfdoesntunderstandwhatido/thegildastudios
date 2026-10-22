@@ -1,0 +1,286 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Chip from '../core/Chip.astro';
+import CtaBand from '../layout/CtaBand.astro';
+import BranchBand from './BranchBand.astro';
+import ServiceCard from './ServiceCard.astro';
+import { orderBranches } from '../../lib/branches';
+import { branchIllustrations } from '../../lib/branch-illustrations';
+
+const page = await getEntry('servicesPage', 'page');
+if (!page) throw new Error('Missing src/content/services-page/page.json');
+const copy = page.data;
+const branches = orderBranches();
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<main class="services-page">
+  <section class="opening band band--cream" aria-labelledby="services-title">
+    <div class="container opening-stack">
+      <div class="opening-grid">
+        <div class="opening-copy">
+          <Chip variant="filled">
+            <span class="eyebrow-full">{copy.opening.eyebrow}</span>
+            <span class="eyebrow-short">{copy.opening.eyebrowShort}</span>
+          </Chip>
+          <h1 id="services-title">{copy.opening.headline}</h1>
+        </div>
+        <p class="intro">{copy.opening.body}</p>
+      </div>
+      <nav class="jump" aria-label={copy.jump.label}>
+        <ul>
+          {branches.map((branch) => (
+            <li>
+              <a
+                class="jump-card"
+                href={`#${branch.key}`}
+                style={`--jump-rule: ${branch.color}; --jump-label: ${branch.label}; --jump-image-ratio: ${branchIllustrations[branch.key].width / branchIllustrations[branch.key].height}`}
+              >
+                <div class="jump-copy">
+                  <span class="jump-meta">
+                    {branch.number} / {branch.ingredient}
+                  </span>
+                  <span class="jump-name">{branch.name}</span>
+                  <span class="jump-list">{copy.jump.lists[branch.key]}</span>
+                </div>
+                <div class="jump-art">
+                  <Picture
+                    src={branchIllustrations[branch.key]}
+                    alt=""
+                    formats={['avif', 'webp']}
+                    fallbackFormat="png"
+                    widths={[96, 192, 280]}
+                    sizes="(max-width: 767px) 56px, 96px"
+                    loading="lazy"
+                  />
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  {branches.map((branch) => (
+    <>
+      <BranchBand branch={branch.key} intro={copy.branchIntros[branch.key]} />
+      {services
+        .filter(({ data }) => data.branch === branch.key)
+        .map(({ data }, index) => (
+          <ServiceCard service={data} labels={copy.labels} ground={index % 2 ? 'sand' : 'cream'} />
+        ))}
+    </>
+  ))}
+
+  <CtaBand content={copy.cta} variant="services" />
+</main>
+
+<style>
+  .services-page {
+    --services-intro-size: 19px;
+    --services-phone-title: 50px;
+    --jump-rule-width: 3px;
+    --jump-image-width: 96px;
+    --jump-image-height: 110px;
+    --jump-copy-gap: 10px;
+    --jump-name-size: 40px;
+    --jump-label-size: 11px;
+    --jump-card-padding: var(--space-6);
+    --jump-card-gap: var(--space-4);
+    --jump-row-gap: var(--space-6);
+  }
+
+  .opening {
+    --band-padding: var(--space-14) var(--band-space-compact);
+  }
+
+  .opening-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .opening-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: var(--space-12);
+  }
+
+  .opening-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-7);
+  }
+
+  .eyebrow-short {
+    display: none;
+  }
+
+  h1 {
+    font-size: var(--display-96);
+    line-height: 1;
+  }
+
+  .intro {
+    color: var(--ink-2);
+    font-size: var(--services-intro-size);
+    line-height: 1.6;
+  }
+
+  .jump ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--jump-row-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .jump-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--jump-image-width);
+    align-items: center;
+    gap: var(--jump-card-gap);
+    block-size: 100%;
+    padding: var(--jump-card-padding);
+    border-block-start: var(--jump-rule-width) solid var(--jump-rule);
+    background: var(--sand);
+    color: var(--brine);
+    text-decoration: none;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .jump-card:hover {
+    opacity: var(--hover-opacity);
+  }
+
+  .jump-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--jump-copy-gap);
+  }
+
+  .jump-meta,
+  .jump-list {
+    font: var(--type-label-sm);
+    font-size: var(--jump-label-size);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .jump-meta {
+    color: var(--jump-label);
+  }
+
+  .jump-name {
+    font-family: var(--font-display);
+    font-size: var(--jump-name-size);
+    line-height: 1;
+  }
+
+  .jump-list {
+    color: var(--ink-3);
+    line-height: 1.5;
+  }
+
+  .jump-art,
+  .jump-art picture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .jump-art {
+    justify-self: center;
+    inline-size: min(var(--jump-image-width), var(--jump-image-height) * var(--jump-image-ratio));
+    block-size: min(var(--jump-image-height), var(--jump-image-width) / var(--jump-image-ratio));
+  }
+
+  .jump-art picture {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture owns the image. */
+  .jump-art :global(img) {
+    inline-size: 100%;
+    max-inline-size: var(--jump-image-width);
+    block-size: 100%;
+    max-block-size: var(--jump-image-height);
+    object-fit: contain;
+  }
+
+  @media (768px <= width < 1024px) {
+    .services-page {
+      --jump-image-width: 56px;
+      --jump-image-height: 64px;
+      --jump-card-padding: var(--space-4);
+      --jump-card-gap: var(--space-3);
+    }
+  }
+
+  @media (width < 768px) {
+    .services-page {
+      --services-intro-size: 16px;
+      --jump-image-width: 56px;
+      --jump-image-height: 64px;
+      --jump-copy-gap: 6px;
+      --jump-name-size: 28px;
+      --jump-label-size: 10px;
+      --jump-card-padding: var(--space-4);
+      --jump-card-gap: var(--space-3);
+      --jump-row-gap: 10px;
+    }
+
+    .opening {
+      --band-padding: var(--space-10);
+    }
+
+    .opening-stack {
+      align-items: flex-start;
+      gap: var(--space-5);
+    }
+
+    .opening-grid,
+    .opening-copy {
+      display: contents;
+    }
+
+    .eyebrow-full {
+      display: none;
+    }
+
+    .eyebrow-short {
+      display: inline;
+    }
+
+    h1 {
+      font-size: var(--services-phone-title);
+      line-height: var(--heading-leading);
+      text-wrap: wrap;
+    }
+
+    .jump {
+      inline-size: 100%;
+      margin-block-start: var(--space-2);
+    }
+
+    .jump ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .jump-list {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .jump-card {
+      transition: none;
+    }
+  }
+</style>

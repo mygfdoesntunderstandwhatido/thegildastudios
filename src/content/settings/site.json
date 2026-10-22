@@ -1,0 +1,11 @@
+{
+  "nav": [
+    { "label": "About", "href": "/about/" },
+    { "label": "Plan", "href": "/services/#plan", "branch": "plan" },
+    { "label": "Build", "href": "/services/#build", "branch": "build" },
+    { "label": "Grow", "href": "/services/#grow", "branch": "grow" },
+    { "label": "Projects", "href": "/projects/" }
+  ],
+  "booking": { "label": "Book a chat", "href": "/contact/" },
+  "email": "hello@thegildastudios.com"
+}

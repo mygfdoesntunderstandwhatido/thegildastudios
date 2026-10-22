@@ -1,5 +1,9 @@
 {
   "name": "Malta Business Network",
+  "meta": {
+    "title": "Malta Business Network",
+    "description": "Project and social media management for a network of senior leaders, across dozens of events in Malta and the UK."
+  },
   "order": 2,
   "draft": false,
   "featured": true,
@@ -32,24 +36,24 @@
     }
   ],
   "cover": {
-    "src": "../../assets/content/case-studies/malta-business-network/cover/src.png"
+    "src": "../../assets/content/case-studies/malta-business-network/cover/src.jpg"
   },
   "hero": {
-    "src": "../../assets/content/case-studies/malta-business-network/hero/src.png",
-    "alt": "Photo placeholder for the Malta Business Network project"
+    "src": "../../assets/content/case-studies/malta-business-network/hero/src.jpg",
+    "alt": "Mobile"
   },
   "gallery": [
     {
-      "src": "../../assets/content/case-studies/malta-business-network/gallery/0/src.png",
-      "alt": "Photo placeholder for the Malta Business Network project, image 1"
+      "src": "../../assets/content/case-studies/malta-business-network/gallery/0/src.jpg",
+      "alt": "Testimonial 1"
     },
     {
-      "src": "../../assets/content/case-studies/malta-business-network/gallery/1/src.png",
-      "alt": "Photo placeholder for the Malta Business Network project, image 2"
+      "src": "../../assets/content/case-studies/malta-business-network/gallery/1/src.jpg",
+      "alt": "Testimonial 2"
     },
     {
-      "src": "../../assets/content/case-studies/malta-business-network/gallery/2/src.png",
-      "alt": "Photo placeholder for the Malta Business Network project, image 3"
+      "src": "../../assets/content/case-studies/malta-business-network/gallery/2/src.jpg",
+      "alt": "Testimonial 3"
     }
   ],
   "sections": [
@@ -173,9 +177,5 @@
         }
       ]
     }
-  ],
-  "meta": {
-    "title": "Malta Business Network",
-    "description": "Project and social media management for a network of senior leaders, across dozens of events in Malta and the UK."
-  }
+  ]
 }

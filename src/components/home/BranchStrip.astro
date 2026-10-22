@@ -1,0 +1,282 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { heroLabels } from '../../content/ui/hero';
+import { orderBranches } from '../../lib/branches';
+
+const site = await getEntry('settings', 'site');
+const copy = new Map((await getCollection('branches')).map((entry) => [entry.id, entry.data]));
+
+const items = orderBranches().map((branch, index) => {
+  const text = copy.get(branch.key);
+  if (!text) throw new Error(`Missing branch copy: src/content/branches/${branch.key}.json`);
+  const link = site?.data.nav.find((item) => item.branch === branch.key);
+  return {
+    ...branch,
+    index,
+    href: link?.href ?? `/services/#${branch.key}`,
+    line: text.line,
+    services: text.services.join(heroLabels.servicesSeparator),
+    style: `--branch-fill: ${branch.color}; --branch-fg: ${branch.foreground}; --branch-tint: ${branch.onDark}`,
+  };
+});
+---
+
+<gilda-branch-strip class="branch-strip">
+  <ul class="strip-list">
+    {items.map((item) => (
+      <li class="strip-cell">
+        <a class="strip-item" href={item.href} data-index={item.index} style={item.style}>
+          <span class="meta" aria-hidden="true">
+            <span class="dot" />
+            <span>
+              {`${item.number}${heroLabels.labelSeparator}`}
+              <span class="ingredient">{item.ingredient}</span>
+            </span>
+          </span>
+          <span class="explore" aria-hidden="true">
+            {heroLabels.explore}
+          </span>
+          <span class="name">{item.name}</span>
+          <span class="line">{item.line}</span>
+          <span class="services">{item.services}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</gilda-branch-strip>
+
+<script>
+  import { onActiveBranch, setActiveBranch, type ActiveBranch } from '../../lib/branch-focus';
+
+  class GildaBranchStrip extends HTMLElement {
+    private items: HTMLAnchorElement[] = [];
+    private unsubscribe: (() => void) | null = null;
+
+    connectedCallback() {
+      this.items = [...this.querySelectorAll<HTMLAnchorElement>('[data-index]')];
+      this.items.forEach((item, index) => {
+        const light = () => setActiveBranch(index as ActiveBranch);
+        item.addEventListener('mouseenter', light);
+        item.addEventListener('focus', light);
+        item.addEventListener('mouseleave', () => {
+          if (!item.matches(':focus')) setActiveBranch(null);
+        });
+        item.addEventListener('blur', (event) => {
+          if (!this.items.includes(event.relatedTarget as HTMLAnchorElement)) setActiveBranch(null);
+        });
+      });
+      this.unsubscribe = onActiveBranch(this.render);
+    }
+
+    disconnectedCallback() {
+      this.unsubscribe?.();
+    }
+
+    private render = (branch: ActiveBranch) => {
+      this.toggleAttribute('data-dim', branch !== null);
+      this.items.forEach((item, index) => item.toggleAttribute('data-on', index === branch));
+    };
+  }
+
+  if (!customElements.get('gilda-branch-strip')) {
+    customElements.define('gilda-branch-strip', GildaBranchStrip);
+  }
+</script>
+
+<style>
+  .branch-strip {
+    --strip-fade: 200ms;
+
+    /* The design dims other columns to .45; .6 keeps their text at AA contrast. */
+    --strip-dim: 0.6;
+
+    position: relative;
+    z-index: 1;
+    display: block;
+    border-block-start: 1px solid color-mix(in srgb, var(--cream) 20%, transparent);
+    background: var(--brine);
+  }
+
+  .strip-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .strip-cell {
+    display: grid;
+  }
+
+  .strip-item {
+    display: grid;
+    grid-template-areas:
+      'meta explore'
+      'name name'
+      'line line'
+      'services services';
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-7) var(--space-12) var(--space-8);
+    border-inline-end: 1px solid color-mix(in srgb, var(--cream) 12%, transparent);
+    background: var(--brine);
+    color: var(--cream);
+    text-decoration: none;
+    transition:
+      background-color var(--strip-fade) ease,
+      opacity var(--strip-fade) ease;
+  }
+
+  .strip-item:hover {
+    color: var(--cream);
+    opacity: 1;
+  }
+
+  .strip-item:focus-visible {
+    outline-offset: calc(var(--focus-width) * -2);
+  }
+
+  .meta,
+  .explore {
+    display: flex;
+    align-items: center;
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .meta {
+    grid-area: meta;
+    gap: 10px;
+  }
+
+  .ingredient {
+    text-transform: uppercase;
+  }
+
+  .dot {
+    inline-size: var(--dot-sm);
+    block-size: var(--dot-sm);
+    border-radius: 50%;
+    background: var(--branch-tint);
+  }
+
+  .explore {
+    grid-area: explore;
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .name {
+    grid-area: name;
+    font-family: var(--font-display);
+    font-size: var(--display-36);
+    line-height: 1;
+  }
+
+  .line {
+    grid-area: line;
+    min-block-size: 45px;
+    color: var(--cream-2);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .services {
+    grid-area: services;
+    font: var(--type-label-sm);
+    line-height: 1.5;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .explore,
+  .services {
+    opacity: 0;
+    transition: opacity var(--strip-fade) ease;
+  }
+
+  /* Active: hovered, focused, or lit from the mark. Desktop only. */
+  @media (width >= 768px) {
+    .strip-item[data-on] {
+      background: var(--branch-fill);
+      color: var(--branch-fg);
+    }
+
+    .strip-item[data-on] .line {
+      color: var(--branch-fg);
+    }
+
+    .strip-item[data-on] .dot {
+      background: var(--branch-fg);
+    }
+
+    .strip-item[data-on] .explore,
+    .strip-item[data-on] .services {
+      opacity: 1;
+    }
+
+    .branch-strip[data-dim] .strip-item:not([data-on]) {
+      opacity: var(--strip-dim);
+    }
+  }
+
+  /* Phone: a static stacked list under the mark. */
+  @media (width < 768px) {
+    .branch-strip {
+      border: 0;
+    }
+
+    .strip-list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-7);
+      padding: var(--space-8) var(--space-6) calc(var(--space-12) - var(--space-2));
+    }
+
+    .strip-item {
+      grid-template-areas:
+        'name meta'
+        'line line'
+        'services services';
+      align-items: baseline;
+      gap: 10px var(--space-3);
+      padding: var(--space-4) 0 0;
+      border: 0;
+      border-block-start: 2px solid var(--branch-tint);
+    }
+
+    .dot,
+    .explore {
+      display: none;
+    }
+
+    .meta {
+      /* The anchovy tint is below AA as small text on Brine, so labels use Cream 2. */
+      color: var(--cream-2);
+      font: var(--type-label-sm);
+      letter-spacing: var(--tracking-label);
+    }
+
+    .name {
+      font-size: 32px;
+    }
+
+    .line {
+      min-block-size: 0;
+    }
+
+    .services {
+      font-size: 10px;
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strip-item,
+    .explore,
+    .services {
+      transition: none;
+    }
+  }
+</style>

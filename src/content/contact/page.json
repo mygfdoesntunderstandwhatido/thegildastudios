@@ -38,6 +38,9 @@
       "meeting": "Meeting in person"
     },
     "submit": "Book a call",
+    "sending": "Sending…",
+    "submissionError": "Your message could not be sent. Please try again, or email hello@thegildastudios.com.",
+    "honeypot": "Leave this field empty.",
     "servicePrefill": "I'd like to ask about {service}.",
     "errors": {
       "name": "Add your name, so we know who to reply to.",

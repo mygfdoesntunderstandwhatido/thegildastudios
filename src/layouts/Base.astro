@@ -4,6 +4,7 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
+import Analytics from '../components/analytics/Analytics.astro';
 
 interface Props {
   title: string;
@@ -45,6 +46,7 @@ const { title, description, header = 'cream' } = Astro.props;
     />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <Analytics />
   </head>
   <body>
     {header && <SiteHeader ground={header} />}

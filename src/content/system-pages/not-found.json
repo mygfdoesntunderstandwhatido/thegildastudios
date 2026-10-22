@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "title": "Page not found · The Gilda Studios",
+    "description": "This page may have moved. Find services, projects and contact details for The Gilda Studios."
+  },
+  "eyebrow": "404 · PAGE NOT FOUND",
+  "headline": "We can't find that page.",
+  "body": "It may have moved. These are the places most people are looking for.",
+  "navLabel": "Find a page",
+  "links": [
+    { "label": "Home", "href": "/" },
+    { "label": "Services", "href": "/services/" },
+    { "label": "Projects", "href": "/projects/" },
+    { "label": "Contact", "href": "/contact/" }
+  ]
+}

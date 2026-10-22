@@ -40,6 +40,9 @@ export const contact = defineCollection({
         meeting: z.string(),
       }),
       submit: z.string(),
+      sending: z.string(),
+      submissionError: z.string(),
+      honeypot: z.string(),
       /** Message prefill for ?service=01.2. {service} is the service name. */
       servicePrefill: z.string(),
       errors: z.object({

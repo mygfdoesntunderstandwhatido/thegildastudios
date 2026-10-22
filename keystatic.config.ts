@@ -948,6 +948,7 @@ const settings = singleton({
     ),
     header: fields.object(
       {
+        skip: caps('Skip link, shown on keyboard focus'),
         nav: required('Navigation label (screen readers)'),
         home: required('Home link label (screen readers)'),
         menu: caps('Menu button'),

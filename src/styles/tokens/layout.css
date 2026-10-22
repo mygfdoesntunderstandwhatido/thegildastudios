@@ -34,6 +34,11 @@
   --body-measure: 65ch;
   --preview-display-measure: 12ch;
   --preview-mark-space: 220px;
+
+  /* Olive text on Sand and Pepper pale. Brand olive is 4.27:1 there, under
+     AA for small labels; this is the same hue 6% darker (4.71:1 on Sand).
+     Fills, rules and dots keep the brand olive. */
+  --olive-text-on-sand: #5e6729;
 }
 
 @media (width < 768px) {

@@ -103,9 +103,12 @@ const year = new Date().getUTCFullYear();
     overflow-wrap: anywhere;
   }
 
+  /* Underline, not a fade: Cream on anchovy at 75% falls to 4.0:1. */
   a:hover {
     color: inherit;
-    opacity: var(--link-hover-opacity-on-dark);
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: var(--link-underline-offset);
   }
 
   .copyright {

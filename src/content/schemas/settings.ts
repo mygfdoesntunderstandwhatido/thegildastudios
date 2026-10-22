@@ -57,6 +57,7 @@ export const settings = defineCollection({
       markLabel: text,
     }),
     header: z.object({
+      skip: text,
       nav: text,
       home: text,
       menu: text,

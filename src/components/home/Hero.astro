@@ -14,9 +14,9 @@ const { booking } = site.data;
 
 <section class="band band--brine hero" aria-labelledby="hero-title">
   <div class="hero-header">
-    <SiteHeader />
+    <SiteHeader skipTo="hero-copy" />
   </div>
-  <div class="container hero-copy">
+  <div id="hero-copy" class="container hero-copy">
     <p class="eyebrow">
       <span class="wide">{hero.eyebrow}</span>
       <span class="short">{hero.eyebrowShort}</span>

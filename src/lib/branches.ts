@@ -29,7 +29,7 @@ export const branches: Record<BranchKey, Branch> = {
     ingredient: 'Olive',
     color: 'var(--olive)',
     onDark: 'var(--olive-on-dark)',
-    label: 'var(--olive)',
+    label: 'var(--olive-text)',
     foreground: 'var(--cream)',
     ring: false,
   },

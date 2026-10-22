@@ -48,11 +48,14 @@ const sections = await Promise.all(
   }),
 );
 
+// Set per band, so olive text takes the darker AA shade on Sand and Pepper pale.
+const accentText = study.accent === 'olive' ? 'var(--olive-text)' : `var(--${study.accent})`;
+
 const heroSizes = '(width < 768px) calc(100vw - 48px), min(1168px, calc(100vw - 112px))';
 const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw - 160px) / 3))';
 ---
 
-<article class="case-study" style={`--accent-color: var(--${study.accent})`}>
+<article class="case-study">
   <header class="intro band band--cream">
     <div class="container intro-inner">
       <a class="all-projects" href={copy.allProjects.href}>
@@ -90,7 +93,11 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
   </header>
 
   {sections.map((section) => (
-    <section class={`cs-section band band--${section.ground}`} aria-labelledby={section.headingId}>
+    <section
+      class={`cs-section band band--${section.ground}`}
+      style={`--accent-color: ${accentText}`}
+      aria-labelledby={section.headingId}
+    >
       <div class="container section-grid">
         <div class="section-head">
           <span class="section-number" aria-hidden="true">
@@ -331,10 +338,10 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
     line-height: 1;
   }
 
-  /* Ink, not the design's olive: olive on Sand is 4.27:1, under AA at 11px. */
+  /* The design's olive, in the darker text shade that passes AA on Sand. */
   .next-sector {
     padding-block-end: 10px;
-    color: var(--ink-3);
+    color: var(--olive-text);
   }
 
   @media (width < 768px) {

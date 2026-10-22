@@ -27,6 +27,8 @@ html {
 }
 
 body {
+  --olive-text: var(--olive);
+
   background: var(--surface-page);
   color: var(--text-body);
   font: var(--type-body);
@@ -70,6 +72,9 @@ h6 {
   font-weight: var(--weight-regular);
   line-height: var(--heading-leading);
   text-wrap: balance;
+
+  /* Reflow at 320px: a word wider than the column breaks instead of scrolling. */
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -165,7 +170,8 @@ a:hover {
   --text-body: var(--brine);
   --text-secondary: var(--ink-2);
   --text-caption: var(--ink-3);
-  --link: var(--olive);
+  --olive-text: var(--olive);
+  --link: var(--olive-text);
   --link-hover: var(--brine);
   --link-hover-opacity: 1;
   --focus-color: var(--brine);
@@ -180,10 +186,12 @@ a:hover {
 
 .band--sand {
   --band-background: var(--sand);
+  --olive-text: var(--olive-text-on-sand);
 }
 
 .band--pepper-pale {
   --band-background: var(--pepper-pale);
+  --olive-text: var(--olive-text-on-sand);
 }
 
 .band--pepper {

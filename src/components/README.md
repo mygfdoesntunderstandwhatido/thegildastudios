@@ -1,7 +1,8 @@
 # Shared components
 
 All visible copy is supplied by props or slots from typed data in `src/content`.
-The components use Astro and scoped CSS. Only toggle chips ship JavaScript.
+The components use Astro and scoped CSS. Only toggle chips, disclosures and the
+testimonial rotator ship JavaScript.
 
 ## Button (#7)
 
@@ -73,6 +74,53 @@ The light variant includes the project link required by #13. Its phone sizes
 follow the Projects phone artboard (19px quote, 72px mark and 18px name).
 Rotation, testimonials collections and the destination pages remain in #18/#25.
 
+## Brand: Mark, Wordmark, Lockup, Monogram (#8)
+
+`brand/Mark.astro` renders `variant="full"` as a `Picture` of the colour PNG
+(`onDark` selects the on-dark file) or `variant="single"` as a CSS mask of
+`mask-engraved.png` filled with `tone` (a colour token, or `currentColor` by
+default). `height` sets the size and the width follows 823:1000. Below 48px the
+mark renders `Monogram` instead. `alt` is the alt text or accessible name;
+`alt=""` makes the mark decorative (`alt=""` on the image, `aria-hidden` on a
+mask). Single-colour marks otherwise get `role="img"` and a name.
+
+`brand/Wordmark.astro` sets the name in Gilda Display 400, as `layout="line"` or
+`layout="stacked"` (The / Gilda / Studios at .95 leading), at `size` px.
+`brand/Lockup.astro` is the footer lockup: a decorative 96px mark with 32px
+stacked type, which becomes 72px with 26px below 768px. `brand/Monogram.astro`
+is the GS tile (`tile`, `dark` or `outline`) with a 22% radius.
+
+## BranchDot and BranchDots (#8)
+
+`branch/BranchDot.astro` takes `branch`, `onDark` and `size` (9–14px, default
+10). Pepper on light grounds gets the inset ring; `onDark` uses the Brine tints.
+`branch/BranchDots.astro` takes any subset of `branches` and always renders
+olive, anchovy, pepper. Dots are decorative unless a `label` is given.
+
+Branch definitions (number, name, ingredient, colour, on-dark tint, label and
+foreground colours) live only in `src/lib/branches.ts`. Grow's label colour is
+Brine, so pepper is never text on Cream or Sand.
+
+## Disclosure (#12)
+
+`content/Disclosure.astro` takes `items` and `branch`, plus optional `labels`
+templates where `{n}` is the item count (defaults in
+`src/content/ui/disclosure.ts`, with single forms for one item). The trigger is
+a native button with `aria-expanded` and `aria-controls`. It is closed by
+default and the panel collapses with a 200ms row transition, which is removed
+under reduced motion. Without JavaScript (`scripting: none`) the list renders
+open with a static label. Circles and numbers follow the branch colours.
+
+## TestimonialRotator (#18)
+
+`content/TestimonialRotator.astro` renders the Brine "In their words" section
+(`id="in-their-words"`) from `testimonials` collection entries, sorted by the
+caller by `homeOrder`. Each slide is a dark `Testimonial`. All slides share one
+grid cell to reserve the longest quote's height. Autoplay runs every 8 seconds.
+It pauses on hover, focus within, the pause control and hidden tabs, and never
+runs under reduced motion. Dot changes made by a visitor are announced politely.
+Copy lives in `src/content/ui/testimonial-rotator.ts`.
+
 ## Previews
 
 - `/dev/button/`
@@ -80,6 +128,9 @@ Rotation, testimonials collections and the destination pages remain in #18/#25.
 - `/dev/chip/`
 - `/dev/section-header/`
 - `/dev/testimonial/`
+- `/dev/brand/`
+- `/dev/disclosure/`
+- `/dev/testimonial-rotator/`
 
 Each preview has its own page and reads typed specimen copy from
 `src/content/dev`. The primitive previews put light-only/dark-only variants on

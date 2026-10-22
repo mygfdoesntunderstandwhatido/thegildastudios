@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import Disclosure from '../../components/content/Disclosure.astro';
+import Label from '../../components/core/Label.astro';
+import { disclosurePreview as content } from '../../content/dev/disclosure';
+---
+
+<Base title={content.title}>
+  <main>
+    <header class="band band--cream band--compact">
+      <div class="container stack">
+        <h1>{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </header>
+    {content.grounds.map((ground) => (
+      <section class:list={['band', ground.className]} aria-labelledby={`disclosure-${ground.id}`}>
+        <div class="container stack">
+          <h2 id={`disclosure-${ground.id}`}>{ground.label}</h2>
+          {content.samples.map((sample) => (
+            <div class="sample">
+              <Label as="h3" tone="muted">
+                {sample.name}
+              </Label>
+              <div class="row rule-row">
+                <span class="row-label">{content.rowLabel}</span>
+                <Disclosure
+                  id={`${ground.id}-${sample.id}`}
+                  branch={sample.branch}
+                  items={sample.items}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-9);
+  }
+
+  .sample {
+    display: grid;
+    gap: var(--space-4);
+    max-inline-size: 700px;
+  }
+
+  /* The Services 1a "What is included" row: a 160px label column on desktop. */
+  .row {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: var(--space-6);
+    padding-block-start: 18px;
+  }
+
+  .row-label {
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    line-height: 1.6;
+    letter-spacing: var(--tracking-label);
+  }
+
+  @media (width < 768px) {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+      padding-block-start: 14px;
+    }
+
+    .row-label {
+      display: none;
+    }
+  }
+</style>

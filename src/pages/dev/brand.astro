@@ -1,0 +1,163 @@
+---
+import Base from '../../layouts/Base.astro';
+import Label from '../../components/core/Label.astro';
+import Lockup from '../../components/brand/Lockup.astro';
+import Mark from '../../components/brand/Mark.astro';
+import Monogram from '../../components/brand/Monogram.astro';
+import Wordmark from '../../components/brand/Wordmark.astro';
+import BranchDot from '../../components/branch/BranchDot.astro';
+import BranchDots from '../../components/branch/BranchDots.astro';
+import { BRANCH_ORDER } from '../../lib/branches';
+import type { DotSize } from '../../components/branch/types';
+import { brandPreview as content } from '../../content/dev/brand';
+
+const dotSizes: DotSize[] = [9, 10, 11, 12, 13, 14];
+---
+
+<Base title={content.title}>
+  <main>
+    <header class="band band--cream band--compact">
+      <div class="container stack">
+        <h1>{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </header>
+    {content.grounds.map((ground) => {
+      const tone = ground.onDark ? 'on-dark' : 'muted';
+      return (
+        <section class:list={['band', ground.className]} aria-labelledby={`brand-${ground.id}`}>
+          <div class="container stack">
+            <h2 id={`brand-${ground.id}`}>{ground.label}</h2>
+
+            <Label as="h3" tone={tone}>
+              {content.sections.mark}
+            </Label>
+            <div class="samples">
+              <figure class="sample">
+                <Mark height={120} onDark={ground.onDark} />
+                <figcaption class="sample-note">{content.sections.markFull}</figcaption>
+              </figure>
+              <figure class="sample">
+                <Mark variant="single" height={120} />
+                <figcaption class="sample-note">{content.sections.markSingle}</figcaption>
+              </figure>
+              <figure class="sample">
+                <Mark
+                  variant="single"
+                  height={120}
+                  alt=""
+                  tone={ground.onDark ? 'olive-on-dark' : 'olive'}
+                />
+                <figcaption class="sample-note">{content.sections.markDecorative}</figcaption>
+              </figure>
+              <figure class="sample">
+                <div class="samples samples-tight">
+                  <Mark height={40} onDark={ground.onDark} />
+                  <Mark variant="single" height={40} />
+                </div>
+                <figcaption class="sample-note">{content.sections.markSmall}</figcaption>
+              </figure>
+            </div>
+
+            <Label as="h3" tone={tone}>
+              {content.sections.wordmark}
+            </Label>
+            <div class="samples">
+              <figure class="sample">
+                <Wordmark />
+                <figcaption class="sample-note">{content.sections.wordmarkLine}</figcaption>
+              </figure>
+              <figure class="sample">
+                <Wordmark layout="stacked" size={32} />
+                <figcaption class="sample-note">{content.sections.wordmarkStacked}</figcaption>
+              </figure>
+            </div>
+
+            <Label as="h3" tone={tone}>
+              {content.sections.lockup}
+            </Label>
+            <div class="samples">
+              <Lockup onDark={ground.onDark} />
+              <Lockup mark="single" />
+            </div>
+
+            <Label as="h3" tone={tone}>
+              {content.sections.monogram}
+            </Label>
+            <div class="samples">
+              <Monogram size={96} />
+              <Monogram size={96} variant="dark" />
+              <Monogram size={96} variant="outline" />
+              <Monogram size={32} variant={ground.onDark ? 'tile' : 'dark'} />
+            </div>
+
+            <Label as="h3" tone={tone}>
+              {content.sections.dots}
+            </Label>
+            <div class="samples">
+              <figure class="sample">
+                <BranchDots onDark={ground.onDark} />
+                <figcaption class="sample-note">{content.sections.dotsAll}</figcaption>
+              </figure>
+              <figure class="sample">
+                <BranchDots
+                  branches={content.subset}
+                  onDark={ground.onDark}
+                  label={content.subsetLabel}
+                />
+                <figcaption class="sample-note">{content.sections.dotsSubset}</figcaption>
+              </figure>
+              <figure class="sample">
+                <div class="samples samples-tight">
+                  {dotSizes.map((size) => (
+                    <span class="dot-row">
+                      {BRANCH_ORDER.map((branch) => (
+                        <BranchDot branch={branch} size={size} onDark={ground.onDark} />
+                      ))}
+                    </span>
+                  ))}
+                </div>
+                <figcaption class="sample-note">{content.sections.dotsSizes}</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+      );
+    })}
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .samples {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-8);
+  }
+
+  .samples-tight {
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .sample {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-3);
+  }
+
+  .sample-note {
+    font: var(--type-body-sm);
+  }
+
+  .dot-row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Mark from './Mark.astro';
+import Wordmark from './Wordmark.astro';
+import type { MarkTone } from './types';
+
+// The footer lockup: a 96px mark with 32px type, and 72px with 26px on phone.
+const MARK_HEIGHT = 96;
+const MARK_HEIGHT_PHONE = 72;
+const TYPE_SIZE = 32;
+
+interface Props extends HTMLAttributes<'div'> {
+  mark?: 'full' | 'single';
+  onDark?: boolean;
+  tone?: MarkTone;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  mark = 'full',
+  onDark = false,
+  tone = 'current',
+  loading,
+  class: className,
+  ...attrs
+} = Astro.props;
+const phoneWidth = Math.round(MARK_HEIGHT_PHONE * (823 / 1000));
+const desktopWidth = Math.round(MARK_HEIGHT * (823 / 1000));
+---
+
+<div {...attrs} class:list={['lockup', className]}>
+  <Mark
+    variant={mark}
+    height={MARK_HEIGHT}
+    alt=""
+    onDark={onDark}
+    tone={tone}
+    loading={loading}
+    sizes={`(width < 768px) ${phoneWidth}px, ${desktopWidth}px`}
+  />
+  <Wordmark layout="stacked" size={TYPE_SIZE} />
+</div>
+
+<style>
+  .lockup {
+    --mark-block-size: 96px;
+    --wordmark-font-size: 32px;
+
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  @media (width < 768px) {
+    .lockup {
+      --mark-block-size: 72px;
+      --wordmark-font-size: 26px;
+
+      gap: var(--space-3);
+    }
+  }
+</style>

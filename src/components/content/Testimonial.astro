@@ -21,6 +21,7 @@ const {
   markColor = 'olive',
   variant = 'dark',
   class: className,
+  'aria-label': ariaLabel,
   ...attrs
 } = Astro.props;
 const href = `/projects/${encodeURIComponent(caseStudy.slug)}/`;
@@ -28,7 +29,7 @@ const href = `/projects/${encodeURIComponent(caseStudy.slug)}/`;
 
 <figure
   {...attrs}
-  aria-label={attrs['aria-label'] ?? testimonialLabels.figureLabel}
+  aria-label={ariaLabel ?? testimonialLabels.figureLabel}
   class:list={['testimonial', className]}
   data-variant={variant}
   data-mark={markColor}

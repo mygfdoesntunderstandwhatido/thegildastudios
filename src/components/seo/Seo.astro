@@ -12,10 +12,7 @@ interface Props {
 const { title, description, caseStudy } = Astro.props;
 const { seo, brand, email } = await getSettings();
 const metadata = await pageMetadata(Astro.url.pathname, title, description);
-const noindex =
-  import.meta.env.DEV ||
-  isPreviewBuild(process.env.CONTEXT) ||
-  !isIndexablePath(Astro.url.pathname);
+const noindex = import.meta.env.DEV || isPreviewBuild() || !isIndexablePath(Astro.url.pathname);
 const origin = new URL('/', seo.siteUrl).href;
 const organizationId = `${origin}#organization`;
 const graph: Record<string, unknown>[] = [

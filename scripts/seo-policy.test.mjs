@@ -35,11 +35,15 @@ test('directory canonicals have exactly one trailing slash', () => {
   assert.equal(pagePath('/404.html'), '/404/');
 });
 
-test('Netlify preview contexts cannot be indexed', () => {
-  assert.equal(isPreviewBuild('production'), false);
-  assert.equal(isPreviewBuild(undefined), false);
-  assert.equal(isPreviewBuild('deploy-preview'), true);
-  assert.equal(isPreviewBuild('branch-deploy'), true);
+test('only main and local builds can be indexed', () => {
+  assert.equal(isPreviewBuild({}), false);
+  assert.equal(isPreviewBuild({ WORKERS_CI_BRANCH: 'main' }), false);
+  assert.equal(isPreviewBuild({ WORKERS_CI_BRANCH: 'claude/50-cloudflare-workers' }), true);
+  assert.equal(isPreviewBuild({ WORKERS_CI_BRANCH: 'content-new-case-study' }), true);
+  assert.equal(isPreviewBuild({ SITE_CONTEXT: 'preview' }), true);
+  assert.equal(isPreviewBuild({ SITE_CONTEXT: 'preview', WORKERS_CI_BRANCH: 'main' }), true);
+  assert.equal(isPreviewBuild({ SITE_CONTEXT: 'production', WORKERS_CI_BRANCH: 'x' }), false);
+  assert.equal(isPreviewBuild({ SITE_CONTEXT: 'unknown' }), true);
 });
 
 test('editor content cannot close the JSON-LD script', () => {

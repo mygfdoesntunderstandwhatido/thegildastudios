@@ -27,8 +27,10 @@
   "send_email": [{ "name": "CONTACT_EMAIL" }],
   "workers_dev": true,
   "preview_urls": true,
-  // Branch Previews use the same settings as production. Secrets are set
-  // separately for Previews (docs/editing.md).
-  "previews": {},
+  // Preview bindings do not inherit production bindings. Secrets are set
+  // separately for Previews Base and existing previews (docs/operations.md).
+  "previews": {
+    "send_email": [{ "name": "CONTACT_EMAIL" }],
+  },
   "observability": { "enabled": true },
 }

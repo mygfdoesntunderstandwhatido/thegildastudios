@@ -1,0 +1,257 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { disclosureLabels } from '../../content/ui/disclosure';
+import { branches, type BranchKey } from '../../lib/branches';
+import { uniqueId } from '../../lib/ids';
+
+interface Props extends HTMLAttributes<'div'> {
+  items: readonly string[];
+  branch: BranchKey;
+  /** Label templates. {n} is replaced with the number of items. */
+  labels?: { show?: string; hide?: string; compact?: string };
+}
+
+const { items, branch, labels = {}, id, class: className, ...attrs } = Astro.props;
+
+const panelId = `${id ?? uniqueId('disclosure')}-panel`;
+const definition = branches[branch];
+const one = items.length === 1;
+const fill = (template: string) => template.replaceAll('{n}', String(items.length));
+const show = fill(labels.show ?? (one ? disclosureLabels.showOne : disclosureLabels.show));
+const hide = fill(labels.hide ?? (one ? disclosureLabels.hideOne : disclosureLabels.hide));
+const compact = fill(
+  labels.compact ?? (one ? disclosureLabels.compactOne : disclosureLabels.compact),
+);
+---
+
+<gilda-disclosure
+  {...attrs}
+  id={id}
+  class:list={['disclosure', className]}
+  style={`--disclosure-color: ${definition.color}; --disclosure-sign: ${definition.foreground}; --disclosure-number: ${definition.label}`}
+>
+  <button class="trigger" type="button" aria-expanded="false" aria-controls={panelId}>
+    <span class="label-show">{show}</span>
+    <span class="label-hide">{hide}</span>
+    <span class="label-compact">{compact}</span>
+    <span class="sign" aria-hidden="true">
+      <span class="sign-closed">{disclosureLabels.closed}</span>
+      <span class="sign-open">{disclosureLabels.open}</span>
+    </span>
+  </button>
+  <p class="static-label">{compact}</p>
+  <div class="panel" id={panelId}>
+    <ol class="items">
+      {items.map((item, index) => (
+        <li class="item">
+          <span class="item-number" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <span class="item-text">{item}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</gilda-disclosure>
+
+<script>
+  class GildaDisclosure extends HTMLElement {
+    private button: HTMLButtonElement | null = null;
+
+    connectedCallback() {
+      this.button = this.querySelector(':scope > .trigger');
+      this.button?.addEventListener('click', this.toggle);
+    }
+
+    disconnectedCallback() {
+      this.button?.removeEventListener('click', this.toggle);
+    }
+
+    private toggle = () => {
+      if (!this.button) return;
+      const expanded = this.button.getAttribute('aria-expanded') !== 'true';
+      this.button.setAttribute('aria-expanded', String(expanded));
+    };
+  }
+
+  if (!customElements.get('gilda-disclosure')) {
+    customElements.define('gilda-disclosure', GildaDisclosure);
+  }
+</script>
+
+<style>
+  .disclosure {
+    --disclosure-rule: color-mix(in srgb, var(--brine) 15%, transparent);
+    --disclosure-duration: 200ms;
+    --sign-size: 28px;
+    --item-column: 40px;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  .trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    inline-size: 100%;
+    min-block-size: var(--space-11);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--brine);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-align: start;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .label-hide,
+  .label-compact,
+  .trigger[aria-expanded='true'] .label-show,
+  .sign-open,
+  .trigger[aria-expanded='true'] .sign-closed {
+    display: none;
+  }
+
+  .trigger[aria-expanded='true'] .label-hide,
+  .trigger[aria-expanded='true'] .sign-open {
+    display: inline;
+  }
+
+  .sign {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--sign-size);
+    block-size: var(--sign-size);
+    border-radius: 50%;
+    background: var(--disclosure-color);
+    color: var(--disclosure-sign);
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .trigger:hover .sign {
+    opacity: var(--hover-opacity);
+  }
+
+  .static-label {
+    display: none;
+    padding-block: var(--space-3);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  /* Collapse by animating the row track, so the closed panel takes no space
+     and stays out of the tab order and the accessibility tree. */
+  .panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--disclosure-duration) ease,
+      visibility var(--disclosure-duration);
+  }
+
+  .trigger[aria-expanded='true'] + .static-label + .panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  .items {
+    min-block-size: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style: none;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: var(--item-column) minmax(0, 1fr);
+    gap: var(--space-2);
+    padding-block: 14px;
+    border-block-start: 1px solid var(--disclosure-rule);
+  }
+
+  .item-number {
+    color: var(--disclosure-number);
+    font: var(--type-label-sm);
+    line-height: 1.9;
+    letter-spacing: var(--tracking-label);
+  }
+
+  .item-text {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  /* Without JavaScript the list stays open and readable. */
+  @media (scripting: none) {
+    .trigger {
+      display: none;
+    }
+
+    .static-label {
+      display: block;
+    }
+
+    .panel {
+      grid-template-rows: 1fr;
+      visibility: visible;
+    }
+  }
+
+  @media (width < 768px) {
+    .disclosure {
+      --item-column: 30px;
+    }
+
+    .trigger {
+      gap: var(--space-3);
+      font-size: 10px;
+    }
+
+    .trigger .label-show,
+    .trigger[aria-expanded='true'] .label-hide {
+      display: none;
+    }
+
+    .label-compact {
+      display: inline;
+    }
+
+    .static-label {
+      font-size: 10px;
+    }
+
+    .item {
+      gap: 6px;
+      padding-block: var(--space-3);
+    }
+
+    .item-number {
+      font-size: 10px;
+    }
+
+    .item-text {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel,
+    .sign {
+      transition: none;
+    }
+  }
+</style>

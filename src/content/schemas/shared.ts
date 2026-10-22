@@ -27,4 +27,7 @@ export const optionalList = <T extends z.ZodType>(item: T) =>
 
 export const link = z.object({ label: text, href: text });
 
-export const meta = z.object({ title: text, description: text });
+/** Empty SEO fields use the defaults in Site settings. */
+export const meta = z
+  .object({ title: optionalText, description: optionalText })
+  .default({ title: undefined, description: undefined });

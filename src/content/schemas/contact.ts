@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { optionalText, text } from './shared';
+import { meta, optionalText, text } from './shared';
 
 const field = z.object({ label: text, hint: optionalText });
 
@@ -10,8 +10,8 @@ const field = z.object({ label: text, hint: optionalText });
 export const contact = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/contact' }),
   schema: z.object({
-    /** Page metadata. Placeholders until the SEO pass (#28). */
-    meta: z.object({ title: text, description: text }),
+    /** Editable metadata; blank fields use Site settings. */
+    meta,
     eyebrow: text,
     headline: text,
     body: text,

@@ -5,19 +5,23 @@ import '../styles/base.css';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import Analytics from '../components/analytics/Analytics.astro';
+import Seo from '../components/seo/Seo.astro';
+import { getSettings } from '../lib/settings';
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  caseStudy?: { name: string };
   /** The site header's ground, or false when a page places it itself (the homepage hero). */
   header?: 'cream' | 'sand' | false;
 }
 
-const { title, description, header = 'cream' } = Astro.props;
+const { title, description, caseStudy, header = 'cream' } = Astro.props;
+const { seo } = await getSettings();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={seo.language}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -44,8 +48,7 @@ const { title, description, header = 'cream' } = Astro.props;
       type="font/woff2"
       crossorigin
     />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <Seo title={title} description={description} caseStudy={caseStudy} />
     <Analytics />
   </head>
   <body>

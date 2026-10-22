@@ -36,6 +36,11 @@ The menu on the left follows the site:
 Change what you need and press **Save**. Each field says what it’s for. A red star means the field
 can’t be left empty, and the admin won’t save until those are filled in.
 
+Page titles and search descriptions are in **Page title and description** on each page and case
+study. Defaults, the live site address and approved public business details are in
+**Site settings → Search and social previews**. See [Search and social previews](seo.md) before
+changing the site address or adding address and phone details.
+
 A few house rules the admin can’t check for you:
 
 - Headlines are in sentence case and usually end with a full stop. No exclamation marks, no emoji.

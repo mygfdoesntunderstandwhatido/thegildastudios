@@ -22,7 +22,12 @@ interface Props {
 const { entry, next } = Astro.props;
 ---
 
-<Base title={entry.data.name} description={entry.data.short} header="sand">
+<Base
+  title={entry.data.meta.title ?? entry.data.name}
+  description={entry.data.meta.description ?? entry.data.short}
+  caseStudy={{ name: entry.data.name }}
+  header="sand"
+>
   <main>
     <CaseStudy entry={entry} next={next} />
   </main>

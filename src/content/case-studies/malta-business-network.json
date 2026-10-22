@@ -173,5 +173,9 @@
         }
       ]
     }
-  ]
+  ],
+  "meta": {
+    "title": "Malta Business Network",
+    "description": "Project and social media management for a network of senior leaders, across dozens of events in Malta and the UK."
+  }
 }

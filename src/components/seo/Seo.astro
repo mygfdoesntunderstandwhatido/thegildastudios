@@ -1,0 +1,96 @@
+---
+import { getSettings } from '../../lib/settings';
+import { pageMetadata } from '../../lib/seo';
+import { isIndexablePath, isPreviewBuild, serializeJsonLd } from '../../lib/seo-policy.mjs';
+
+interface Props {
+  title?: string;
+  description?: string;
+  caseStudy?: { name: string };
+}
+
+const { title, description, caseStudy } = Astro.props;
+const { seo, brand, email } = await getSettings();
+const metadata = await pageMetadata(Astro.url.pathname, title, description);
+const noindex =
+  import.meta.env.DEV ||
+  isPreviewBuild(process.env.CONTEXT) ||
+  !isIndexablePath(Astro.url.pathname);
+const origin = new URL('/', seo.siteUrl).href;
+const organizationId = `${origin}#organization`;
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'Organization',
+    '@id': organizationId,
+    name: brand.name,
+    url: origin,
+    logo: new URL('/icons/logo.png', origin).href,
+    email,
+    ...(seo.socialProfiles.length ? { sameAs: seo.socialProfiles } : {}),
+  },
+  {
+    '@type': 'LocalBusiness',
+    '@id': `${origin}#studio`,
+    name: brand.name,
+    url: origin,
+    image: new URL('/icons/logo.png', origin).href,
+    email,
+    parentOrganization: { '@id': organizationId },
+    areaServed: { '@type': 'Country', name: 'Malta' },
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'MT',
+      ...(seo.locality ? { addressLocality: seo.locality } : {}),
+      ...(seo.streetAddress ? { streetAddress: seo.streetAddress } : {}),
+      ...(seo.postalCode ? { postalCode: seo.postalCode } : {}),
+    },
+    ...(seo.publishedPhone ? { telephone: seo.publishedPhone } : {}),
+    ...(seo.socialProfiles.length ? { sameAs: seo.socialProfiles } : {}),
+  },
+];
+if (caseStudy) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: seo.homeLabel, item: origin },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: seo.projectsLabel,
+        item: new URL('/projects/', origin).href,
+      },
+      { '@type': 'ListItem', position: 3, name: caseStudy.name, item: metadata.canonical },
+    ],
+  });
+}
+---
+
+<title>{metadata.title}</title>
+<meta name="description" content={metadata.description} />
+<link rel="canonical" href={metadata.canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={brand.name} />
+<meta property="og:locale" content={seo.locale} />
+<meta property="og:title" content={metadata.title} />
+<meta property="og:description" content={metadata.description} />
+<meta property="og:url" content={metadata.canonical} />
+<meta property="og:image" content={metadata.image} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={metadata.title} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={metadata.title} />
+<meta name="twitter:description" content={metadata.description} />
+<meta name="twitter:image" content={metadata.image} />
+<meta name="twitter:image:alt" content={metadata.title} />
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={serializeJsonLd({ '@context': 'https://schema.org', '@graph': graph })}
+/>

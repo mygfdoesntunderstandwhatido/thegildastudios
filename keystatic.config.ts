@@ -70,10 +70,14 @@ const list = (label: string, itemLabel: string, description?: string) =>
 const meta = () =>
   fields.object(
     {
-      title: required('Browser tab title'),
-      description: required('Search result description', {
+      title: optional('Browser tab title', {
+        description:
+          'Leave empty for the default title in Site settings. The studio name is added automatically.',
+      }),
+      description: optional('Search result description', {
         multiline: true,
-        description: 'One or two sentences that search engines can show under the title.',
+        description:
+          'One or two sentences for search and social previews. Leave empty for the description in Site settings.',
       }),
     },
     { label: 'Page title and description' },
@@ -271,6 +275,7 @@ const caseStudies = collection({
           'The end of the page address: /projects/web-address/. Changing it later breaks old links.',
       },
     }),
+    meta: meta(),
     order: order('Where it sits on the Projects page and in the Next project loop. 1 comes first.'),
     draft: fields.checkbox({
       label: 'Draft',
@@ -819,6 +824,77 @@ const settings = singleton({
   path: 'src/content/settings/site',
   format: 'json',
   schema: {
+    seo: fields.object(
+      {
+        siteUrl: fields.text({
+          label: 'Public site address',
+          description:
+            'The live HTTPS origin, with no path. Change to https://www.thegildastudios.com when the domain is connected. Preview domains never belong here.',
+          validation: {
+            isRequired: true,
+            pattern: {
+              regex: /^https:\/\/[^/?#@:]+(?::\d+)?\/?$/,
+              message: 'Use an HTTPS origin without a path, query or fragment.',
+            },
+          },
+        }),
+        defaultTitle: required('Default page title'),
+        homeTitle: required('Default homepage title'),
+        defaultDescription: required('Default search description', { multiline: true }),
+        language: fields.select({
+          label: 'Page language',
+          description: 'English as used in Malta, pending confirmation.',
+          options: [
+            { label: 'English (Malta)', value: 'en-MT' },
+            { label: 'English', value: 'en' },
+          ],
+          defaultValue: 'en-MT',
+        }),
+        locale: fields.select({
+          label: 'Social preview locale',
+          description: 'Use the locale matching the page language.',
+          options: [
+            { label: 'English (Malta)', value: 'en_MT' },
+            { label: 'English (UK)', value: 'en_GB' },
+          ],
+          defaultValue: 'en_MT',
+        }),
+        socialProfiles: fields.array(
+          fields.text({
+            label: 'Profile address',
+            description: 'A confirmed public HTTPS social profile for this studio.',
+            validation: {
+              isRequired: true,
+              pattern: {
+                regex: /^https:\/\/[^\s]+$/,
+                message: 'Use a full HTTPS profile address.',
+              },
+            },
+          }),
+          {
+            label: 'Social profiles',
+            description: 'Leave empty until Chris supplies them.',
+            itemLabel: (props) => props.value || 'Profile',
+          },
+        ),
+        locality: optional('Public locality', {
+          description: 'Leave empty until Chris confirms which locality may be published.',
+        }),
+        streetAddress: optional('Public street address', {
+          description: 'Only enter an address approved for publication.',
+        }),
+        postalCode: optional('Public postal code'),
+        publishedPhone: optional('Confirmed public phone', {
+          description: 'Leave empty while the contact number is a placeholder. Include +356.',
+        }),
+        homeLabel: required('Home breadcrumb label'),
+        projectsLabel: required('Projects breadcrumb label'),
+      },
+      {
+        label: 'Search and social previews',
+        description: 'Defaults, production URLs and public business details used in metadata.',
+      },
+    ),
     nav: fields.array(navLink, {
       label: 'Main navigation',
       description: 'The header links, in order.',

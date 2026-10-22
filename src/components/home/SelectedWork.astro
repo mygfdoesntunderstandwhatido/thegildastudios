@@ -1,0 +1,189 @@
+---
+import { getEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import placeholder from '../../assets/graphics/photo-placeholder-feed.png';
+import BranchDots from '../branch/BranchDots.astro';
+import SectionHeader from '../layout/SectionHeader.astro';
+
+const home = await getEntry('homepage', 'home');
+if (!home) throw new Error('Missing the homepage singleton: src/content/homepage/home.json');
+const { work } = home.data;
+const headingId = 'selected-work-title';
+const cards = work.cards.map((card) => ({
+  ...card,
+  href: `/projects/${encodeURIComponent(card.slug)}/`,
+}));
+---
+
+<section class="work band band--cream" aria-labelledby={headingId}>
+  <div class="container work-inner">
+    <SectionHeader id={headingId} number="01" title={work.label} link={work.link} />
+    <ul class="cards">
+      {cards.map((card) => (
+        <li>
+          <a class="card" href={card.href}>
+            <Picture
+              class="card-image"
+              src={placeholder}
+              alt={work.imageAlt}
+              formats={['avif', 'webp']}
+              fallbackFormat="png"
+              widths={[354, 708, 1080]}
+              sizes="(width < 768px) calc(100vw - 48px), min(368px, calc((100vw - 176px) / 3))"
+            />
+            <span class="meta">
+              <BranchDots branches={card.branches} />
+              <span class="sector">{card.sector}</span>
+            </span>
+            <h3 class="title">{card.title}</h3>
+            <span class="card-link">{work.cardLink}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="all-link" href={work.link.href}>
+      {work.link.label}
+    </a>
+  </div>
+</section>
+
+<style>
+  .work {
+    --work-padding: 88px;
+    --work-gap: 48px;
+    --card-gap: 14px;
+    --card-dot-gap: 10px;
+    --card-title-size: var(--display-30);
+    --card-title-leading: 1.08;
+
+    padding-block: var(--work-padding);
+  }
+
+  .work-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--work-gap);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    color: var(--brine);
+    text-decoration: none;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .card:hover {
+    color: var(--brine);
+    opacity: var(--hover-opacity);
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .card :global(.card-image) {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: var(--card-dot-gap);
+  }
+
+  .sector {
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .title {
+    font-size: var(--card-title-size);
+    line-height: var(--card-title-leading);
+    text-wrap: pretty;
+  }
+
+  .card-link,
+  .all-link {
+    color: var(--olive);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .all-link {
+    display: none;
+    align-self: flex-start;
+    padding-block: var(--space-3);
+  }
+
+  @media (width < 768px) {
+    .work {
+      --work-padding: 48px;
+      --card-gap: var(--space-3);
+      --card-dot-gap: var(--space-2);
+      --card-title-size: var(--display-26);
+      --card-title-leading: 1.1;
+    }
+
+    .work-inner,
+    .cards {
+      gap: var(--space-7);
+    }
+
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The phone card uses 4:3. */
+    .card :global(.card-image) {
+      aspect-ratio: 4 / 3;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Phone dots are 9px with a 4px gap. */
+    .meta :global(.branch-dots) {
+      gap: var(--space-1);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- See above. */
+    .meta :global(.branch-dot) {
+      inline-size: 9px;
+      block-size: 9px;
+    }
+
+    .sector {
+      font-size: 10px;
+    }
+
+    .card-link {
+      display: none;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The phone link sits under the cards instead. */
+    .work :global(.section-link) {
+      display: none;
+    }
+
+    .all-link {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+  }
+</style>

@@ -1,10 +1,23 @@
 ---
-// Placeholder until the homepage is assembled in #19.
+import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import TestimonialRotator from '../components/content/TestimonialRotator.astro';
+import Hero from '../components/home/Hero.astro';
+import OriginStory from '../components/home/OriginStory.astro';
+import SelectedWork from '../components/home/SelectedWork.astro';
+
+const home = await getEntry('homepage', 'home');
+if (!home) throw new Error('Missing the homepage singleton: src/content/homepage/home.json');
+const testimonials = (await getCollection('testimonials'))
+  .filter((entry) => entry.data.homeOrder !== undefined)
+  .sort((a, b) => (a.data.homeOrder ?? 0) - (b.data.homeOrder ?? 0));
 ---
 
-<Base title="The Gilda Studios">
+<Base title={home.data.meta.title} description={home.data.meta.description} header={false}>
   <main>
-    <h1>The Gilda Studios</h1>
+    <Hero />
+    <SelectedWork />
+    <TestimonialRotator testimonials={testimonials} />
+    <OriginStory />
   </main>
 </Base>

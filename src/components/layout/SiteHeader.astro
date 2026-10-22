@@ -235,7 +235,6 @@ const menuId = uniqueId('site-menu');
 
   .nav-link {
     display: block;
-    padding-block-end: var(--space-1);
     color: var(--brine);
     font-size: 14px;
     font-weight: 500;
@@ -249,6 +248,7 @@ const menuId = uniqueId('site-menu');
 
   .nav-link[aria-current],
   .nav-link[aria-current]:hover {
+    padding-block-end: var(--space-1);
     box-shadow: inset 0 calc(var(--nav-current-rule) * -1) 0 var(--current-rule);
     color: var(--current-text);
   }

@@ -19,7 +19,7 @@ OpenAI's docs on cloud environments: https://developers.openai.com/codex/cloud/e
 
 ## Starting a task
 
-Codex cloud doesn't read GitHub issues itself, so paste the issue into the task. Only start issues labelled `agent:codex` and `status:ready`, and add `status:in-progress` on GitHub when you launch one.
+Codex cloud doesn't read GitHub issues itself, so paste the issue into the task. Only start issues labelled `agent:codex` and `status:ready`, and add `status:in-progress` on GitHub when you launch one. The exception is an issue whose open dependencies are all done in the same batch: it can join that batch's PR (see `AGENTS.md`, step 1).
 
 Prompt template:
 

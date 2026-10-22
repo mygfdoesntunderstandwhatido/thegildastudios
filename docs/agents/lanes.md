@@ -23,7 +23,7 @@ The live source of truth is GitHub: the `status:ready` label means every depende
 | 13   | #31           | —                  |
 | 14   | #33           | —                  |
 
-A wave can start early if its own dependencies are already closed. `status:ready` tracks this per issue.
+A wave can start early if its own dependencies are already closed. `status:ready` tracks this per issue. A batch PR can also run on into the next wave: if it already covers an issue's open dependencies in the same lane, that issue joins the same PR (`AGENTS.md`, step 1).
 
 ## Files to watch for conflicts in the same wave
 

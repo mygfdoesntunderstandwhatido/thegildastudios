@@ -1,7 +1,7 @@
 {
-  "measuredAt": "2026-10-22T14:42:08.809Z",
+  "measuredAt": "2026-10-22T16:42:03.216Z",
   "lighthouseVersion": "12.6.1",
-  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
   "formFactor": "mobile",
   "throttlingMethod": "simulate",
   "throttling": {
@@ -18,13 +18,13 @@
       "runs": 3,
       "scores": {
         "performance": 99,
-        "accessibility": 96,
+        "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1962,
+      "lcpMs": 1957,
       "cls": 0,
-      "lcpRangeMs": [1964, 1957, 1962],
+      "lcpRangeMs": [1734, 1957, 1959],
       "clsValues": [0, 0, 0]
     },
     {
@@ -32,13 +32,13 @@
       "runs": 3,
       "scores": {
         "performance": 100,
-        "accessibility": 95,
+        "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "lcpMs": 1806,
       "cls": 0,
-      "lcpRangeMs": [1881, 1804, 1806],
+      "lcpRangeMs": [1732, 1806, 1807],
       "clsValues": [0, 0, 0]
     },
     {
@@ -46,13 +46,13 @@
       "runs": 3,
       "scores": {
         "performance": 99,
-        "accessibility": 96,
+        "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1955,
+      "lcpMs": 1880,
       "cls": 0,
-      "lcpRangeMs": [1955, 1954, 1957],
+      "lcpRangeMs": [1880, 1881, 1878],
       "clsValues": [0, 0, 0]
     },
     {
@@ -64,23 +64,23 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1657,
+      "lcpMs": 1805,
       "cls": 0,
-      "lcpRangeMs": [1658, 1657, 1656],
+      "lcpRangeMs": [1805, 1808, 1803],
       "clsValues": [0, 0, 0]
     },
     {
       "path": "/projects/cs-butcher/",
       "runs": 3,
       "scores": {
-        "performance": 99,
+        "performance": 100,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1883,
+      "lcpMs": 1655,
       "cls": 0,
-      "lcpRangeMs": [1884, 1883, 1882],
+      "lcpRangeMs": [1655, 1804, 1654],
       "clsValues": [0, 0, 0]
     },
     {
@@ -92,9 +92,9 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1580,
+      "lcpMs": 1653,
       "cls": 0,
-      "lcpRangeMs": [1580, 1655, 1580],
+      "lcpRangeMs": [1653, 1653, 1655],
       "clsValues": [0, 0, 0]
     }
   ]

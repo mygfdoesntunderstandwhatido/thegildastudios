@@ -71,7 +71,8 @@ Projects, CS Butcher and Contact. Lighthouse's standard mobile simulated Slow
 4G profile is used (150ms RTT, 1,638.4 Kbps throughput and 4x CPU slowdown).
 The assertions use the median of the three runs per page:
 
-- Performance, Accessibility, Best Practices and SEO each at least 95.
+- Performance, Best Practices and SEO each at least 95, and Accessibility at
+  100 (#29).
 - LCP at most 2,000ms and CLS exactly zero. Results are reported with the
   numeric CLS value, without rounding away small shifts.
 - Transfer and request-count limits from `lighthouse-budgets.json`, applied
@@ -91,12 +92,12 @@ report’s Performance score to 94; the 95-point gate rejected it with exit code
 
 | Page                    | Performance | Accessibility | Best Practices | SEO | Median LCP | CLS  |
 | ----------------------- | ----------- | ------------- | -------------- | --- | ---------- | ---- |
-| `/`                     | 99          | 96            | 100            | 100 | 1.962s     | 0.00 |
-| `/about/`               | 100         | 95            | 100            | 100 | 1.806s     | 0.00 |
-| `/services/`            | 99          | 96            | 100            | 100 | 1.955s     | 0.00 |
-| `/projects/`            | 100         | 100           | 100            | 100 | 1.657s     | 0.00 |
-| `/projects/cs-butcher/` | 99          | 100           | 100            | 100 | 1.883s     | 0.00 |
-| `/contact/`             | 100         | 100           | 100            | 100 | 1.580s     | 0.00 |
+| `/`                     | 99          | 100           | 100            | 100 | 1.957s     | 0.00 |
+| `/about/`               | 100         | 100           | 100            | 100 | 1.806s     | 0.00 |
+| `/services/`            | 99          | 100           | 100            | 100 | 1.880s     | 0.00 |
+| `/projects/`            | 100         | 100           | 100            | 100 | 1.805s     | 0.00 |
+| `/projects/cs-butcher/` | 100         | 100           | 100            | 100 | 1.655s     | 0.00 |
+| `/contact/`             | 100         | 100           | 100            | 100 | 1.653s     | 0.00 |
 
 The committed [Lighthouse results](qa/30-lighthouse.json) record the tool/browser,
 throttling profile, three-run medians and individual LCP/CLS values. The
@@ -117,7 +118,6 @@ Filters and disclosures intentionally change content height after input; their
 control anchors remain stable. These checks do not claim that intentional
 content expansion leaves the entire page at a fixed height.
 
-Existing olive-on-sand contrast issues produce Accessibility scores of 95–96
-on home/About/Services. Projects, the case study and Contact score 100 in the
-audited browser. These are recorded defects for #29, not an AA certification.
-No contrast colors were changed in this performance work.
+The accessibility pass (#29) fixed the olive-on-sand contrast that held
+home, About and Services at 95–96. Every audited page now scores 100, and the
+gate requires it. See [the accessibility record](a11y.md).

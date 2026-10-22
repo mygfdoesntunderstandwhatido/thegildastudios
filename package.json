@@ -19,7 +19,8 @@
     "format:check": "prettier --check .",
     "test:seo": "node --test scripts/seo-policy.test.mjs && node scripts/verify-seo.mjs",
     "serve:performance": "node scripts/serve-performance.mjs",
-    "test:performance": "node scripts/verify-performance.mjs && playwright test",
+    "test:performance": "node scripts/verify-performance.mjs && playwright test tests/performance",
+    "test:a11y": "playwright test tests/a11y",
     "lighthouse": "lhci autorun && node scripts/report-lighthouse.mjs"
   },
   "dependencies": {
@@ -41,6 +42,7 @@
     "@playwright/test": "^1.64.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "axe-core": "^4.14.0",
     "eslint": "^10.13.0",
     "eslint-plugin-astro": "^3.2.1",
     "globals": "^17.13.0",

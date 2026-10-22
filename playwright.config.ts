@@ -7,7 +7,7 @@ const executablePath =
 if (!executablePath) throw new Error('Set CHROME_PATH to a local Chrome or Chromium executable.');
 
 export default defineConfig({
-  testDir: './tests/performance',
+  testDir: './tests',
   fullyParallel: false,
   workers: 1,
   reporter: 'list',

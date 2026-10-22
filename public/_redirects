@@ -1,6 +1,8 @@
-# Keep legacy work links, including case studies, in one hop to the slash URL.
-# Workers preserves query strings. The first matching rule wins.
-/work           /projects/         301
-/work/:slug     /projects/:slug/   301
-/work/:slug/    /projects/:slug/   301
-/work/*         /projects/:splat   301
+# Keep legacy work links, including case studies. Exact paths come first, so
+# the case studies reach their slash URL in one hop; anything else under /work
+# falls through to the splat. Workers preserves query strings.
+/work                          /projects/                          301
+/work/cs-butcher               /projects/cs-butcher/               301
+/work/malta-business-network   /projects/malta-business-network/   301
+/work/drapp-fuq-drapp          /projects/drapp-fuq-drapp/          301
+/work/*                        /projects/:splat                    301

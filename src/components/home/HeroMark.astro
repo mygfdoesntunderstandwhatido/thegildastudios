@@ -60,14 +60,18 @@ const sizes = '(width < 768px) 300px, min(708px, 55.3vw)';
       aria-hidden="true"
       style={`--piece-origin: ${piece.origin}`}
     >
-      <Picture
-        src={piece.image}
-        alt=""
-        formats={['avif', 'webp']}
-        fallbackFormat="png"
-        widths={widths}
-        sizes={sizes}
-      />
+      <template data-piece-image>
+        <Picture
+          src={piece.image}
+          alt=""
+          formats={['avif', 'webp']}
+          fallbackFormat="png"
+          widths={widths}
+          sizes={sizes}
+          loading="eager"
+          fetchpriority="low"
+        />
+      </template>
     </span>
   ))}
   <span class="hit" aria-hidden="true" data-hit></span>
@@ -130,7 +134,14 @@ const sizes = '(width < 768px) 300px, min(708px, 55.3vw)';
 
     private render = (branch: ActiveBranch) => {
       if (branch === null) this.removeAttribute('data-active');
-      else this.dataset.active = String(branch);
+      else {
+        // Invisible overlays cost no image requests until their first use.
+        const template = this.querySelector<HTMLTemplateElement>(
+          `[data-piece="${branch}"] [data-piece-image]`,
+        );
+        template?.replaceWith(template.content.cloneNode(true));
+        this.dataset.active = String(branch);
+      }
       this.controls.forEach((control, index) => {
         control.setAttribute('aria-pressed', String(index === branch));
       });

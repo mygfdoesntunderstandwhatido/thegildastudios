@@ -13,6 +13,8 @@ import { isIndexablePath } from './src/lib/seo-policy.mjs';
 export default defineConfig({
   output: 'static',
   site: settings.seo.siteUrl,
+  // Each page has a small stylesheet. Inlining avoids a blocking CSS round trip.
+  build: { inlineStylesheets: 'always' },
   // Images stay optimised at build time, as before the adapter.
   adapter: netlify({ imageCDN: false }),
   integrations: [

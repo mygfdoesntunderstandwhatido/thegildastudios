@@ -25,8 +25,7 @@ const { seo } = await getSettings();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Preload only the above-the-fold fonts: the hero headline, body copy, and the
-         expanded button face used by Book a chat in every header. -->
+    <!-- Prioritise display and body type. Other faces load through CSS when used. -->
     <link
       rel="preload"
       href="/fonts/gilda-display-400.woff2"
@@ -37,13 +36,6 @@ const { seo } = await getSettings();
     <link
       rel="preload"
       href="/fonts/archivo-400-600.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/archivo-expanded-600.woff2"
       as="font"
       type="font/woff2"
       crossorigin

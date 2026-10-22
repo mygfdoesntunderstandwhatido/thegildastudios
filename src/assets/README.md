@@ -42,7 +42,9 @@ Upscaling cannot add detail, so all output is capped at native resolution. The
 
 Import `mark-piece-map.png?url` directly for the canvas hit test. Never pass it
 through an image service, resize it, or recompress it. Its original bytes and
-823 × 1000 coordinate space are preserved. Masks remain original PNGs for CSS.
+823 × 1000 coordinate space are preserved. Masks keep their original PNG sources. In #30, `mask-engraved.webp` adds a native-size
+lossless WebP for CSS image-set, with the original PNG as a format fallback. Its
+alpha channel is byte-identical to the original mask.
 
 ## Validation and review
 

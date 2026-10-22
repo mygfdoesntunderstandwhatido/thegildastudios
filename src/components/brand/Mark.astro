@@ -96,6 +96,10 @@ const monogramVariant = variant === 'single' ? 'outline' : onDark ? 'tile' : 'da
   .mark[data-variant='single'] {
     background: var(--mark-fill);
     mask: url('../../assets/logos/mask-engraved.png') center / contain no-repeat;
+    mask-image: image-set(
+      url('../../assets/logos/mask-engraved.webp') type('image/webp'),
+      url('../../assets/logos/mask-engraved.png') type('image/png')
+    );
   }
 
   /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */

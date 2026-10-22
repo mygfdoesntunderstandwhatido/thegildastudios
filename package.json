@@ -17,7 +17,10 @@
     "lint:css": "stylelint \"src/**/*.{css,astro}\" --allow-empty-input",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:seo": "node --test scripts/seo-policy.test.mjs && node scripts/verify-seo.mjs"
+    "test:seo": "node --test scripts/seo-policy.test.mjs && node scripts/verify-seo.mjs",
+    "serve:performance": "node scripts/serve-performance.mjs",
+    "test:performance": "node scripts/verify-performance.mjs && playwright test",
+    "lighthouse": "lhci autorun && node scripts/report-lighthouse.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.10",
@@ -34,6 +37,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.64.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^10.13.0",
@@ -42,6 +47,7 @@
     "postcss-html": "^2.0.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.1",
+    "smol-toml": "^1.9.1",
     "stylelint": "^17.16.0",
     "stylelint-config-html": "^2.0.0",
     "stylelint-config-standard": "^40.0.0",

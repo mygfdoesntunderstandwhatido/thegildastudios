@@ -7,3 +7,8 @@ dist/
 # Keystatic GitHub App credentials (docs/editing.md). Never commit them.
 .env
 .env.*
+
+# Local performance and browser test artifacts.
+.lighthouseci/
+test-results/
+playwright-report/

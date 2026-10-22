@@ -2,12 +2,16 @@
 import '../styles/fonts.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+
 interface Props {
   title: string;
   description?: string;
+  /** The site header's ground, or false when a page places it itself (the homepage hero). */
+  header?: 'cream' | 'sand' | false;
 }
 
-const { title, description } = Astro.props;
+const { title, description, header = 'cream' } = Astro.props;
 ---
 
 <!doctype html>
@@ -15,7 +19,8 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Preload only the above-the-fold fonts: the hero headline and body copy. -->
+    <!-- Preload only the above-the-fold fonts: the hero headline, body copy, and the
+         expanded button face used by Book a chat in every header. -->
     <link
       rel="preload"
       href="/fonts/gilda-display-400.woff2"
@@ -30,10 +35,18 @@ const { title, description } = Astro.props;
       type="font/woff2"
       crossorigin
     />
+    <link
+      rel="preload"
+      href="/fonts/archivo-expanded-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
   </head>
   <body>
+    {header && <SiteHeader ground={header} />}
     <slot />
   </body>
 </html>

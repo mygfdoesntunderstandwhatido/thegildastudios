@@ -1,8 +1,8 @@
 # Shared components
 
 All visible copy is supplied by props or slots from typed data in `src/content`.
-The components use Astro and scoped CSS. Only toggle chips, disclosures and the
-testimonial rotator ship JavaScript.
+The components use Astro and scoped CSS. Only toggle chips, disclosures, the
+testimonial rotator and the mobile menu, the hero mark and the branch strip ship JavaScript.
 
 ## Button (#7)
 
@@ -121,6 +121,41 @@ It pauses on hover, focus within, the pause control and hidden tabs, and never
 runs under reduced motion. Dot changes made by a visitor are announced politely.
 Copy lives in `src/content/ui/testimonial-rotator.ts`.
 
+## SiteHeader (#9)
+
+`layout/SiteHeader.astro` reads the nav, the booking link and the email from
+the `settings` singleton (`src/content/settings/site.json`). `ground` is
+`cream` (the homepage) or `sand` (About, Services and Projects). `currentPath`
+defaults to the page URL. An exact match gets `aria-current="page"`, and a
+section ancestor (a case study under `/projects/`) gets `aria-current="true"`.
+Both use olive, or the branch colours for Plan, Build and Grow. `Base.astro`
+renders the header; pass `header={false}` to place it yourself, as the homepage
+hero will (#15).
+
+From 960px up the header shows the full nav. Below that a MENU toggle opens a
+native modal `<dialog>`: the rest of the page becomes inert, focus is kept
+inside, Esc closes it, focus returns to the toggle, and the page doesn't
+scroll. MENU and CLOSE share one grid cell, so nothing shifts. Without
+JavaScript the links wrap under the name.
+
+## Hero, HeroMark and BranchStrip (#15, #17)
+
+`home/Hero.astro` is the dark homepage hero. It places `SiteHeader` on top, so
+the page uses `Base` with `header={false}`. Its copy comes from the `homepage`
+singleton, and the booking button from `settings`.
+
+`home/HeroMark.astro` stacks the base mark and the three piece images, and
+hit-tests the pointer against `mark-piece-map.png`. The map loads on first
+pointer contact. Three keyboard buttons, clipped to the design polygons, give
+each piece focus, `aria-pressed` and a polygon focus outline drawn in SVG.
+
+`home/BranchStrip.astro` is the three-column strip, with copy from the
+`branches` collection and colours from `branches.ts`. Below 768px it becomes
+the static stacked list.
+
+The mark and the strip share state through `src/lib/branch-focus.ts`, which
+also dispatches a `gilda:branch-focus` event on `document`.
+
 ## Previews
 
 - `/dev/button/`
@@ -131,6 +166,8 @@ Copy lives in `src/content/ui/testimonial-rotator.ts`.
 - `/dev/brand/`
 - `/dev/disclosure/`
 - `/dev/testimonial-rotator/`
+- `/dev/header/`
+- `/dev/hero/`
 
 Each preview has its own page and reads typed specimen copy from
 `src/content/dev`. The primitive previews put light-only/dark-only variants on

@@ -1,0 +1,19 @@
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
+
+// A singleton: the only entry is src/content/homepage/home.json.
+export const homepage = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/homepage' }),
+  schema: z.object({
+    hero: z.object({
+      eyebrow: z.string(),
+      /** The shorter eyebrow on phone. */
+      eyebrowShort: z.string(),
+      title: z.string(),
+      body: z.string(),
+      work: z.object({ label: z.string(), labelShort: z.string(), href: z.string() }),
+      markAlt: z.string(),
+    }),
+  }),
+});

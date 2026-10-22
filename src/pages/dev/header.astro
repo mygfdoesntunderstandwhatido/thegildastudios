@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import Label from '../../components/core/Label.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import { headerPreview as content } from '../../content/dev/header';
+---
+
+<Base title={content.title}>
+  <main>
+    <section class="band band--cream band--compact" aria-labelledby="header-title">
+      <div class="container stack">
+        <h1 id="header-title">{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </section>
+    {content.samples.map((sample) => (
+      <section class:list={['sample', 'band', sample.band]} aria-labelledby={`sample-${sample.id}`}>
+        <div class="container">
+          <Label
+            as="h2"
+            id={`sample-${sample.id}`}
+            tone={sample.band === 'band--brine' ? 'on-dark' : 'muted'}
+          >
+            {sample.label}
+          </Label>
+        </div>
+        <SiteHeader ground={sample.ground} currentPath={sample.currentPath} />
+      </section>
+    ))}
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .sample {
+    display: grid;
+    gap: var(--space-6);
+  }
+</style>

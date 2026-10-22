@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/home/Hero.astro';
+import { heroPreview as content } from '../../content/dev/hero';
+---
+
+<Base title={content.title} header={false}>
+  <main>
+    <Hero />
+    <section class="band band--cream band--compact" aria-labelledby="hero-notes">
+      <div class="container stack">
+        <h2 id="hero-notes">{content.heading}</h2>
+        <p>{content.intro}</p>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-4);
+  }
+</style>

@@ -1,0 +1,421 @@
+---
+import { getEntry } from 'astro:content';
+import { headerLabels } from '../../content/ui/header';
+import { branches } from '../../lib/branches';
+import { uniqueId } from '../../lib/ids';
+import BranchDot from '../branch/BranchDot.astro';
+import Wordmark from '../brand/Wordmark.astro';
+import Button from '../core/Button.astro';
+
+interface Props {
+  /** Homepage artboards use Cream; About, Services and Projects use Sand. */
+  ground?: 'cream' | 'sand';
+  /** Path used to mark the current page. Defaults to the page being rendered. */
+  currentPath?: string;
+}
+
+const { ground = 'cream', currentPath = Astro.url.pathname } = Astro.props;
+const site = await getEntry('settings', 'site');
+if (!site) throw new Error('Missing the settings singleton: src/content/settings/site.json');
+const { nav, booking, email } = site.data;
+
+const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+const here = withSlash(currentPath);
+const links = nav.map((item) => {
+  const target = withSlash(item.href.split('#')[0] || '/');
+  const current: 'page' | 'true' | undefined =
+    target === here ? 'page' : target !== '/' && here.startsWith(target) ? 'true' : undefined;
+  const branch = item.branch ? branches[item.branch] : undefined;
+  return {
+    ...item,
+    current,
+    style: `--current-text: ${branch?.label ?? 'var(--olive)'}; --current-rule: ${branch?.color ?? 'var(--olive)'}`,
+  };
+});
+const menuId = uniqueId('site-menu');
+---
+
+<header class="site-header strip" data-ground={ground}>
+  <div class="container container--header bar">
+    <a class="home" href="/" aria-label={headerLabels.home}>
+      <Wordmark class="home-wordmark" />
+    </a>
+    <nav class="nav" aria-label={headerLabels.nav}>
+      <ul class="nav-list">
+        {links.map((link) => (
+          <li>
+            <a class="nav-link" href={link.href} aria-current={link.current} style={link.style}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <Button class="booking" variant="anchovy" size="sm" href={booking.href}>
+      {booking.label}
+    </Button>
+    <gilda-site-menu class="menu">
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls={menuId}
+        data-menu-toggle
+      >
+        <span class="toggle-label toggle-open">{headerLabels.menu}</span>
+        <span class="toggle-label toggle-close">{headerLabels.close}</span>
+      </button>
+      <dialog
+        id={menuId}
+        class="menu-dialog"
+        aria-label={headerLabels.menuTitle}
+        data-ground={ground}
+      >
+        <div class="strip">
+          <div class="container container--header bar">
+            <a class="home" href="/" aria-label={headerLabels.home}>
+              <Wordmark class="home-wordmark" />
+            </a>
+            <button
+              class="menu-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls={menuId}
+              data-menu-close
+            >
+              <span class="toggle-label toggle-open">{headerLabels.menu}</span>
+              <span class="toggle-label toggle-close">{headerLabels.close}</span>
+            </button>
+          </div>
+        </div>
+        <div class="container container--header panel">
+          <nav aria-label={headerLabels.nav}>
+            <ul class="menu-list">
+              {links.map((link) => (
+                <li>
+                  <a
+                    class="menu-link"
+                    href={link.href}
+                    aria-current={link.current}
+                    style={link.style}
+                    data-menu-link
+                  >
+                    {link.label}
+                    {link.branch && <BranchDot branch={link.branch} size={12} />}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <Button class="menu-booking" variant="anchovy" href={booking.href}>
+            {booking.label}
+          </Button>
+          <a class="menu-email" href={`mailto:${email}`}>
+            {email}
+          </a>
+        </div>
+      </dialog>
+    </gilda-site-menu>
+  </div>
+</header>
+
+<script>
+  const FOCUSABLE = 'a[href], button:not([disabled])';
+
+  class GildaSiteMenu extends HTMLElement {
+    private toggle: HTMLButtonElement | null = null;
+    private dialog: HTMLDialogElement | null = null;
+    private desktop = window.matchMedia('(width >= 960px)');
+
+    connectedCallback() {
+      this.toggle = this.querySelector('[data-menu-toggle]');
+      this.dialog = this.querySelector('dialog');
+      this.toggle?.addEventListener('click', this.open);
+      this.dialog?.querySelector('[data-menu-close]')?.addEventListener('click', this.close);
+      this.dialog?.addEventListener('close', this.onClose);
+      this.dialog?.addEventListener('keydown', this.trapFocus);
+      // Following a link to a section on the current page closes the menu.
+      this.dialog?.querySelectorAll('[data-menu-link]').forEach((link) => {
+        link.addEventListener('click', this.close);
+      });
+      this.desktop.addEventListener('change', this.close);
+    }
+
+    disconnectedCallback() {
+      this.desktop.removeEventListener('change', this.close);
+    }
+
+    private open = () => {
+      if (!this.dialog || !this.toggle) return;
+      this.dialog.showModal();
+      this.toggle.setAttribute('aria-expanded', 'true');
+      this.dialog.querySelector<HTMLElement>('[data-menu-link]')?.focus();
+    };
+
+    private close = () => {
+      if (this.dialog?.open) this.dialog.close();
+    };
+
+    private onClose = () => {
+      if (!this.toggle) return;
+      this.toggle.setAttribute('aria-expanded', 'false');
+      this.toggle.focus();
+    };
+
+    // Keep Tab and Shift+Tab inside the open menu rather than the browser's own controls.
+    private trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || !this.dialog) return;
+      const items = [...this.dialog.querySelectorAll<HTMLElement>(FOCUSABLE)];
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+  }
+
+  if (!customElements.get('gilda-site-menu')) {
+    customElements.define('gilda-site-menu', GildaSiteMenu);
+  }
+</script>
+
+<style>
+  .strip {
+    --header-ground: var(--cream);
+    --header-wordmark: 26px;
+    --header-pad: var(--space-5);
+    --nav-current-rule: 2px;
+    --focus-color: var(--brine);
+
+    border-block-end: 1px solid var(--rule-light-faint);
+    background: var(--header-ground);
+    color: var(--brine);
+  }
+
+  [data-ground='sand'] .strip,
+  .strip[data-ground='sand'] {
+    --header-ground: var(--sand);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-block: var(--header-pad);
+  }
+
+  .home,
+  .home:hover {
+    flex: none;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .home-wordmark {
+    --wordmark-font-size: var(--header-wordmark);
+  }
+
+  .nav-list,
+  .menu-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-8);
+  }
+
+  .nav-link {
+    display: block;
+    color: var(--brine);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .nav-link:hover {
+    color: var(--olive);
+  }
+
+  .nav-link[aria-current],
+  .nav-link[aria-current]:hover {
+    padding-block-end: var(--space-1);
+    box-shadow: inset 0 calc(var(--nav-current-rule) * -1) 0 var(--current-rule);
+    color: var(--current-text);
+  }
+
+  .booking {
+    flex: none;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  /* Both labels share one grid cell, so MENU and CLOSE keep the same width
+     and the copy in the open menu lines up with the toggle. */
+  .menu-toggle {
+    display: inline-grid;
+    place-items: center end;
+    min-block-size: var(--space-11);
+    margin-block: -4.5px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--brine);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-running);
+    cursor: pointer;
+  }
+
+  .toggle-label {
+    grid-area: 1 / 1;
+  }
+
+  .menu-toggle[aria-expanded='true'] .toggle-open,
+  .menu-toggle[aria-expanded='false'] .toggle-close {
+    visibility: hidden;
+  }
+
+  /* The open menu fills the screen in the top layer: a copy of the bar with
+     CLOSE where MENU was, then the panel below it. */
+  .menu-dialog {
+    position: fixed;
+    inset: 0;
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: 100%;
+    max-block-size: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    border: 0;
+
+    --focus-color: var(--brine);
+
+    background: var(--cream);
+    color: var(--brine);
+    opacity: 1;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .menu-dialog[data-ground='sand'] {
+    background: var(--sand);
+  }
+
+  .menu-dialog::backdrop {
+    background: transparent;
+  }
+
+  @starting-style {
+    .menu-dialog[open] {
+      opacity: 0;
+    }
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    padding-block: var(--space-2) var(--space-10);
+  }
+
+  .panel nav {
+    align-self: stretch;
+  }
+
+  .menu-list li {
+    border-block-end: 1px solid var(--rule-light-soft);
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    color: var(--brine);
+    font-family: var(--font-display);
+    font-size: 40px;
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  .menu-link:hover {
+    color: var(--olive);
+  }
+
+  .menu-link[aria-current],
+  .menu-link[aria-current]:hover {
+    color: var(--current-text);
+  }
+
+  .menu-booking {
+    margin-block-start: var(--space-4);
+  }
+
+  .menu-email {
+    color: var(--brine);
+    font-size: 16px;
+  }
+
+  @media (width < 960px) {
+    .nav,
+    .booking {
+      display: none;
+    }
+
+    .menu {
+      display: block;
+    }
+  }
+
+  @media (width < 768px) {
+    .strip {
+      --header-wordmark: 20px;
+      --header-pad: var(--space-4);
+    }
+  }
+
+  /* Without JavaScript the toggle cannot open the menu, so the links wrap
+     under the name instead. */
+  @media (width < 960px) and (scripting: none) {
+    .bar {
+      flex-wrap: wrap;
+    }
+
+    .nav {
+      display: block;
+    }
+
+    .nav-list {
+      flex-wrap: wrap;
+      gap: var(--space-2) var(--space-5);
+    }
+
+    .menu {
+      display: none;
+    }
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The open menu locks the page behind it. */
+  :global(html:has(dialog.menu-dialog[open])) {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-dialog {
+      transition: none;
+    }
+  }
+</style>

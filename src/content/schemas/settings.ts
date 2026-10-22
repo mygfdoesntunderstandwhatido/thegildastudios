@@ -2,7 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { BRANCH_ORDER } from '../../lib/branches';
-import { link, text } from './shared';
+import { link, optionalText, text } from './shared';
 
 const navLink = link.extend({
   /** Branch links take their branch colour when current. The admin saves "none" for other links. */
@@ -16,6 +16,24 @@ const navLink = link.extend({
 export const settings = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/settings' }),
   schema: z.object({
+    seo: z.object({
+      siteUrl: z.url({ protocol: /^https$/ }).refine((value) => {
+        const url = new URL(value);
+        return url.pathname === '/' && !url.search && !url.hash && !url.username && !url.password;
+      }, 'Use an HTTPS site address without a path, query or fragment.'),
+      defaultTitle: text,
+      homeTitle: text,
+      defaultDescription: text,
+      language: z.enum(['en-MT', 'en']),
+      locale: z.enum(['en_MT', 'en_GB']),
+      socialProfiles: z.array(z.url({ protocol: /^https$/ })),
+      locality: optionalText,
+      streetAddress: optionalText,
+      postalCode: optionalText,
+      publishedPhone: optionalText,
+      homeLabel: text,
+      projectsLabel: text,
+    }),
     /** Main navigation, shared by the header and footer. */
     nav: z.array(navLink),
     booking: link,
@@ -39,6 +57,7 @@ export const settings = defineCollection({
       markLabel: text,
     }),
     header: z.object({
+      skip: text,
       nav: text,
       home: text,
       menu: text,

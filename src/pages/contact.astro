@@ -12,7 +12,7 @@ const { email, phone } = site.data;
 ---
 
 <Base title={copy.meta.title} description={copy.meta.description} header="sand">
-  <main>
+  <main id="main">
     <section class="opening band band--cream" aria-labelledby="contact-title">
       <div class="container opening-grid">
         <div class="opening-copy">
@@ -162,8 +162,9 @@ const { email, phone } = site.data;
       gap: var(--space-5);
     }
 
+    /* 52px from the 390 artboard; narrower phones scale it so "conversation." fits. */
     h1 {
-      font-size: 52px;
+      font-size: min(52px, 14vw);
       line-height: 1.02;
     }
 

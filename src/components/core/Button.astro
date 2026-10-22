@@ -83,7 +83,9 @@ const {
     text-decoration: none;
     text-transform: uppercase;
     cursor: pointer;
-    transition: opacity var(--hover-duration) ease;
+    transition:
+      opacity var(--hover-duration) ease,
+      background-color var(--hover-duration) ease;
   }
 
   .button[data-size='sm'] {
@@ -117,8 +119,16 @@ const {
   }
 
   .button:hover {
+    background: var(--button-hover-background, var(--button-background));
     color: var(--button-foreground);
-    opacity: var(--hover-opacity);
+    opacity: var(--button-hover-opacity, var(--hover-opacity));
+  }
+
+  /* Olive and anchovy fills darken instead of fading: at 86% opacity their
+     Cream labels fall under AA (3.7:1 and 4.3:1). */
+  .button:is([data-variant='primary'], [data-variant='anchovy']) {
+    --button-hover-background: color-mix(in srgb, var(--button-background) 86%, var(--brine));
+    --button-hover-opacity: 1;
   }
 
   .button:is(:disabled, [aria-disabled='true']) {

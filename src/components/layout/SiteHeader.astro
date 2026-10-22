@@ -11,9 +11,11 @@ interface Props {
   ground?: 'cream' | 'sand';
   /** Path used to mark the current page. Defaults to the page being rendered. */
   currentPath?: string;
+  /** Id the skip link jumps to: the page's main, or the content after a header placed inside it. */
+  skipTo?: string;
 }
 
-const { ground = 'cream', currentPath = Astro.url.pathname } = Astro.props;
+const { ground = 'cream', currentPath = Astro.url.pathname, skipTo = 'main' } = Astro.props;
 const { nav, booking, email, header: headerLabels } = await getSettings();
 
 const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
@@ -26,13 +28,16 @@ const links = nav.map((item) => {
   return {
     ...item,
     current,
-    style: `--current-text: ${branch?.label ?? 'var(--olive)'}; --current-rule: ${branch?.color ?? 'var(--olive)'}`,
+    style: `--current-text: ${branch?.label ?? 'var(--olive-text)'}; --current-rule: ${branch?.color ?? 'var(--olive)'}`,
   };
 });
 const menuId = uniqueId('site-menu');
 ---
 
 <header class="site-header strip" data-ground={ground}>
+  <a class="skip-link" href={`#${skipTo}`}>
+    {headerLabels.skip}
+  </a>
   <div class="container container--header bar">
     <a class="home" href="/" aria-label={headerLabels.home}>
       <Wordmark class="home-wordmark" />
@@ -187,15 +192,40 @@ const menuId = uniqueId('site-menu');
     --header-pad: var(--space-5);
     --nav-current-rule: 2px;
     --focus-color: var(--brine);
+    --link-hover-opacity: 1;
 
     border-block-end: 1px solid var(--rule-light-faint);
     background: var(--header-ground);
     color: var(--brine);
   }
 
+  /* Hidden until keyboard focus, then shown over the bar's top-left corner. */
+  .skip-link {
+    position: absolute;
+    z-index: 1;
+    inset-block-start: var(--space-2);
+    inset-inline-start: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--brine);
+    color: var(--cream);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .skip-link:not(:focus) {
+    clip-path: inset(50%);
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
   [data-ground='sand'] .strip,
   .strip[data-ground='sand'] {
     --header-ground: var(--sand);
+    --olive-text: var(--olive-text-on-sand);
   }
 
   .bar {
@@ -240,7 +270,7 @@ const menuId = uniqueId('site-menu');
   }
 
   .nav-link:hover {
-    color: var(--olive);
+    color: var(--olive-text);
   }
 
   .nav-link[aria-current],
@@ -263,6 +293,7 @@ const menuId = uniqueId('site-menu');
   .menu-toggle {
     display: inline-grid;
     place-items: center end;
+    min-inline-size: var(--space-11);
     min-block-size: var(--space-11);
     margin-block: -4.5px;
     padding: 0;
@@ -306,6 +337,8 @@ const menuId = uniqueId('site-menu');
   }
 
   .menu-dialog[data-ground='sand'] {
+    --olive-text: var(--olive-text-on-sand);
+
     background: var(--sand);
   }
 
@@ -349,7 +382,7 @@ const menuId = uniqueId('site-menu');
   }
 
   .menu-link:hover {
-    color: var(--olive);
+    color: var(--olive-text);
   }
 
   .menu-link[aria-current],

@@ -8,3 +8,8 @@ package-lock.json
 # truth. Prettier would reformat it and fail CI on every editor's change.
 src/content/**/*.json
 .netlify/
+
+# Local performance and browser test artifacts.
+.lighthouseci/
+test-results/
+playwright-report/

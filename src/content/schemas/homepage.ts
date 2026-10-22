@@ -1,14 +1,14 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { text } from './shared';
+import { meta, text } from './shared';
 
 // A singleton: the only entry is src/content/homepage/home.json.
 export const homepage = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/homepage' }),
   schema: z.object({
-    /** Page metadata. Placeholders until the SEO pass (#28). */
-    meta: z.object({ title: text, description: text }),
+    /** Editable metadata; blank fields use Site settings. */
+    meta,
     work: z.object({
       number: text,
       label: text,

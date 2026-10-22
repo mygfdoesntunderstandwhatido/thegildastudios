@@ -16,7 +16,7 @@ const branches = orderBranches();
 const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<main class="about">
+<main id="main" class="about">
   <section class="opening band band--cream" aria-labelledby="about-title">
     <div class="container opening-grid">
       <div class="opening-copy">
@@ -260,7 +260,7 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
   }
 
   .meta {
-    color: var(--olive);
+    color: var(--olive-text);
     font: var(--type-label);
     letter-spacing: var(--tracking-label);
   }

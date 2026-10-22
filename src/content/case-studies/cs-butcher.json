@@ -225,5 +225,9 @@
         }
       ]
     }
-  ]
+  ],
+  "meta": {
+    "title": "CS Butcher",
+    "description": "A traditional butcher on the verge of closing, repositioned around convenience with delivery and online ordering."
+  }
 }

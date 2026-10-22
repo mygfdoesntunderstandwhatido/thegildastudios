@@ -212,12 +212,10 @@ const filters = orderBranches().map((branch) => ({
     gap: var(--space-4);
     color: var(--brine);
     text-decoration: none;
-    transition: opacity var(--hover-duration) ease;
   }
 
   .card:hover {
     color: var(--brine);
-    opacity: var(--hover-opacity);
   }
 
   /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
@@ -226,6 +224,13 @@ const filters = orderBranches().map((branch) => ({
     block-size: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  /* Hover fades the image only: text keeps its full AA contrast. */
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .card:hover :global(.cover) {
+    opacity: var(--hover-opacity);
   }
 
   .meta {
@@ -252,7 +257,7 @@ const filters = orderBranches().map((branch) => ({
   }
 
   .card-link {
-    color: var(--olive);
+    color: var(--olive-text);
     font: var(--type-label-sm);
     letter-spacing: var(--tracking-label);
   }
@@ -375,7 +380,8 @@ const filters = orderBranches().map((branch) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .card {
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+    .card :global(.cover) {
       transition: none;
     }
   }

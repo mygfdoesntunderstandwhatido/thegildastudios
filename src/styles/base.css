@@ -27,6 +27,8 @@ html {
 }
 
 body {
+  --olive-text: var(--olive);
+
   background: var(--surface-page);
   color: var(--text-body);
   font: var(--type-body);
@@ -165,7 +167,8 @@ a:hover {
   --text-body: var(--brine);
   --text-secondary: var(--ink-2);
   --text-caption: var(--ink-3);
-  --link: var(--olive);
+  --olive-text: var(--olive);
+  --link: var(--olive-text);
   --link-hover: var(--brine);
   --link-hover-opacity: 1;
   --focus-color: var(--brine);
@@ -180,10 +183,12 @@ a:hover {
 
 .band--sand {
   --band-background: var(--sand);
+  --olive-text: var(--olive-text-on-sand);
 }
 
 .band--pepper-pale {
   --band-background: var(--pepper-pale);
+  --olive-text: var(--olive-text-on-sand);
 }
 
 .band--pepper {
@@ -231,6 +236,10 @@ a:hover {
   block-size: var(--band-mark-height);
   background: var(--band-mark-color, var(--olive-on-dark));
   mask: url('../assets/logos/mask-engraved.png') center / contain no-repeat;
+  mask-image: image-set(
+    url('../assets/logos/mask-engraved.webp') type('image/webp'),
+    url('../assets/logos/mask-engraved.png') type('image/png')
+  );
   pointer-events: none;
 }
 

@@ -14,9 +14,9 @@ const { booking } = site.data;
 
 <section class="band band--brine hero" aria-labelledby="hero-title">
   <div class="hero-header">
-    <SiteHeader />
+    <SiteHeader skipTo="hero-copy" />
   </div>
-  <div class="container hero-copy">
+  <div id="hero-copy" class="container hero-copy">
     <p class="eyebrow">
       <span class="wide">{hero.eyebrow}</span>
       <span class="short">{hero.eyebrowShort}</span>
@@ -40,6 +40,10 @@ const { booking } = site.data;
 <style>
   .hero {
     --band-padding: 0;
+
+    /* Between 768 and ~1150 the lede narrows and the mark shrinks so the two
+       never overlap; from 1280 both are the artboard's 440px and 708px. */
+    --hero-lede: min(440px, 52vw - var(--page-gutter) - var(--space-8));
 
     position: relative;
     display: flex;
@@ -83,7 +87,7 @@ const { booking } = site.data;
   }
 
   .lede {
-    max-inline-size: 440px;
+    max-inline-size: var(--hero-lede);
     color: var(--cream-2);
     font-size: 19px;
     line-height: 1.55;
@@ -106,7 +110,11 @@ const { booking } = site.data;
     inset-block-start: 84px;
     inset-inline-end: 10px;
     z-index: 0;
-    inline-size: min(708px, 55.3vw);
+    inline-size: min(
+      708px,
+      55.3vw,
+      100vw - 10px - var(--page-gutter) - var(--hero-lede) - var(--space-6)
+    );
   }
 
   @media (width < 768px) {
@@ -128,6 +136,7 @@ const { booking } = site.data;
     }
 
     .lede {
+      max-inline-size: 440px;
       font-size: 16px;
     }
 

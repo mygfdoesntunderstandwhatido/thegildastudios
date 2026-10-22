@@ -15,7 +15,7 @@ const branches = orderBranches();
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<main class="services-page">
+<main id="main" class="services-page">
   <section class="opening band band--cream" aria-labelledby="services-title">
     <div class="container opening-stack">
       <div class="opening-grid">
@@ -141,6 +141,8 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
   }
 
   .jump-card {
+    --olive-text: var(--olive-text-on-sand);
+
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--jump-image-width);
     align-items: center;
@@ -151,11 +153,6 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     background: var(--sand);
     color: var(--brine);
     text-decoration: none;
-    transition: opacity var(--hover-duration) ease;
-  }
-
-  .jump-card:hover {
-    opacity: var(--hover-opacity);
   }
 
   .jump-copy {
@@ -198,6 +195,7 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     justify-self: center;
     inline-size: min(var(--jump-image-width), var(--jump-image-height) * var(--jump-image-ratio));
     block-size: min(var(--jump-image-height), var(--jump-image-width) / var(--jump-image-ratio));
+    transition: opacity var(--hover-duration) ease;
   }
 
   .jump-art picture {
@@ -212,6 +210,11 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     block-size: 100%;
     max-block-size: var(--jump-image-height);
     object-fit: contain;
+  }
+
+  /* Hover fades the illustration only: the labels keep their AA contrast. */
+  .jump-card:hover .jump-art {
+    opacity: var(--hover-opacity);
   }
 
   @media (768px <= width < 1024px) {
@@ -279,7 +282,7 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .jump-card {
+    .jump-art {
       transition: none;
     }
   }

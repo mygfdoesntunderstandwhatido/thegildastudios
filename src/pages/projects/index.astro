@@ -11,7 +11,7 @@ const entries = await getCaseStudies();
 ---
 
 <Base title={page.data.meta.title} description={page.data.meta.description} header="sand">
-  <main>
+  <main id="main">
     <ProjectIndex entries={entries} />
     <CtaBand content={page.data.cta} variant="projects" />
   </main>

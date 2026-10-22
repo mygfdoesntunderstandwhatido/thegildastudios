@@ -68,15 +68,19 @@ const year = new Date().getUTCFullYear();
     gap: var(--space-10);
   }
 
+  /* Link columns never go narrower than their longest link, so the email
+     address stays on one line on tablets. */
   .footer-grid {
     display: grid;
-    grid-template-columns: 2fr repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 2fr) repeat(3, minmax(max-content, 1fr));
     gap: var(--space-8);
   }
 
+  /* The artboard's link rows use normal leading, not the body's 1.6. */
   .footer-column {
     min-inline-size: 0;
     font-size: var(--footer-link-size);
+    line-height: normal;
   }
 
   .column-label {
@@ -103,9 +107,12 @@ const year = new Date().getUTCFullYear();
     overflow-wrap: anywhere;
   }
 
+  /* Underline, not a fade: Cream on anchovy at 75% falls to 4.0:1. */
   a:hover {
     color: inherit;
-    opacity: var(--link-hover-opacity-on-dark);
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: var(--link-underline-offset);
   }
 
   .copyright {

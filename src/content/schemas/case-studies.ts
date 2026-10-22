@@ -2,7 +2,7 @@ import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { BRANCH_ORDER } from '../../lib/branches';
-import { optionalText, text } from './shared';
+import { meta, optionalText, text } from './shared';
 
 const items = z.array(text).min(1);
 const group = z.object({ title: text, items });
@@ -43,6 +43,7 @@ export const caseStudies = defineCollection({
     const picture = z.object({ src: image(), alt: text });
     return z.object({
       name: text,
+      meta,
       branches: z.array(z.enum(BRANCH_ORDER)).min(1),
       sector: text,
       /** The Projects index card line. */

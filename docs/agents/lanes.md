@@ -18,8 +18,8 @@ The live source of truth is GitHub: the `status:ready` label means every depende
 | 8    | #17, #24      | #22, #23, #32      |
 | 9    | #19, #25      | —                  |
 | 10   | #27           | —                  |
-| 11   | —             | #28                |
-| 12   | #29           | #30                |
+| 11   | #28           | —                  |
+| 12   | #29, #30      | —                  |
 | 13   | #31           | —                  |
 | 14   | #33           | —                  |
 
@@ -62,9 +62,9 @@ A wave can start early if its own dependencies are already closed. `status:ready
 | #25   | Claude | [5.6] Build the Projects index and the three case studies                                  | #24                              |
 | #26   | Claude | [5.7] Design and build the Contact / booking page                                          | #7, #9, #10, #11                 |
 | #27   | Claude | [6.1] Move page copy, services, case studies and testimonials into Keystatic               | #19, #20, #23, #25, #26          |
-| #28   | Codex  | [6.2] Add meta tags, Open Graph images, sitemap, robots.txt, icons and structured data     | #5, #27                          |
+| #28   | Claude | [6.2] Add meta tags, Open Graph images, sitemap, robots.txt, icons and structured data     | #5, #27                          |
 | #29   | Claude | [7.1] Run an accessibility pass to WCAG 2.2 AA                                             | #28                              |
-| #30   | Codex  | [7.2] Run a performance pass to Lighthouse 95+                                             | #28                              |
+| #30   | Claude | [7.2] Run a performance pass to Lighthouse 95+                                             | #28                              |
 | #31   | Claude | [7.3] Run cross-browser and device QA against the design at 375, 768, 1280 and 1440px      | #29, #30                         |
 | #32   | Codex  | [8.1] Set up the contact form backend, analytics, a 404 page and redirects                 | #2, #26                          |
 | #33   | Claude | [8.2] Write a launch checklist and go live on the production domain                        | #31, #32                         |
@@ -79,3 +79,4 @@ A wave can start early if its own dependencies are already closed. `status:ready
   - visual assembly and QA: #19, #29, #31
 - **Codex cloud** runs offline from the repo, so it takes well-specified builds with exact copy: tokens (#3), assets (#5), base styles (#6), static components (#7, #10, #11, #13, #14), content pages (#16, #20–#23), SEO (#28), the performance pass (#30) and the form, 404 and redirects (#32).
 - To move an issue to the other lane, swap its label on GitHub and update this table.
+- #28 and #30 moved from Codex to Claude Code on 22 October 2026, when Codex ran out of capacity. Claude Code took over their open PR's work and finished it in the same batch as #29.

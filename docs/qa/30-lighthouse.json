@@ -1,0 +1,101 @@
+{
+  "measuredAt": "2026-10-22T17:40:50.184Z",
+  "lighthouseVersion": "12.6.1",
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
+  "formFactor": "mobile",
+  "throttlingMethod": "simulate",
+  "throttling": {
+    "rttMs": 150,
+    "throughputKbps": 1638.4,
+    "requestLatencyMs": 562.5,
+    "downloadThroughputKbps": 1474.5600000000002,
+    "uploadThroughputKbps": 675,
+    "cpuSlowdownMultiplier": 4
+  },
+  "pages": [
+    {
+      "path": "/",
+      "runs": 3,
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1887,
+      "cls": 0,
+      "lcpRangeMs": [1956, 1887, 1655],
+      "clsValues": [0, 0, 0]
+    },
+    {
+      "path": "/about/",
+      "runs": 3,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1730,
+      "cls": 0,
+      "lcpRangeMs": [1730, 1805, 1728],
+      "clsValues": [0, 0, 0]
+    },
+    {
+      "path": "/services/",
+      "runs": 3,
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1878,
+      "cls": 0,
+      "lcpRangeMs": [1879, 1807, 1878],
+      "clsValues": [0, 0, 0]
+    },
+    {
+      "path": "/projects/",
+      "runs": 3,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1803,
+      "cls": 0,
+      "lcpRangeMs": [1804, 1802, 1803],
+      "clsValues": [0, 0, 0]
+    },
+    {
+      "path": "/projects/cs-butcher/",
+      "runs": 3,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1654,
+      "cls": 0,
+      "lcpRangeMs": [1805, 1653, 1654],
+      "clsValues": [0, 0, 0]
+    },
+    {
+      "path": "/contact/",
+      "runs": 3,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1504,
+      "cls": 0,
+      "lcpRangeMs": [1503, 1504, 1504],
+      "clsValues": [0, 0, 0]
+    }
+  ]
+}

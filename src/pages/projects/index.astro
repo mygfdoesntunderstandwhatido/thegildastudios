@@ -1,0 +1,18 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/layout/CtaBand.astro';
+import ProjectIndex from '../../components/projects/ProjectIndex.astro';
+import { getCaseStudies } from '../../lib/case-studies';
+
+const page = await getEntry('projects', 'page');
+if (!page) throw new Error('Missing the projects singleton: src/content/projects/page.json');
+const entries = await getCaseStudies();
+---
+
+<Base title={page.data.meta.title} description={page.data.meta.description} header="sand">
+  <main>
+    <ProjectIndex entries={entries} />
+    <CtaBand content={page.data.cta} variant="projects" />
+  </main>
+</Base>

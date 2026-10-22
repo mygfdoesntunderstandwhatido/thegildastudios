@@ -1,0 +1,382 @@
+---
+import { getEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import BranchDots from '../branch/BranchDots.astro';
+import Chip from '../core/Chip.astro';
+import type { DotColor } from '../core/types';
+import { orderBranches } from '../../lib/branches';
+import { caseStudyHref, type CaseStudy } from '../../lib/case-studies';
+
+interface Props {
+  entries: CaseStudy[];
+}
+
+const { entries } = Astro.props;
+const page = await getEntry('projects', 'page');
+if (!page) throw new Error('Missing the projects singleton: src/content/projects/page.json');
+const copy = page.data;
+const pad = (value: number) => String(value).padStart(2, '0');
+const total = entries.length;
+const countLabel = copy.countLabel.replace('{shown}', pad(total)).replace('{total}', pad(total));
+const filters = orderBranches().map((branch) => ({
+  value: branch.key,
+  label: branch.name,
+  dot: branch.ingredient.toLowerCase() as DotColor,
+}));
+---
+
+<gilda-project-filter
+  class="project-index"
+  data-count-label={copy.countLabel}
+  data-status-label={copy.filter.status}
+>
+  <section class="opening band band--cream" aria-labelledby="projects-title">
+    <div class="container opening-grid">
+      <div class="opening-title">
+        <Chip variant="filled">
+          <span data-count>{countLabel}</span>
+        </Chip>
+        <h1 id="projects-title">{copy.headline}</h1>
+      </div>
+      <p class="body">
+        <span class="body-wide">{copy.body}</span>
+        <span class="body-short">{copy.bodyShort}</span>
+      </p>
+    </div>
+  </section>
+  <div class="list band band--cream">
+    <div class="container list-inner">
+      <div class="filters" role="group" aria-label={copy.filter.label}>
+        <Chip variant="toggle" value="all" pressed>
+          {copy.filter.all}
+        </Chip>
+        {filters.map((filter) => (
+          <Chip variant="toggle" value={filter.value} dot={filter.dot}>
+            {filter.label}
+          </Chip>
+        ))}
+      </div>
+      <ul class="cards">
+        {entries.map(({ id, data }) => (
+          <li data-branches={data.branches.join(' ')}>
+            <a class="card" href={caseStudyHref(id)}>
+              <Picture
+                class="cover"
+                src={data.cover.src}
+                alt={data.cover.alt}
+                formats={['avif', 'webp']}
+                fallbackFormat="png"
+                widths={[354, 708, 1080]}
+                sizes="(width < 768px) calc(100vw - 48px), min(368px, calc((100vw - 176px) / 3))"
+              />
+              <span class="meta">
+                <BranchDots branches={data.branches} />
+                <span class="sector">{data.sector}</span>
+              </span>
+              <h2 class="name">{data.name}</h2>
+              <p class="short">{data.short}</p>
+              <span class="card-link">{copy.cardLink}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-status></p>
+    </div>
+  </div>
+</gilda-project-filter>
+
+<script>
+  // One filter at a time. ALL shows every project; a branch shows the
+  // projects that used it. Without JavaScript every project shows.
+  class GildaProjectFilter extends HTMLElement {
+    private chips: HTMLButtonElement[] = [];
+    private cards: HTMLElement[] = [];
+
+    connectedCallback() {
+      this.chips = [...this.querySelectorAll<HTMLButtonElement>('.filters button')];
+      this.cards = [...this.querySelectorAll<HTMLElement>('[data-branches]')];
+      this.addEventListener('chip-change', this.onChange);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('chip-change', this.onChange);
+    }
+
+    private onChange = (event: Event) => {
+      const { value } = (event as CustomEvent<{ value: string }>).detail;
+      // The chip toggles itself; a filter stays pressed until another is chosen.
+      this.chips.forEach((chip) => chip.setAttribute('aria-pressed', String(chip.value === value)));
+      let shown = 0;
+      this.cards.forEach((card) => {
+        const match = value === 'all' || (card.dataset.branches ?? '').split(' ').includes(value);
+        card.hidden = !match;
+        if (match) shown += 1;
+      });
+      const fill = (template: string, pad: boolean) =>
+        template
+          .replace('{shown}', pad ? String(shown).padStart(2, '0') : String(shown))
+          .replace(
+            '{total}',
+            pad ? String(this.cards.length).padStart(2, '0') : String(this.cards.length),
+          );
+      const count = this.querySelector('[data-count]');
+      if (count) count.textContent = fill(this.dataset.countLabel ?? '', true);
+      // Clear first, so the same count is announced again after a change.
+      const status = this.querySelector('[data-status]');
+      if (!status) return;
+      status.textContent = '';
+      window.setTimeout(() => {
+        status.textContent = fill(this.dataset.statusLabel ?? '', false);
+      }, 100);
+    };
+  }
+
+  if (!customElements.get('gilda-project-filter')) {
+    customElements.define('gilda-project-filter', GildaProjectFilter);
+  }
+</script>
+
+<style>
+  .project-index {
+    display: block;
+  }
+
+  .opening {
+    --band-padding: var(--space-14) var(--space-12);
+  }
+
+  .opening-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: var(--space-12);
+  }
+
+  .opening-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-7);
+  }
+
+  h1 {
+    font-size: var(--display-104);
+    line-height: 1;
+  }
+
+  .body {
+    color: var(--ink-2);
+    font-size: 19px;
+    line-height: 1.6;
+  }
+
+  .body-short {
+    display: none;
+  }
+
+  .list {
+    --band-padding: 0 96px;
+  }
+
+  .list-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding-block-end: var(--space-6);
+    border-block-end: 1px solid var(--rule-light);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cards li[hidden] {
+    display: none;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    color: var(--brine);
+    text-decoration: none;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .card:hover {
+    color: var(--brine);
+    opacity: var(--hover-opacity);
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .card :global(.cover) {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sector {
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .name {
+    font-size: var(--display-36);
+    line-height: 1.04;
+  }
+
+  .short {
+    color: var(--ink-2);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .card-link {
+    color: var(--olive);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (scripting: none) {
+    .filters {
+      display: none;
+    }
+  }
+
+  @media (width < 768px) {
+    .opening {
+      --band-padding: var(--space-10) var(--space-6);
+    }
+
+    .opening-grid,
+    .opening-title {
+      gap: 18px;
+    }
+
+    .opening-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    h1 {
+      font-size: 60px;
+    }
+
+    .body {
+      font-size: 16px;
+    }
+
+    .body-wide {
+      display: none;
+    }
+
+    .body-short {
+      display: inline;
+    }
+
+    .list {
+      --band-padding: 0 48px;
+    }
+
+    .list-inner {
+      gap: var(--space-9);
+    }
+
+    /* The phone filters scroll sideways in one row, without the rule. */
+    .filters {
+      flex-wrap: nowrap;
+      gap: var(--space-2);
+      padding-block: var(--space-1) var(--space-2);
+      overflow-x: auto;
+      border: 0;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Phone toggle chips are 10px with 16px padding. */
+    .filters :global(gilda-toggle-chip) {
+      flex: none;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- See above. */
+    .filters :global(.chip) {
+      min-block-size: var(--space-11);
+      padding-inline: var(--space-4);
+      font-size: 10px;
+    }
+
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-9);
+    }
+
+    .card {
+      gap: var(--space-3);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The phone cover is 16:9. */
+    .card :global(.cover) {
+      aspect-ratio: 16 / 9;
+    }
+
+    .meta {
+      gap: var(--space-2);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Phone dots are 9px with a 4px gap. */
+    .meta :global(.branch-dots) {
+      gap: var(--space-1);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- See above. */
+    .meta :global(.branch-dot) {
+      inline-size: 9px;
+      block-size: 9px;
+    }
+
+    .sector {
+      font-size: 10px;
+    }
+
+    .name {
+      font-size: 30px;
+      line-height: 1.06;
+    }
+
+    .card-link {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+  }
+</style>

@@ -48,17 +48,25 @@ export const caseStudies = defineCollection({
       cover: picture,
       hero: picture,
       gallery: z.array(picture).max(3).default([]),
+      /** Featured entries appear in the homepage Selected work, in `order`. */
       featured: z.boolean().default(false),
+      /** The homepage card's title and sector line. They fall back to `short` and `sector`. */
+      homeTitle: z.string().optional(),
+      homeSector: z.string().optional(),
       /** Position on the Projects index and in the Next project loop. */
       order: z.number().int(),
-      /** Drafts get no page and stay out of the loop. Fixtures preview at /dev/case-study/<slug>/. */
+      /** Drafts get no page and stay out of the index and the Next project loop. */
       draft: z.boolean().default(false),
       sections: z
         .array(
           z.object({
             title: z.string(),
             /** A Pepper pale section with display-size paragraphs. */
+            /** Featured entries appear in the homepage Selected work, in `order`. */
             featured: z.boolean().default(false),
+            /** The homepage card's title and sector line. They fall back to `short` and `sector`. */
+            homeTitle: z.string().optional(),
+            homeSector: z.string().optional(),
             blocks: z.array(block).min(1),
           }),
         )

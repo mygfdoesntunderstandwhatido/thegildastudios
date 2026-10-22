@@ -1,18 +1,24 @@
 ---
 import { getEntry } from 'astro:content';
 import { Picture } from 'astro:assets';
-import placeholder from '../../assets/graphics/photo-placeholder-feed.png';
 import BranchDots from '../branch/BranchDots.astro';
 import SectionHeader from '../layout/SectionHeader.astro';
+import { caseStudyHref, getCaseStudies } from '../../lib/case-studies';
 
 const home = await getEntry('homepage', 'home');
 if (!home) throw new Error('Missing the homepage singleton: src/content/homepage/home.json');
 const { work } = home.data;
 const headingId = 'selected-work-title';
-const cards = work.cards.map((card) => ({
-  ...card,
-  href: `/projects/${encodeURIComponent(card.slug)}/`,
-}));
+// Featured case studies, in their index order.
+const cards = (await getCaseStudies())
+  .filter((entry) => entry.data.featured)
+  .map(({ id, data }) => ({
+    href: caseStudyHref(id),
+    cover: data.cover,
+    branches: data.branches,
+    sector: data.homeSector ?? data.sector,
+    title: data.homeTitle ?? data.short,
+  }));
 ---
 
 <section class="work band band--cream" aria-labelledby={headingId}>
@@ -24,8 +30,8 @@ const cards = work.cards.map((card) => ({
           <a class="card" href={card.href}>
             <Picture
               class="card-image"
-              src={placeholder}
-              alt={work.imageAlt}
+              src={card.cover.src}
+              alt={card.cover.alt}
               formats={['avif', 'webp']}
               fallbackFormat="png"
               widths={[354, 708, 1080]}

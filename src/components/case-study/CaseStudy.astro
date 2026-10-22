@@ -9,11 +9,9 @@ import Blocks, { type ResolvedBlock } from './Blocks.astro';
 interface Props {
   entry: CaseStudy;
   next?: CaseStudy;
-  /** Fail the build when a quote's testimonial links to another case study. Off for fixtures. */
-  checkQuoteLinks?: boolean;
 }
 
-const { entry, next, checkQuoteLinks = true } = Astro.props;
+const { entry, next } = Astro.props;
 const page = await getEntry('case_study', 'page');
 if (!page) throw new Error('Missing the case study singleton: src/content/case-study/page.json');
 const copy = page.data;
@@ -30,7 +28,8 @@ const sections = await Promise.all(
         if (!testimonial) {
           throw new Error(`${entry.id}: unknown testimonial "${block.testimonial.id}"`);
         }
-        if (checkQuoteLinks && testimonial.data.caseStudy !== entry.id) {
+        // READ THE PROJECT on the homepage must lead back to this page.
+        if (testimonial.data.caseStudy !== entry.id) {
           throw new Error(
             `${entry.id}: testimonial "${testimonial.id}" links to "${testimonial.data.caseStudy}". ` +
               `Set its caseStudy to "${entry.id}" so READ THE PROJECT points back here.`,

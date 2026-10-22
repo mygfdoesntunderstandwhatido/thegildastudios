@@ -2,8 +2,8 @@
 
 All visible copy is supplied by props or slots from typed data in `src/content`.
 The components use Astro and scoped CSS. Only toggle chips, disclosures (including the
-case-study pillar cards), the testimonial rotator, the mobile menu, the hero
-mark, the branch strip and the contact form ship JavaScript.
+case-study pillar cards), the testimonial rotator, the project filters, the
+mobile menu, the hero mark, the branch strip and the contact form ship JavaScript.
 
 ## Button (#7)
 
@@ -159,10 +159,9 @@ also dispatches a `gilda:branch-focus` event on `document`.
 
 ## SelectedWork and the homepage (#19)
 
-`home/SelectedWork.astro` is the cream "01 Selected work" band. Its cards come
-from `work.cards` in the `homepage` singleton (slug, sector, title, branches),
-in order, and link to `/projects/<slug>/`. #25 switches it to read featured
-case studies. `src/pages/index.astro` assembles the hero, Selected work, the
+`home/SelectedWork.astro` is the cream "01 Selected work" band. Its cards are
+the `featured` case studies in `order`, using each entry's `homeTitle` and
+`homeSector` (falling back to `short` and `sector`). `src/pages/index.astro` assembles the hero, Selected work, the
 rotator and the origin story; the footer comes from `Base`.
 
 ## Case study template (#24)
@@ -183,7 +182,15 @@ moves first. Without JavaScript every card is open.
 `src/lib/case-studies.ts` lists published entries in `order`, drafts aside, and
 works out the Next project loop. `src/pages/projects/[slug].astro` builds one
 page per published entry, and fails the build if a quote's testimonial links to
-another case study. Draft fixtures preview at `/dev/case-study/<slug>/`.
+another case study. Entries with `draft: true` get no page.
+
+## ProjectIndex (#25)
+
+`projects/ProjectIndex.astro` is the `/projects/` opening and card grid, with
+copy from the `projects` singleton. The ALL / PLAN / BUILD / GROW toggle chips
+(#7) filter the cards in place: one is pressed at a time, the count chip
+updates, and a polite live region announces the result. Without JavaScript the
+filters are hidden and every project shows.
 
 ## Contact form (#26)
 
@@ -207,7 +214,6 @@ focuses the first invalid field and announces a count. It also reads
 - `/dev/testimonial-rotator/`
 - `/dev/header/`
 - `/dev/hero/`
-- `/dev/case-study/template-fixture/` and `/dev/case-study/template-fixture-short/`
 
 Each preview has its own page and reads typed specimen copy from
 `src/content/dev`. The primitive previews put light-only/dark-only variants on

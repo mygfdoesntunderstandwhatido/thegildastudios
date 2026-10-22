@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TestimonialRotator from '../../components/content/TestimonialRotator.astro';
+import { testimonialRotatorPreview as content } from '../../content/dev/testimonial-rotator';
+
+const testimonials = (await getCollection('testimonials'))
+  .filter((entry) => entry.data.homeOrder !== undefined)
+  .sort((a, b) => (a.data.homeOrder ?? 0) - (b.data.homeOrder ?? 0));
+---
+
+<Base title={content.title}>
+  <main>
+    <header class="band band--cream band--compact">
+      <div class="container stack">
+        <h1>{content.heading}</h1>
+        <p>{content.intro}</p>
+      </div>
+    </header>
+    <TestimonialRotator testimonials={testimonials} />
+    <section class="band band--sand band--compact" aria-labelledby="after-title">
+      <div class="container stack">
+        <h2 id="after-title">{content.afterHeading}</h2>
+        <p>{content.afterBody}</p>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-4);
+  }
+</style>

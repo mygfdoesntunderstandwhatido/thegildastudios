@@ -1,0 +1,386 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { testimonialRotatorCopy as copy } from '../../content/ui/testimonial-rotator';
+import { BRANCH_BY_COLOR, branches } from '../../lib/branches';
+import Testimonial from './Testimonial.astro';
+
+// Proposed autoplay interval, flagged for review in #18.
+const AUTOPLAY_INTERVAL = 8000;
+
+interface Props {
+  testimonials: CollectionEntry<'testimonials'>[];
+  id?: string;
+  number?: string;
+}
+
+const { testimonials, id = 'in-their-words', number = copy.number } = Astro.props;
+const total = testimonials.length;
+const pad = (value: number) => String(value).padStart(2, '0');
+const counter = (index: number) => `${pad(index + 1)} / ${pad(total)}`;
+const titleId = `${id}-title`;
+const slides = testimonials.map(({ data }, index) => ({
+  ...data,
+  label: copy.slideLabel
+    .replace('{index}', String(index + 1))
+    .replace('{total}', String(total))
+    .replace('{name}', data.name),
+  dotColor: branches[BRANCH_BY_COLOR[data.markColor]].onDark,
+}));
+---
+
+<section
+  id={id}
+  class="band band--brine band--spacious rotator-band"
+  role="region"
+  aria-roledescription={copy.roleDescription}
+  aria-labelledby={titleId}
+>
+  <gilda-testimonial-rotator
+    class="container rotator"
+    data-interval={AUTOPLAY_INTERVAL}
+    data-pause={copy.pause}
+    data-play={copy.play}
+    data-pause-label={copy.pauseLabel}
+    data-play-label={copy.playLabel}
+  >
+    <h2 class="counter">
+      <span aria-hidden="true">
+        {number} {copy.separator}{' '}
+      </span>
+      <span id={titleId}>{copy.title}</span>
+      <span class="counter-position" aria-hidden="true">
+        {` ${copy.separator} `}
+        <span data-counter>{counter(0)}</span>
+      </span>
+    </h2>
+    <div class="slides">
+      {slides.map((slide, index) => (
+        <div
+          class="slide"
+          data-slide
+          data-counter-text={counter(index)}
+          data-active={index === 0 ? '' : undefined}
+        >
+          <Testimonial
+            quote={slide.quote}
+            name={slide.name}
+            role={slide.role}
+            caseStudy={{ slug: slide.caseStudy }}
+            markColor={slide.markColor}
+            aria-roledescription={copy.slideRoleDescription}
+            aria-label={slide.label}
+          />
+        </div>
+      ))}
+    </div>
+    <div class="controls">
+      <div class="dots" role="group" aria-label={copy.controlsLabel}>
+        <span class="skewer" aria-hidden="true"></span>
+        {slides.map((slide, index) => (
+          <button
+            class="dot"
+            type="button"
+            aria-label={slide.label}
+            aria-current={index === 0 ? 'true' : undefined}
+            data-dot
+            style={`--dot-color: ${slide.dotColor}`}
+          >
+            <span class="dot-mark"></span>
+          </button>
+        ))}
+      </div>
+      <button class="playback" type="button" aria-label={copy.pauseLabel} hidden data-playback>
+        {copy.pause}
+      </button>
+    </div>
+    <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-status></p>
+  </gilda-testimonial-rotator>
+</section>
+
+<script>
+  class GildaTestimonialRotator extends HTMLElement {
+    private slides: HTMLElement[] = [];
+    private dots: HTMLButtonElement[] = [];
+    private counter: HTMLElement | null = null;
+    private status: HTMLElement | null = null;
+    private playback: HTMLButtonElement | null = null;
+    private reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    private index = 0;
+    private timer: number | undefined;
+    private paused = false;
+    private hovering = false;
+    private focused = false;
+
+    connectedCallback() {
+      this.slides = [...this.querySelectorAll<HTMLElement>('[data-slide]')];
+      this.dots = [...this.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+      this.counter = this.querySelector('[data-counter]');
+      this.status = this.querySelector('[data-status]');
+      this.playback = this.querySelector('[data-playback]');
+
+      this.dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => this.show(index, true));
+      });
+      this.playback?.addEventListener('click', this.togglePlayback);
+      this.addEventListener('mouseenter', this.onPointerEnter);
+      this.addEventListener('mouseleave', this.onPointerLeave);
+      this.addEventListener('focusin', this.onFocusIn);
+      this.addEventListener('focusout', this.onFocusOut);
+      document.addEventListener('visibilitychange', this.update);
+      this.reducedMotion.addEventListener('change', this.update);
+
+      this.show(0, false);
+      this.update();
+    }
+
+    disconnectedCallback() {
+      this.stop();
+      document.removeEventListener('visibilitychange', this.update);
+      this.reducedMotion.removeEventListener('change', this.update);
+    }
+
+    private show(index: number, announce: boolean) {
+      this.index = index;
+      this.slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === index;
+        slide.toggleAttribute('data-active', active);
+        slide.inert = !active;
+      });
+      this.dots.forEach((dot, dotIndex) => {
+        if (dotIndex === index) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      if (this.counter) this.counter.textContent = this.slides[index]?.dataset.counterText ?? '';
+      // Announce only changes the visitor asked for, never autoplay.
+      if (announce && this.status)
+        this.status.textContent = this.dots[index]?.getAttribute('aria-label') ?? '';
+    }
+
+    private next = () => {
+      this.show((this.index + 1) % this.slides.length, false);
+    };
+
+    private update = () => {
+      const motionAllowed = !this.reducedMotion.matches;
+      if (this.playback) {
+        this.playback.hidden = !motionAllowed || this.slides.length < 2;
+        const { pause = '', play = '', pauseLabel = '', playLabel = '' } = this.dataset;
+        this.playback.textContent = this.paused ? play : pause;
+        this.playback.setAttribute('aria-label', this.paused ? playLabel : pauseLabel);
+      }
+
+      const running =
+        motionAllowed &&
+        !this.paused &&
+        !this.hovering &&
+        !this.focused &&
+        !document.hidden &&
+        this.slides.length > 1;
+      if (running && this.timer === undefined) {
+        this.timer = window.setInterval(this.next, Number(this.dataset.interval) || 8000);
+      } else if (!running) {
+        this.stop();
+      }
+    };
+
+    private stop() {
+      window.clearInterval(this.timer);
+      this.timer = undefined;
+    }
+
+    private togglePlayback = () => {
+      this.paused = !this.paused;
+      this.update();
+    };
+
+    private onPointerEnter = () => {
+      this.hovering = true;
+      this.update();
+    };
+
+    private onPointerLeave = () => {
+      this.hovering = false;
+      this.update();
+    };
+
+    private onFocusIn = () => {
+      this.focused = true;
+      this.update();
+    };
+
+    private onFocusOut = (event: FocusEvent) => {
+      this.focused = this.contains(event.relatedTarget as Node | null);
+      this.update();
+    };
+  }
+
+  if (!customElements.get('gilda-testimonial-rotator')) {
+    customElements.define('gilda-testimonial-rotator', GildaTestimonialRotator);
+  }
+</script>
+
+<style>
+  .rotator {
+    --rotator-gap: var(--space-9);
+    --dot-size: 10px;
+    --dot-size-active: 18px;
+    --dot-target: var(--space-11);
+    --dot-gap: 6px;
+    --dot-duration: 150ms;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--rotator-gap);
+    text-align: center;
+  }
+
+  .counter {
+    color: var(--salt);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  /* Every quote shares one grid cell, so the tallest one sets the height
+     and switching quotes never moves the content around it. */
+  .slides {
+    display: grid;
+    inline-size: 100%;
+  }
+
+  .slide {
+    grid-area: 1 / 1;
+  }
+
+  .slide:not([data-active]) {
+    visibility: hidden;
+  }
+
+  /* The pause control sits beside the dots, out of the flow, so showing it
+     or changing its label never moves the dots. */
+  .controls {
+    position: relative;
+  }
+
+  .dots {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--dot-gap);
+  }
+
+  .skewer {
+    position: absolute;
+    inset-inline: calc(var(--dot-target) / 2);
+    inset-block-start: 50%;
+    block-size: 1px;
+    background: color-mix(in srgb, var(--cream) 30%, transparent);
+  }
+
+  .dot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--dot-target);
+    block-size: var(--dot-target);
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .dot-mark {
+    inline-size: var(--dot-size);
+    block-size: var(--dot-size);
+    border-radius: 50%;
+    background: var(--dot-color);
+    transition:
+      inline-size var(--dot-duration) ease,
+      block-size var(--dot-duration) ease;
+  }
+
+  .dot[aria-current='true'] .dot-mark {
+    inline-size: var(--dot-size-active);
+    block-size: var(--dot-size-active);
+  }
+
+  .playback {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 100%;
+    min-block-size: var(--dot-target);
+    margin-inline-start: var(--space-3);
+    padding: 0 var(--space-2);
+    white-space: nowrap;
+    border: 0;
+    background: none;
+    color: var(--cream-2);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    cursor: pointer;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .playback:hover {
+    opacity: var(--hover-opacity);
+  }
+
+  .playback[hidden] {
+    display: none;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Without JavaScript, every quote is listed and the controls are hidden. */
+  @media (scripting: none) {
+    .slides {
+      gap: var(--space-14);
+    }
+
+    .slide {
+      grid-area: auto;
+    }
+
+    .slide:not([data-active]) {
+      visibility: visible;
+    }
+
+    .counter-position,
+    .controls {
+      display: none;
+    }
+  }
+
+  @media (width < 768px) {
+    .rotator {
+      --rotator-gap: var(--space-6);
+      --dot-gap: 2px;
+
+      align-items: flex-start;
+      text-align: start;
+    }
+
+    .counter {
+      font-size: var(--label-phone-size);
+    }
+
+    .controls {
+      margin-inline-start: -14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot-mark,
+    .playback {
+      transition: none;
+    }
+  }
+</style>

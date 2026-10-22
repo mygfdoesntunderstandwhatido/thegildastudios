@@ -231,6 +231,10 @@ a:hover {
   block-size: var(--band-mark-height);
   background: var(--band-mark-color, var(--olive-on-dark));
   mask: url('../assets/logos/mask-engraved.png') center / contain no-repeat;
+  mask-image: image-set(
+    url('../assets/logos/mask-engraved.webp') type('image/webp'),
+    url('../assets/logos/mask-engraved.png') type('image/png')
+  );
   pointer-events: none;
 }
 

@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { text } from './shared';
+import { meta, text } from './shared';
 import { ctaSchema } from './cta';
 
 const section = z.object({ number: text, label: text, headline: text });
@@ -14,7 +14,7 @@ const branchCopy = z.object({
 export const about = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/about' }),
   schema: z.object({
-    meta: z.object({ title: text, description: text }),
+    meta,
     opening: z.object({
       eyebrow: text,
       headline: text,

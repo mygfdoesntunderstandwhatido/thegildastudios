@@ -5,7 +5,18 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist/', '.astro/', '.netlify/', 'design/', 'node_modules/'] },
+  {
+    ignores: [
+      'dist/',
+      '.astro/',
+      '.netlify/',
+      'design/',
+      'node_modules/',
+      '.lighthouseci/',
+      'test-results/',
+      'playwright-report/',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,

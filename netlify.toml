@@ -12,3 +12,20 @@
 [build.processing.html]
   pretty_urls = true
 
+# Content hashes change whenever these generated assets change.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Font names are stable: cache for a week, without immutable so updates expire.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Revalidate HTML and stable-name metadata/artwork on every request.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

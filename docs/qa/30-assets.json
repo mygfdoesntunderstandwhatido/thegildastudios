@@ -1,0 +1,191 @@
+[
+  {
+    "path": "/",
+    "jsBytes": 8054,
+    "jsGzip": 3489,
+    "cssGzip": 8468,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      },
+      {
+        "name": "gilda-hero-mark",
+        "bytes": 2731,
+        "gzip": 1110
+      },
+      {
+        "name": "/_astro/branch-focus.Dpi-jYO0.js",
+        "bytes": 212,
+        "gzip": 180
+      },
+      {
+        "name": "gilda-branch-strip",
+        "bytes": 717,
+        "gzip": 390
+      },
+      {
+        "name": "gilda-testimonial-rotator",
+        "bytes": 2506,
+        "gzip": 912
+      }
+    ]
+  },
+  {
+    "path": "/about/",
+    "jsBytes": 1888,
+    "jsGzip": 897,
+    "cssGzip": 7515,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      }
+    ]
+  },
+  {
+    "path": "/contact/",
+    "jsBytes": 5706,
+    "jsGzip": 2428,
+    "cssGzip": 6457,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      },
+      {
+        "name": "gilda-contact-form",
+        "bytes": 3818,
+        "gzip": 1531
+      }
+    ]
+  },
+  {
+    "path": "/projects/",
+    "jsBytes": 3424,
+    "jsGzip": 1710,
+    "cssGzip": 6315,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      },
+      {
+        "name": "gilda-toggle-chip",
+        "bytes": 508,
+        "gzip": 303
+      },
+      {
+        "name": "gilda-project-filter",
+        "bytes": 1028,
+        "gzip": 510
+      }
+    ]
+  },
+  {
+    "path": "/projects/cs-butcher/",
+    "jsBytes": 2470,
+    "jsGzip": 1209,
+    "cssGzip": 7858,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      },
+      {
+        "name": "gilda-pillars",
+        "bytes": 582,
+        "gzip": 312
+      }
+    ]
+  },
+  {
+    "path": "/projects/drapp-fuq-drapp/",
+    "jsBytes": 1888,
+    "jsGzip": 897,
+    "cssGzip": 7858,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      }
+    ]
+  },
+  {
+    "path": "/projects/malta-business-network/",
+    "jsBytes": 1888,
+    "jsGzip": 897,
+    "cssGzip": 7858,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      }
+    ]
+  },
+  {
+    "path": "/services/",
+    "jsBytes": 2362,
+    "jsGzip": 1164,
+    "cssGzip": 8295,
+    "scripts": [
+      {
+        "name": "analytics events",
+        "bytes": 503,
+        "gzip": 336
+      },
+      {
+        "name": "gilda-site-menu",
+        "bytes": 1385,
+        "gzip": 561
+      },
+      {
+        "name": "gilda-disclosure",
+        "bytes": 474,
+        "gzip": 267
+      }
+    ]
+  }
+]

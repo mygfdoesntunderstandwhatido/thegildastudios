@@ -71,7 +71,8 @@
   line-gap-override: 0%;
 }
 
-/* Matches the expanded button face's width, so buttons keep their size during the swap. */
+/* Calibrated to the shared BOOK A CHAT label at 125% width, so the header
+   and the next hero button keep their positions during the font swap. */
 @font-face {
   font-family: 'Archivo Fallback';
   src:
@@ -79,9 +80,9 @@
     local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Arimo Bold');
   font-weight: 600;
   font-stretch: 125%;
-  size-adjust: 122.3%;
-  ascent-override: 71.79%;
-  descent-override: 17.17%;
+  size-adjust: 128.075%;
+  ascent-override: 68.553%;
+  descent-override: 16.396%;
   line-gap-override: 0%;
 }
 

@@ -328,7 +328,14 @@
     "width": 823,
     "height": 1000,
     "usage": "Single-colour CSS mask",
-    "variants": []
+    "variants": [
+      {
+        "file": "logos/mask-engraved.webp",
+        "width": 823,
+        "height": 1000,
+        "bytes": 110228
+      }
+    ]
   },
   {
     "file": "logos/mask-outline.png",

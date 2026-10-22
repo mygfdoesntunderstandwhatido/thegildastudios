@@ -1,5 +1,9 @@
 {
   "name": "CS Butcher",
+  "meta": {
+    "title": "CS Butcher",
+    "description": "A traditional butcher repositioned around convenience with delivery and online ordering."
+  },
   "order": 1,
   "draft": false,
   "featured": true,
@@ -12,7 +16,7 @@
   ],
   "sector": "RETAIL · INDEPENDENT BUTCHER · MALTA",
   "accent": "anchovy",
-  "short": "A traditional butcher on the verge of closing, repositioned around convenience with delivery and online ordering.",
+  "short": "A traditional butcher repositioned around convenience with delivery and online ordering.",
   "summary": "At a time when the business was on the verge of shutting down, we were brought in to identify opportunities for innovation, reposition the offering, and develop a strategy to reconnect the business with modern consumer habits.",
   "facts": [
     {
@@ -33,24 +37,24 @@
     }
   ],
   "cover": {
-    "src": "../../assets/content/case-studies/cs-butcher/cover/src.png"
+    "src": "../../assets/content/case-studies/cs-butcher/cover/src.jpg"
   },
   "hero": {
-    "src": "../../assets/content/case-studies/cs-butcher/hero/src.png",
+    "src": "../../assets/content/case-studies/cs-butcher/hero/src.jpg",
     "alt": "Photo placeholder for the CS Butcher project"
   },
   "gallery": [
     {
-      "src": "../../assets/content/case-studies/cs-butcher/gallery/0/src.png",
-      "alt": "Photo placeholder for the CS Butcher project, image 1"
+      "src": "../../assets/content/case-studies/cs-butcher/gallery/0/src.jpg",
+      "alt": "Fresh Cuts"
     },
     {
-      "src": "../../assets/content/case-studies/cs-butcher/gallery/1/src.png",
-      "alt": "Photo placeholder for the CS Butcher project, image 2"
+      "src": "../../assets/content/case-studies/cs-butcher/gallery/1/src.jpg",
+      "alt": "Butcher"
     },
     {
-      "src": "../../assets/content/case-studies/cs-butcher/gallery/2/src.png",
-      "alt": "Photo placeholder for the CS Butcher project, image 3"
+      "src": "../../assets/content/case-studies/cs-butcher/gallery/2/src.jpg",
+      "alt": "Pork Belly"
     }
   ],
   "sections": [
@@ -225,9 +229,5 @@
         }
       ]
     }
-  ],
-  "meta": {
-    "title": "CS Butcher",
-    "description": "A traditional butcher on the verge of closing, repositioned around convenience with delivery and online ordering."
-  }
+  ]
 }

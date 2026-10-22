@@ -15,18 +15,23 @@ const storage = github
   ? ({
       kind: 'github',
       repo: { owner: 'mygfdoesntunderstandwhatido', name: 'thegildastudios' },
-      // Content branches get a Netlify branch deploy (scripts/netlify-ignore.sh).
+      // Every content branch gets a Cloudflare Workers preview.
       branchPrefix: 'content-',
     } as const)
   : ({ kind: 'local' } as const);
 
 /**
- * The page on the branch deploy of the branch being edited, so editors see
- * their saved changes before they publish. Netlify serves each branch at
- * <branch>--thegildastudios.netlify.app, and main at the live site.
+ * The page on the preview of the branch being edited, so editors see their
+ * saved changes before they publish. Workers serves each branch's preview at
+ * <branch>-thegildastudios.<subdomain>.workers.dev, with the branch name in
+ * lower case. The account's workers.dev subdomain is the build variable
+ * PUBLIC_WORKERS_SUBDOMAIN; without it, the admin shows no preview link.
  */
-const preview = (path: string) =>
-  github ? `https://{branch}--thegildastudios.netlify.app${path}` : path;
+const subdomain = import.meta.env.PUBLIC_WORKERS_SUBDOMAIN;
+const preview = (path: string) => {
+  if (!github) return path;
+  return subdomain ? `https://{branch}-thegildastudios.${subdomain}.workers.dev${path}` : undefined;
+};
 
 // ---------------------------------------------------------------------------
 // Field helpers

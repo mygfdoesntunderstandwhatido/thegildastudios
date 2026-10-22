@@ -9,7 +9,7 @@ export default tseslint.config(
     ignores: [
       'dist/',
       '.astro/',
-      '.netlify/',
+      '.wrangler/',
       'design/',
       'node_modules/',
       '.lighthouseci/',

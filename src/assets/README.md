@@ -56,8 +56,8 @@ bytes in AVIF or 79,964 bytes in WebP (excluding the hit-test map). PNG
 fallbacks total 1,145,936 bytes, so the 300 KB target relies on modern-format
 negotiation. Avoid preloading multiple formats or both original and variant.
 
-The assembled page must still be checked at 1280 and 390 on a Netlify Deploy
-Preview for the 2× delivery cap, image quality and the complete above-the-fold
+The assembled page must still be checked at 1280 and 390 on a Cloudflare preview
+for the 2× delivery cap, image quality and the complete above-the-fold
 300 KB budget. That cannot be measured on the scaffold before #8 / #15 / #19.
 
 CSS dots (`graphics/dot-*.png`, `branch-dots-*.png`) remain reference-only.

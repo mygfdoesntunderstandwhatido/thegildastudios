@@ -16,14 +16,14 @@ assert.ok((await readFile(`${mask}.webp`)).length < 150 * 1024, 'CSS mask exceed
 
 const text = (file) => readFile(file, 'utf8');
 const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
-const sitemap = await text('dist/sitemap-0.xml');
+const sitemap = await text('dist/client/sitemap-0.xml');
 const paths = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(
   (match) => new URL(match[1]).pathname,
 );
 const report = [];
 
 for (const path of paths) {
-  const html = await text(`dist${path}index.html`);
+  const html = await text(`dist/client${path}index.html`);
   assert.ok(!html.includes('<astro-island'), `${path}: public React island`);
   const preloads = [...html.matchAll(/<link\b[^>]*>/g)]
     .map((match) => match[0])
@@ -73,7 +73,7 @@ for (const path of paths) {
     assert.ok(url.startsWith('/_astro/'), `${path}: unexpected script URL ${url}`);
     if (seen.has(url)) return;
     seen.add(url);
-    await measure(await text(`dist${url}`), url);
+    await measure(await text(`dist/client${url}`), url);
   }
   for (const [, attributes, source] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
     if (attribute(attributes, 'type') === 'application/ld+json') continue;

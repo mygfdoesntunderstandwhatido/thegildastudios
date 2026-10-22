@@ -1,0 +1,27 @@
+// Cloudflare Workers settings. `npm run build` writes the deployable config
+// to dist/server/wrangler.json; `npx wrangler deploy` (main) and
+// `npx wrangler preview` (every other branch) read it from there.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "thegildastudios",
+  // The newest date the pinned workerd supports. Move it forward with Wrangler.
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": {
+    "binding": "ASSETS",
+    // Every public page is a static file. Directory routes get one trailing
+    // slash, and unknown URLs get the branded dist/client/404.html with 404.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    // Only the Keystatic admin runs as Worker code. Without this, a browser
+    // opening /keystatic matches no file and gets the 404 page instead.
+    "run_worker_first": ["/keystatic", "/keystatic/*", "/api/keystatic/*"],
+  },
+  "workers_dev": true,
+  "preview_urls": true,
+  // Branch Previews use the same settings as production. Secrets are set
+  // separately for Previews (docs/editing.md).
+  "previews": {},
+  "observability": { "enabled": true },
+}

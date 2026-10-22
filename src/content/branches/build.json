@@ -1,4 +1,8 @@
 {
   "line": "Websites designed, built, hosted and looked after by the people who made them.",
-  "services": ["Web design", "Development", "Hosting and care"]
+  "services": [
+    "Web design",
+    "Development",
+    "Hosting and care"
+  ]
 }

@@ -1,11 +1,14 @@
 {
   "name": "Drapp fuq Drapp",
-  "slug": "drapp-fuq-drapp",
   "order": 3,
+  "draft": false,
   "featured": true,
   "homeTitle": "From pandemic face masks to a lifestyle brand, grown on social media.",
   "homeSector": "Drapp fuq Drapp · Own venture",
-  "branches": ["plan", "grow"],
+  "branches": [
+    "plan",
+    "grow"
+  ],
   "sector": "OWN VENTURE · HANDMADE ACCESSORIES · MALTA",
   "accent": "olive",
   "short": "Maronia’s own business: from pandemic face masks to a lifestyle brand, grown through social media over almost four years.",
@@ -29,99 +32,122 @@
     }
   ],
   "cover": {
-    "src": "../../assets/graphics/photo-placeholder-feed.png",
-    "alt": ""
+    "src": "../../assets/content/case-studies/drapp-fuq-drapp/cover/src.png"
   },
   "hero": {
-    "src": "../../assets/graphics/photo-placeholder-feed.png",
-    "alt": ""
+    "src": "../../assets/content/case-studies/drapp-fuq-drapp/hero/src.png",
+    "alt": "Photo placeholder for the Drapp fuq Drapp project"
   },
   "gallery": [
     {
-      "src": "../../assets/graphics/photo-placeholder-feed.png",
-      "alt": ""
+      "src": "../../assets/content/case-studies/drapp-fuq-drapp/gallery/0/src.png",
+      "alt": "Photo placeholder for the Drapp fuq Drapp project, image 1"
     },
     {
-      "src": "../../assets/graphics/photo-placeholder-feed.png",
-      "alt": ""
+      "src": "../../assets/content/case-studies/drapp-fuq-drapp/gallery/1/src.png",
+      "alt": "Photo placeholder for the Drapp fuq Drapp project, image 2"
     },
     {
-      "src": "../../assets/graphics/photo-placeholder-feed.png",
-      "alt": ""
+      "src": "../../assets/content/case-studies/drapp-fuq-drapp/gallery/2/src.png",
+      "alt": "Photo placeholder for the Drapp fuq Drapp project, image 3"
     }
   ],
   "sections": [
     {
       "title": "Overview",
+      "featured": false,
       "blocks": [
         {
-          "type": "paragraph",
-          "text": "Drapp fuq Drapp was founded during the early stages of the COVID-19 pandemic, at a time of uncertainty and disruption. Inspired by my mother’s background as a seamstress and my own interest in marketing and social media, the business started with handmade reusable face masks aimed at reducing single-use waste in public spaces."
+          "discriminant": "paragraph",
+          "value": {
+            "text": "Drapp fuq Drapp was founded during the early stages of the COVID-19 pandemic, at a time of uncertainty and disruption. Inspired by my mother’s background as a seamstress and my own interest in marketing and social media, the business started with handmade reusable face masks aimed at reducing single-use waste in public spaces."
+          }
         },
         {
-          "type": "paragraph",
-          "text": "As the pandemic situation evolved and social behaviour shifted, the brand naturally transitioned from necessity-based products into lifestyle-led design. This included reversible bucket hats and small-batch creative accessories that blended sustainability with everyday style."
+          "discriminant": "paragraph",
+          "value": {
+            "text": "As the pandemic situation evolved and social behaviour shifted, the brand naturally transitioned from necessity-based products into lifestyle-led design. This included reversible bucket hats and small-batch creative accessories that blended sustainability with everyday style."
+          }
         },
         {
-          "type": "paragraph",
-          "text": "The business ran for almost four years, alongside my studies and later a full-time role in a creative agency, growing into a consistent side venture with a strong digital presence."
+          "discriminant": "paragraph",
+          "value": {
+            "text": "The business ran for almost four years, alongside my studies and later a full-time role in a creative agency, growing into a consistent side venture with a strong digital presence."
+          }
         }
       ]
     },
     {
       "title": "The challenge",
+      "featured": false,
       "blocks": [
         {
-          "type": "callout",
-          "text": "The original challenge was timing: the business was built for a moment that eventually disappeared."
+          "discriminant": "callout",
+          "value": {
+            "text": "The original challenge was timing: the business was built for a moment that eventually disappeared."
+          }
         },
         {
-          "type": "paragraph",
-          "text": "As COVID restrictions eased, demand for masks declined significantly, meaning the business risked becoming irrelevant if it stayed static. The challenge became less about production and more about reinvention: how to evolve a brand built on a temporary global need into something that could sustain itself creatively and commercially."
+          "discriminant": "paragraph",
+          "value": {
+            "text": "As COVID restrictions eased, demand for masks declined significantly, meaning the business risked becoming irrelevant if it stayed static. The challenge became less about production and more about reinvention: how to evolve a brand built on a temporary global need into something that could sustain itself creatively and commercially."
+          }
         },
         {
-          "type": "paragraph",
-          "text": "At the same time, I was balancing full-time studies and later agency work, which meant growth had to be strategic, efficient, and driven largely through digital channels rather than operational scale."
+          "discriminant": "paragraph",
+          "value": {
+            "text": "At the same time, I was balancing full-time studies and later agency work, which meant growth had to be strategic, efficient, and driven largely through digital channels rather than operational scale."
+          }
         }
       ]
     },
     {
       "title": "My role",
+      "featured": false,
       "blocks": [
         {
-          "type": "paragraph",
-          "text": "I managed the business end-to-end, combining creative direction with operational execution. This included:"
+          "discriminant": "paragraph",
+          "value": {
+            "text": "I managed the business end-to-end, combining creative direction with operational execution. This included:"
+          }
         },
         {
-          "type": "list",
-          "items": [
-            "Product development and direction",
-            "Brand identity and positioning",
-            "Social media strategy and content creation",
-            "Photography, videography, and editing",
-            "Day-to-day operations and planning",
-            "Growth strategy and audience engagement"
-          ]
+          "discriminant": "list",
+          "value": {
+            "items": [
+              "Product development and direction",
+              "Brand identity and positioning",
+              "Social media strategy and content creation",
+              "Photography, videography, and editing",
+              "Day-to-day operations and planning",
+              "Growth strategy and audience engagement"
+            ]
+          }
         },
         {
-          "type": "paragraph",
-          "text": "I also led the shift in positioning from product necessity to lifestyle brand, ensuring the business could continue beyond its original context."
+          "discriminant": "paragraph",
+          "value": {
+            "text": "I also led the shift in positioning from product necessity to lifestyle brand, ensuring the business could continue beyond its original context."
+          }
         }
       ]
     },
     {
       "title": "Key outcomes",
+      "featured": false,
       "blocks": [
         {
-          "type": "list",
-          "items": [
-            "Successfully grew and maintained a digital audience across platforms, reaching a combined 3.5k followers.",
-            "Transitioned the brand from pandemic-driven demand to a lifestyle-oriented product offering.",
-            "Sustained and evolved the business for almost four years while balancing academic commitments and a full-time agency role.",
-            "Built and executed a full social media strategy focused on organic growth, storytelling, and product evolution.",
-            "Gained hands-on experience in running a full-cycle creative business: from concept to execution to reinvention.",
-            "Represented the company at the Startup Festival by Malta Enterprise."
-          ]
+          "discriminant": "list",
+          "value": {
+            "items": [
+              "Successfully grew and maintained a digital audience across platforms, reaching a combined 3.5k followers.",
+              "Transitioned the brand from pandemic-driven demand to a lifestyle-oriented product offering.",
+              "Sustained and evolved the business for almost four years while balancing academic commitments and a full-time agency role.",
+              "Built and executed a full social media strategy focused on organic growth, storytelling, and product evolution.",
+              "Gained hands-on experience in running a full-cycle creative business: from concept to execution to reinvention.",
+              "Represented the company at the Startup Festival by Malta Enterprise."
+            ]
+          }
         }
       ]
     }

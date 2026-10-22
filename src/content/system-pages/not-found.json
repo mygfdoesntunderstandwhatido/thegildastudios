@@ -8,9 +8,21 @@
   "body": "It may have moved. These are the places most people are looking for.",
   "navLabel": "Find a page",
   "links": [
-    { "label": "Home", "href": "/" },
-    { "label": "Services", "href": "/services/" },
-    { "label": "Projects", "href": "/projects/" },
-    { "label": "Contact", "href": "/contact/" }
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Services",
+      "href": "/services/"
+    },
+    {
+      "label": "Projects",
+      "href": "/projects/"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact/"
+    }
   ]
 }

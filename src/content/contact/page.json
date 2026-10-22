@@ -18,10 +18,19 @@
     "intro": "A few lines are enough. Tell us what you need and when, and how you'd like us to reply.",
     "optional": "OPTIONAL",
     "fields": {
-      "name": { "label": "NAME" },
-      "email": { "label": "EMAIL" },
-      "business": { "label": "BUSINESS NAME" },
-      "phone": { "label": "PHONE", "hint": "Needed if you'd like a call." },
+      "name": {
+        "label": "NAME"
+      },
+      "email": {
+        "label": "EMAIL"
+      },
+      "business": {
+        "label": "BUSINESS NAME"
+      },
+      "phone": {
+        "label": "PHONE",
+        "hint": "Needed if you'd like a call."
+      },
       "message": {
         "label": "MESSAGE",
         "hint": "What you're planning, and any dates we should know."

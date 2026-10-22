@@ -1,4 +1,15 @@
 {
+  "seo": {
+    "siteUrl": "https://thegildastudios.netlify.app",
+    "defaultTitle": "The Gilda Studios",
+    "homeTitle": "The Gilda Studios · Digital and events, Malta",
+    "defaultDescription": "Websites, projects, events and social media from one team in Malta. One contact, one plan, one invoice.",
+    "language": "en-MT",
+    "locale": "en_MT",
+    "socialProfiles": [],
+    "homeLabel": "Home",
+    "projectsLabel": "Projects"
+  },
   "nav": [
     {
       "label": "About",
@@ -32,8 +43,8 @@
   },
   "email": "hello@thegildastudios.com",
   "phone": {
-    "label": "+356 0000 0000",
-    "href": "tel:+35600000000"
+    "label": "+356 99690850",
+    "href": "tel:+35699690850"
   },
   "footer": {
     "navLabel": "Footer navigation",
@@ -106,20 +117,5 @@
       "pieces": "Light an ingredient",
       "explore": "EXPLORE"
     }
-  },
-  "seo": {
-    "siteUrl": "https://thegildastudios.netlify.app",
-    "defaultTitle": "The Gilda Studios",
-    "homeTitle": "The Gilda Studios · Digital and events, Malta",
-    "defaultDescription": "Websites, projects, events and social media from one team in Malta. One contact, one plan, one invoice.",
-    "language": "en-MT",
-    "locale": "en_MT",
-    "socialProfiles": [],
-    "locality": "",
-    "streetAddress": "",
-    "postalCode": "",
-    "publishedPhone": "",
-    "homeLabel": "Home",
-    "projectsLabel": "Projects"
   }
 }

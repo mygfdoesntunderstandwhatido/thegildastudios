@@ -24,10 +24,11 @@ proceed before #28 closes. Accessibility fixes remain in #29.
 - The decorative engraved mask uses a lossless WebP at its original 823×1000
   resolution, reducing it from 259 KB to 110 KB. Its alpha channel is
   byte-identical to the PNG; CSS `image-set` retains that PNG as a fallback.
-- Netlify caches hashed `/_astro/*` resources for one year with `immutable`.
+- Cloudflare caches hashed `/_astro/*` resources for one year with `immutable`.
   Stable-name `/fonts/*` resources cache for one week without `immutable`.
-  HTML and other stable-name resources revalidate on every request. Specific
-  cache rules precede the default in `netlify.toml`.
+  HTML and other stable-name resources keep Workers' default and revalidate on
+  every request. The rules are in `public/_headers`. Workers joins the values of
+  every matching rule, so it has no catch-all `Cache-Control` rule.
 
 ## Checks to run
 
@@ -58,9 +59,10 @@ document height, and deployed cache configuration on the local lab server.
 Hero image geometry is measured with focus-driven scrolling suppressed;
 keyboard navigation itself belongs to #29.
 
-The test server serves the unmodified `dist/` output, uses gzip for text as
-Netlify does at the edge, and reads cache rules from `netlify.toml`. This is a
-local production-like lab measurement, **not a measurement of Netlify's edge,
+The test server serves the unmodified `dist/client/` output, uses gzip for text
+as Cloudflare does at the edge, and reads cache rules from `public/_headers`.
+This is a local production-like lab measurement, **not a measurement of
+Cloudflare's edge,
 real mobile hardware, or field Core Web Vitals**. The optional remote analytics
 provider is disabled in these measurements; remeasure if it is enabled.
 

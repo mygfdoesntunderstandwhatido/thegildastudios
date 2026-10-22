@@ -1,3 +1,6 @@
-# Keep legacy work links, including case studies. Netlify preserves query strings.
-/work     /projects/         301
-/work/*   /projects/:splat   301
+# Keep legacy work links, including case studies, in one hop to the slash URL.
+# Workers preserves query strings. The first matching rule wins.
+/work           /projects/         301
+/work/:slug     /projects/:slug/   301
+/work/:slug/    /projects/:slug/   301
+/work/*         /projects/:splat   301

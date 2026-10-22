@@ -1,23 +1,29 @@
-// Serve the production output for lab checks. Netlify compresses text at the
-// edge; use gzip here too, and read cache rules from the deployment config.
+// Serve the production output for lab checks. Cloudflare compresses text at
+// the edge; use gzip here too, and read cache rules from public/_headers.
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { parse } from 'smol-toml';
 
-const root = resolve('dist');
+const root = resolve('dist/client');
 const port = Number(process.env.PERFORMANCE_PORT || 4173);
-const config = parse(await readFile('netlify.toml', 'utf8'));
-const rules = config.headers.map((rule) => ({
-  match: new RegExp(
-    `^${rule.for
+// Workers' default for static assets when no _headers rule sets one.
+const defaults = { 'Cache-Control': 'public, max-age=0, must-revalidate' };
+const rules = [];
+for (const line of (await readFile('public/_headers', 'utf8')).split('\n')) {
+  if (!line.trim() || line.trim().startsWith('#')) continue;
+  if (!/^\s/.test(line)) {
+    const pattern = line
+      .trim()
       .split('*')
       .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-      .join('.*')}$`,
-  ),
-  values: rule.values,
-}));
+      .join('.*');
+    rules.push({ match: new RegExp(`^${pattern}$`), values: {} });
+    continue;
+  }
+  const [name, ...value] = line.trim().split(':');
+  rules.at(-1).values[name.trim()] = value.join(':').trim();
+}
 const types = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -49,13 +55,15 @@ createServer(async (request, response) => {
       file = resolve(root, '404.html');
       status = 404;
     }
+    // Like Workers, every matching rule applies and repeated headers are joined.
     const headers = {};
     for (const rule of rules) {
       if (!rule.match.test(pathname)) continue;
       for (const [name, value] of Object.entries(rule.values)) {
-        headers[name] ??= value;
+        headers[name] = headers[name] ? `${headers[name]}, ${value}` : value;
       }
     }
+    for (const [name, value] of Object.entries(defaults)) headers[name] ??= value;
     const extension = extname(file);
     headers['Content-Type'] = types[extension] || 'application/octet-stream';
     let body = await readFile(file);

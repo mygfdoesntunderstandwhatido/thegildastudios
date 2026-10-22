@@ -23,7 +23,7 @@ const cards = (await getCaseStudies())
 
 <section class="work band band--cream" aria-labelledby={headingId}>
   <div class="container work-inner">
-    <SectionHeader id={headingId} number="01" title={work.label} link={work.link} />
+    <SectionHeader id={headingId} number={work.number} title={work.label} link={work.link} />
     <ul class="cards">
       {cards.map((card) => (
         <li>

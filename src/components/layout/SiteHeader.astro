@@ -1,8 +1,7 @@
 ---
-import { getEntry } from 'astro:content';
-import { headerLabels } from '../../content/ui/header';
 import { branches } from '../../lib/branches';
 import { uniqueId } from '../../lib/ids';
+import { getSettings } from '../../lib/settings';
 import BranchDot from '../branch/BranchDot.astro';
 import Wordmark from '../brand/Wordmark.astro';
 import Button from '../core/Button.astro';
@@ -15,9 +14,7 @@ interface Props {
 }
 
 const { ground = 'cream', currentPath = Astro.url.pathname } = Astro.props;
-const site = await getEntry('settings', 'site');
-if (!site) throw new Error('Missing the settings singleton: src/content/settings/site.json');
-const { nav, booking, email } = site.data;
+const { nav, booking, email, header: headerLabels } = await getSettings();
 
 const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
 const here = withSlash(currentPath);

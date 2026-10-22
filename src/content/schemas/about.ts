@@ -1,34 +1,35 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { text } from './shared';
 import { ctaSchema } from './cta';
 
-const section = z.object({ number: z.string(), label: z.string(), headline: z.string() });
+const section = z.object({ number: text, label: text, headline: text });
 const branchCopy = z.object({
-  description: z.string(),
-  services: z.array(z.string()).min(1),
-  servicesShort: z.string(),
+  description: text,
+  services: z.array(text).min(1),
+  servicesShort: text,
 });
 
 export const about = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/about' }),
   schema: z.object({
-    meta: z.object({ title: z.string(), description: z.string() }),
+    meta: z.object({ title: text, description: text }),
     opening: z.object({
-      eyebrow: z.string(),
-      headline: z.string(),
-      body: z.string(),
-      markAlt: z.string(),
+      eyebrow: text,
+      headline: text,
+      body: text,
+      markAlt: text,
     }),
-    gilda: z.object({ label: z.string(), body: z.string(), statement: z.string() }),
+    gilda: z.object({ label: text, body: text, statement: text }),
     studio: section.extend({
-      pillars: z.array(z.object({ title: z.string(), body: z.string() })).length(3),
+      pillars: z.array(z.object({ title: text, body: text })).length(3),
     }),
     branches: section.extend({
-      body: z.string(),
+      body: text,
       copy: z.object({ plan: branchCopy, build: branchCopy, grow: branchCopy }),
     }),
-    team: section.extend({ body: z.string() }),
+    team: section.extend({ body: text }),
     cta: ctaSchema,
   }),
 });

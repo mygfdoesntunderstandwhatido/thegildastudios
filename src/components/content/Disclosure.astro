@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { disclosureLabels } from '../../content/ui/disclosure';
+import { getSettings } from '../../lib/settings';
+import { typography } from '../../lib/typography';
 import { branches, type BranchKey } from '../../lib/branches';
 import { uniqueId } from '../../lib/ids';
 
@@ -13,6 +14,7 @@ interface Props extends HTMLAttributes<'div'> {
 
 const { items, branch, labels = {}, id, class: className, ...attrs } = Astro.props;
 
+const disclosureLabels = (await getSettings()).labels.disclosure;
 const panelId = `${id ?? uniqueId('disclosure')}-panel`;
 const definition = branches[branch];
 const one = items.length === 1;
@@ -35,8 +37,8 @@ const compact = fill(
     <span class="label-hide">{hide}</span>
     <span class="label-compact">{compact}</span>
     <span class="sign" aria-hidden="true">
-      <span class="sign-closed">{disclosureLabels.closed}</span>
-      <span class="sign-open">{disclosureLabels.open}</span>
+      <span class="sign-closed">{typography.closed}</span>
+      <span class="sign-open">{typography.open}</span>
     </span>
   </button>
   <p class="static-label">{compact}</p>

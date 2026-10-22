@@ -5,12 +5,24 @@ import TestimonialRotator from '../components/content/TestimonialRotator.astro';
 import Hero from '../components/home/Hero.astro';
 import OriginStory from '../components/home/OriginStory.astro';
 import SelectedWork from '../components/home/SelectedWork.astro';
+import { getCaseStudies } from '../lib/case-studies';
 
 const home = await getEntry('homepage', 'home');
 if (!home) throw new Error('Missing the homepage singleton: src/content/homepage/home.json');
 const testimonials = (await getCollection('testimonials'))
-  .filter((entry) => entry.data.homeOrder !== undefined)
+  .filter((entry) => entry.data.homeOrder != null)
   .sort((a, b) => (a.data.homeOrder ?? 0) - (b.data.homeOrder ?? 0));
+// READ THE PROJECT must lead to a live page, so a testimonial whose case study
+// was removed or made a draft stops the build instead of linking to a 404.
+const published = new Set((await getCaseStudies()).map((entry) => entry.id));
+for (const { id, data } of testimonials) {
+  if (!published.has(data.caseStudy)) {
+    throw new Error(
+      `Testimonial "${id}" links to "${data.caseStudy}", which is not a published case study. ` +
+        'Choose another project for it, or remove its homepage position.',
+    );
+  }
+}
 ---
 
 <Base title={home.data.meta.title} description={home.data.meta.description} header={false}>

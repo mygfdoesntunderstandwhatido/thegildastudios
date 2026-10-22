@@ -4,10 +4,9 @@ import type { ImageMetadata } from 'astro';
 import plan from '../../assets/illustrations/01-olive-plan.png';
 import build from '../../assets/illustrations/02-anchovy-build.png';
 import grow from '../../assets/illustrations/03-pepper-grow.png';
-import { disclosureLabels } from '../../content/ui/disclosure';
-import { heroLabels } from '../../content/ui/hero';
 import { branches, type BranchKey } from '../../lib/branches';
 import { uniqueId } from '../../lib/ids';
+import { typography } from '../../lib/typography';
 import BranchDot from '../branch/BranchDot.astro';
 
 interface Props {
@@ -29,7 +28,7 @@ const cards = pillars.map((pillar, index) => {
     ...pillar,
     branch,
     panelId: `${id}-${index}`,
-    label: `${branch.number}${heroLabels.labelSeparator}${branch.ingredient}`,
+    label: `${branch.number}${typography.slash}${branch.ingredient}`,
     count: (total === 1 ? count.one : count.many).replaceAll('{n}', String(total)),
     illustration: illustrations[pillar.branch],
     layout: pillar.groups.length > 1 ? 'groups' : 'items',
@@ -66,8 +65,8 @@ const cards = pillars.map((pillar, index) => {
               sizes="84px"
             />
             <span class="sign">
-              <span class="sign-closed">{disclosureLabels.closed}</span>
-              <span class="sign-open">{disclosureLabels.open}</span>
+              <span class="sign-closed">{typography.closed}</span>
+              <span class="sign-open">{typography.open}</span>
             </span>
           </span>
         </button>

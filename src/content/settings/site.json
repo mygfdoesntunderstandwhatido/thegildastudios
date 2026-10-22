@@ -2,7 +2,8 @@
   "nav": [
     {
       "label": "About",
-      "href": "/about/"
+      "href": "/about/",
+      "branch": "none"
     },
     {
       "label": "Plan",
@@ -21,7 +22,8 @@
     },
     {
       "label": "Projects",
-      "href": "/projects/"
+      "href": "/projects/",
+      "branch": "none"
     }
   ],
   "booking": {
@@ -45,18 +47,15 @@
       },
       {
         "label": "Plan",
-        "href": "/services/#plan",
-        "branch": "plan"
+        "href": "/services/#plan"
       },
       {
         "label": "Build",
-        "href": "/services/#build",
-        "branch": "build"
+        "href": "/services/#build"
       },
       {
         "label": "Grow",
-        "href": "/services/#grow",
-        "branch": "grow"
+        "href": "/services/#grow"
       }
     ],
     "projectLinks": [
@@ -71,5 +70,40 @@
     ],
     "copyright": "THE GILDA STUDIOS · MALTA",
     "copyrightShort": "MALTA"
+  },
+  "brand": {
+    "name": "The Gilda Studios",
+    "stacked": [
+      "The",
+      "Gilda",
+      "Studios"
+    ],
+    "monogram": "GS",
+    "markLabel": "The Gilda Studios"
+  },
+  "header": {
+    "nav": "Main",
+    "home": "The Gilda Studios, home",
+    "menu": "MENU",
+    "close": "CLOSE",
+    "menuTitle": "Menu"
+  },
+  "labels": {
+    "disclosure": {
+      "show": "SHOW ALL {n} ITEMS",
+      "hide": "HIDE THE {n} ITEMS",
+      "compact": "WHAT IS INCLUDED · {n} ITEMS",
+      "showOne": "SHOW THE {n} ITEM",
+      "hideOne": "HIDE THE {n} ITEM",
+      "compactOne": "WHAT IS INCLUDED · {n} ITEM"
+    },
+    "testimonial": {
+      "figureLabel": "Client testimonial",
+      "projectLink": "READ THE PROJECT"
+    },
+    "hero": {
+      "pieces": "Light an ingredient",
+      "explore": "EXPLORE"
+    }
   }
 }

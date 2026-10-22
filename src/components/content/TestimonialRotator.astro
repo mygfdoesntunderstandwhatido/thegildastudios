@@ -1,7 +1,7 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { testimonialRotatorCopy as copy } from '../../content/ui/testimonial-rotator';
+import { getEntry, type CollectionEntry } from 'astro:content';
 import { BRANCH_BY_COLOR, branches } from '../../lib/branches';
+import { typography } from '../../lib/typography';
 import Testimonial from './Testimonial.astro';
 
 // Proposed autoplay interval, flagged for review in #18.
@@ -13,6 +13,9 @@ interface Props {
   number?: string;
 }
 
+const home = await getEntry('homepage', 'home');
+if (!home) throw new Error('Missing the homepage singleton: src/content/homepage/home.json');
+const copy = home.data.testimonials;
 const { testimonials, id = 'in-their-words', number = copy.number } = Astro.props;
 const total = testimonials.length;
 const pad = (value: number) => String(value).padStart(2, '0');
@@ -45,11 +48,11 @@ const slides = testimonials.map(({ data }, index) => ({
   >
     <h2 class="counter">
       <span aria-hidden="true">
-        {number} {copy.separator}{' '}
+        {number} {typography.dot}{' '}
       </span>
       <span id={titleId}>{copy.title}</span>
       <span class="counter-position" aria-hidden="true">
-        {` ${copy.separator} `}
+        {` ${typography.dot} `}
         <span data-counter>{counter(0)}</span>
       </span>
     </h2>

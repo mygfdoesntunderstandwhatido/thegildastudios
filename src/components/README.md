@@ -67,7 +67,7 @@ artboard's Olive mark. Case-study links and blockquote citations resolve to
 `/projects/<encoded-slug>/`, using the slugs defined in #25.
 
 The figure contains one blockquote and one figcaption. Its default accessible
-name comes from `src/content/ui/testimonial.ts`; callers can supply `aria-label`.
+name comes from the `labels.testimonial` group in `src/content/settings/site.json`; callers can supply `aria-label`.
 The separate figure label prevents the caption being repeated as the figure's
 name. The decorative quote mark is hidden from assistive technology.
 
@@ -106,7 +106,7 @@ Brine, so pepper is never text on Cream or Sand.
 
 `content/Disclosure.astro` takes `items` and `branch`, plus optional `labels`
 templates where `{n}` is the item count (defaults in
-`src/content/ui/disclosure.ts`, with single forms for one item). The trigger is
+`labels.disclosure` in `src/content/settings/site.json`, with single forms for one item). The trigger is
 a native button with `aria-expanded` and `aria-controls`. It is closed by
 default and the panel collapses with a 200ms row transition, which is removed
 under reduced motion. Without JavaScript (`scripting: none`) the list renders
@@ -120,7 +120,7 @@ caller by `homeOrder`. Each slide is a dark `Testimonial`. All slides share one
 grid cell to reserve the longest quote's height. Autoplay runs every 8 seconds.
 It pauses on hover, focus within, the pause control and hidden tabs, and never
 runs under reduced motion. Dot changes made by a visitor are announced politely.
-Copy lives in `src/content/ui/testimonial-rotator.ts`.
+Copy lives in the `testimonials` group of `src/content/homepage/home.json`.
 
 ## SiteHeader (#9)
 

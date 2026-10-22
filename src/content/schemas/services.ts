@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { branches, BRANCH_ORDER } from '../../lib/branches';
+import { optionalList, optionalText, text } from './shared';
 
 export const services = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/services' }),
@@ -9,15 +10,12 @@ export const services = defineCollection({
     .object({
       branch: z.enum(BRANCH_ORDER),
       number: z.string().regex(/^\d{2}\.\d+$/),
-      name: z.string(),
-      description: z.string(),
-      bestFor: z.string(),
-      included: z.array(z.string()).min(1).optional(),
-      howItStarts: z.string().optional(),
-      phases: z
-        .array(z.object({ title: z.string(), description: z.string() }))
-        .min(1)
-        .optional(),
+      name: text,
+      description: text,
+      bestFor: text,
+      included: optionalList(text),
+      howItStarts: optionalText,
+      phases: optionalList(z.object({ title: text, description: text })),
       order: z.number().int(),
     })
     .refine((service) => service.included || service.howItStarts, {

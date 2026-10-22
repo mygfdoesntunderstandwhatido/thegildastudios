@@ -1,8 +1,8 @@
 # Shared components
 
 All visible copy is supplied by props or slots from typed data in `src/content`.
-The components use Astro and scoped CSS. Only toggle chips, disclosures and the
-testimonial rotator ship JavaScript.
+The components use Astro and scoped CSS. Only toggle chips, disclosures, the
+testimonial rotator and the mobile menu ship JavaScript.
 
 ## Button (#7)
 
@@ -121,6 +121,23 @@ It pauses on hover, focus within, the pause control and hidden tabs, and never
 runs under reduced motion. Dot changes made by a visitor are announced politely.
 Copy lives in `src/content/ui/testimonial-rotator.ts`.
 
+## SiteHeader (#9)
+
+`layout/SiteHeader.astro` reads the nav, the booking link and the email from
+the `settings` singleton (`src/content/settings/site.json`). `ground` is
+`cream` (the homepage) or `sand` (About, Services and Projects). `currentPath`
+defaults to the page URL. An exact match gets `aria-current="page"`, and a
+section ancestor (a case study under `/projects/`) gets `aria-current="true"`.
+Both use olive, or the branch colours for Plan, Build and Grow. `Base.astro`
+renders the header; pass `header={false}` to place it yourself, as the homepage
+hero will (#15).
+
+From 960px up the header shows the full nav. Below that a MENU toggle opens a
+native modal `<dialog>`: the rest of the page becomes inert, focus is kept
+inside, Esc closes it, focus returns to the toggle, and the page doesn't
+scroll. MENU and CLOSE share one grid cell, so nothing shifts. Without
+JavaScript the links wrap under the name.
+
 ## Previews
 
 - `/dev/button/`
@@ -131,6 +148,7 @@ Copy lives in `src/content/ui/testimonial-rotator.ts`.
 - `/dev/brand/`
 - `/dev/disclosure/`
 - `/dev/testimonial-rotator/`
+- `/dev/header/`
 
 Each preview has its own page and reads typed specimen copy from
 `src/content/dev`. The primitive previews put light-only/dark-only variants on

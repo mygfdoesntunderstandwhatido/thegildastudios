@@ -332,9 +332,10 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
     line-height: 1;
   }
 
+  /* Ink, not the design's olive: olive on Sand is 4.27:1, under AA at 11px. */
   .next-sector {
     padding-block-end: 10px;
-    color: var(--olive);
+    color: var(--ink-3);
   }
 
   @media (width < 768px) {
@@ -432,9 +433,14 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
       line-height: 1.06;
     }
 
-    /* The phone artboard has no gallery row. */
+    /* The phone artboard has no gallery row; the images stack instead. */
     .gallery {
-      display: none;
+      --band-padding: 48px;
+    }
+
+    .gallery-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
     }
 
     .next {

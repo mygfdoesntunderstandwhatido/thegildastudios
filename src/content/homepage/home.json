@@ -1,0 +1,10 @@
+{
+  "hero": {
+    "eyebrow": "Studio for digital and events · Malta",
+    "eyebrowShort": "DIGITAL AND EVENTS · MALTA",
+    "title": "The right ingredients.",
+    "body": "Websites, projects, events and social media from one team. One contact, one plan, one invoice.",
+    "work": { "label": "See our work", "labelShort": "Our work", "href": "/projects/" },
+    "markAlt": "The Gilda Studios mark"
+  }
+}

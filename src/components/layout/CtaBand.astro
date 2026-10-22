@@ -1,0 +1,125 @@
+---
+import { getEntry } from 'astro:content';
+import Button from '../core/Button.astro';
+import type { CtaContent } from '../../content/schemas/cta';
+import { uniqueId } from '../../lib/ids';
+
+interface Props {
+  content: CtaContent;
+  /** The Projects artboards use a compact phone band without body or decoration. */
+  variant?: 'about' | 'services' | 'projects' | 'case-study';
+  id?: string;
+}
+const { content, variant = 'about', id = uniqueId('cta') } = Astro.props;
+const { email } = (await getEntry('settings', 'site'))!.data;
+---
+
+<section
+  class="cta band band--brine band--roomy band--decorated"
+  data-variant={variant}
+  aria-labelledby={id}
+>
+  <div class="band__mark decoration" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-content">
+      <p class="eyebrow">{content.eyebrow}</p>
+      <h2 id={id}>{content.headline}</h2>
+      <p class="body">{content.body}</p>
+      <div class="actions">
+        <Button href={content.booking.href}>{content.booking.label}</Button>
+        <span class="email">
+          <Button href={`mailto:${email}`} variant="anchovy">
+            {email}
+          </Button>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    --cta-measure: 640px;
+    --cta-body-size: 18px;
+    --cta-body-leading: 1.55;
+    --cta-phone-heading: 44px;
+    --cta-phone-body: 16px;
+    --cta-phone-gap: 18px;
+    --cta-phone-mark-space: 220px;
+    --cta-phone-padding: 48px;
+  }
+
+  .cta-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-inline-size: var(--cta-measure);
+  }
+
+  .eyebrow {
+    color: var(--pepper-pale);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: var(--display-80);
+    line-height: 1;
+    text-wrap: wrap;
+  }
+
+  .body {
+    color: var(--cream-2);
+    font-size: var(--cta-body-size);
+    line-height: var(--cta-body-leading);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  @media (width < 768px) {
+    .cta {
+      padding-block: var(--space-12) var(--cta-phone-mark-space);
+    }
+
+    .cta-content {
+      gap: var(--cta-phone-gap);
+    }
+
+    .eyebrow {
+      font-size: var(--label-phone-size);
+    }
+
+    h2 {
+      font-size: var(--cta-phone-heading);
+    }
+
+    .cta[data-variant='about'] {
+      --cta-phone-heading: 46px;
+    }
+
+    .body {
+      font-size: var(--cta-phone-body);
+    }
+
+    .email {
+      display: none;
+    }
+
+    .actions {
+      display: grid;
+    }
+
+    .cta:is([data-variant='projects'], [data-variant='case-study']) {
+      padding-block: var(--cta-phone-padding);
+    }
+
+    .cta:is([data-variant='projects'], [data-variant='case-study']) :is(.body, .decoration) {
+      display: none;
+    }
+  }
+</style>

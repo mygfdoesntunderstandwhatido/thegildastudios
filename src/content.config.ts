@@ -6,7 +6,19 @@ import { homepage } from './content/schemas/homepage';
 import { settings } from './content/schemas/settings';
 import { testimonials } from './content/schemas/testimonials';
 
+import { about } from './content/schemas/about';
+
+import { services } from './content/schemas/services';
+
+import { projects } from './content/schemas/projects';
+
+import { case_study } from './content/schemas/case-study';
+
 export const collections = {
+  case_study,
+  projects,
+  services,
+  about,
   branches: branchCopy,
   homepage,
   settings,

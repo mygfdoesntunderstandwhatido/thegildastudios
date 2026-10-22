@@ -1,0 +1,11 @@
+{
+  "cta": {
+    "eyebrow": "We'll take it from here.",
+    "headline": "Have a project in mind?",
+    "body": "Tell us what you're planning and we'll take it from there.",
+    "booking": {
+      "label": "Book a call",
+      "href": "/contact/"
+    }
+  }
+}

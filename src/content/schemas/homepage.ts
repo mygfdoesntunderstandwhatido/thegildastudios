@@ -6,6 +6,13 @@ import { z } from 'astro/zod';
 export const homepage = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/homepage' }),
   schema: z.object({
+    story: z.object({
+      label: z.string(),
+      headline: z.string(),
+      body: z.string(),
+      markAlt: z.string(),
+      link: z.object({ label: z.string(), href: z.string() }),
+    }),
     hero: z.object({
       eyebrow: z.string(),
       /** The shorter eyebrow on phone. */

@@ -1,0 +1,11 @@
+{
+  "cta": {
+    "eyebrow": "We'll take it from here.",
+    "headline": "Not sure which you need?",
+    "body": "Tell us what you're planning and we'll put the right ingredients together.",
+    "booking": {
+      "label": "Book a call",
+      "href": "/contact/"
+    }
+  }
+}

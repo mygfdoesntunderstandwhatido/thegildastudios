@@ -3,6 +3,7 @@ import '../styles/fonts.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
 
 interface Props {
   title: string;
@@ -48,5 +49,6 @@ const { title, description, header = 'cream' } = Astro.props;
   <body>
     {header && <SiteHeader ground={header} />}
     <slot />
+    <SiteFooter />
   </body>
 </html>

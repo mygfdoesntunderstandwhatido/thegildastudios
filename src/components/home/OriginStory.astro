@@ -1,0 +1,197 @@
+---
+import { getEntry } from 'astro:content';
+import Mark from '../brand/Mark.astro';
+import BranchDot from '../branch/BranchDot.astro';
+import SectionHeader from '../layout/SectionHeader.astro';
+import { orderBranches } from '../../lib/branches';
+import { uniqueId } from '../../lib/ids';
+
+const { story } = (await getEntry('homepage', 'home'))!.data;
+const headingId = uniqueId('origin-story');
+---
+
+<section class="story band band--sand" aria-labelledby={headingId}>
+  <div class="container story-grid">
+    <div class="section-label">
+      <SectionHeader number="03" title={story.label} />
+    </div>
+    <h3 id={headingId}>{story.headline}</h3>
+    <div class="story-mark">
+      <Mark
+        height={510}
+        onDark
+        alt={story.markAlt}
+        sizes="(width < 768px) 240px, (width < 1280px) 36vw, 420px"
+      />
+    </div>
+    <p class="body">{story.body}</p>
+    <dl class="branches">
+      {orderBranches().map((branch) => (
+        <div class="branch-row">
+          <dt>
+            <BranchDot branch={branch.key} />
+            {branch.number} / {branch.ingredient}
+          </dt>
+          <dd>{branch.name}</dd>
+        </div>
+      ))}
+    </dl>
+    <a class="story-link" href={story.link.href}>
+      {story.link.label}
+    </a>
+  </div>
+</section>
+
+<style>
+  .story {
+    --story-padding: 96px;
+    --story-mark-width: 420px;
+    --story-phone-mark-width: 240px;
+    --story-body-measure: 560px;
+    --story-body-size: 18px;
+    --story-body-leading: 1.6;
+    --story-row-padding: 14px;
+    --story-dot-gap: 10px;
+    --story-link-rule: 1.5px;
+    --story-phone-padding: 48px;
+    --story-phone-gap: 22px;
+    --story-phone-heading: 38px;
+    --story-phone-leading: 1.04;
+    --story-phone-body: 15px;
+    --story-phone-label: 10px;
+
+    padding-block: var(--story-padding);
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-7) var(--grid-gap-wide);
+  }
+
+  .story-grid > * {
+    min-inline-size: 0;
+    grid-column: 2;
+  }
+
+  .section-label {
+    grid-row: 1;
+  }
+
+  .story-grid > .story-mark {
+    grid-column: 1;
+    grid-row: 1 / 6;
+    place-self: center center;
+    inline-size: 100%;
+    max-inline-size: var(--story-mark-width);
+
+    --mark-block-size: auto;
+  }
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Size the shared Mark without changing its implementation. */
+  .story-mark :global(.mark) {
+    inline-size: 100%;
+  }
+
+  h3 {
+    grid-row: 2;
+    font-size: var(--display-64);
+  }
+
+  .body {
+    grid-row: 3;
+    max-inline-size: var(--story-body-measure);
+    color: var(--ink-2);
+    font-size: var(--story-body-size);
+    line-height: var(--story-body-leading);
+  }
+
+  .branches {
+    grid-row: 4;
+    max-inline-size: var(--story-body-measure);
+    border-block-end: var(--rule-row-width) solid var(--rule-light-soft);
+  }
+
+  .branch-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--story-row-padding);
+    border-block-start: var(--rule-row-width) solid var(--rule-light-soft);
+  }
+
+  dt {
+    display: flex;
+    align-items: center;
+    gap: var(--story-dot-gap);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  dd {
+    font-family: var(--font-display);
+    font-size: var(--display-26);
+    line-height: 1;
+  }
+
+  .story-link {
+    grid-row: 5;
+    justify-self: start;
+    padding-block: var(--story-dot-gap);
+    border-block-end: var(--story-link-rule) solid var(--olive);
+    color: var(--brine);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  @media (width < 768px) {
+    .story {
+      padding-block: var(--story-phone-padding);
+    }
+
+    .story-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--story-phone-gap);
+    }
+
+    .story-grid > * {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .story-grid > .story-mark {
+      grid-row: auto;
+      max-inline-size: var(--story-phone-mark-width);
+    }
+
+    h3 {
+      font-size: var(--story-phone-heading);
+      line-height: var(--story-phone-leading);
+      text-wrap: wrap;
+    }
+
+    .body {
+      font-size: var(--story-phone-body);
+    }
+
+    .branch-row {
+      padding-block: var(--space-3);
+    }
+
+    dt,
+    .story-link {
+      font-size: var(--story-phone-label);
+    }
+
+    dd {
+      font-size: var(--display-22);
+    }
+
+    .story-link {
+      padding-block: var(--story-row-padding);
+    }
+  }
+</style>

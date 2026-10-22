@@ -1,0 +1,677 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Chip from '../core/Chip.astro';
+import Mark from '../brand/Mark.astro';
+import BranchDots from '../branch/BranchDots.astro';
+import SectionHeader from '../layout/SectionHeader.astro';
+import CtaBand from '../layout/CtaBand.astro';
+import { orderBranches } from '../../lib/branches';
+import { branchIllustrations } from '../../lib/branch-illustrations';
+
+const page = await getEntry('about', 'page');
+if (!page) throw new Error('Missing src/content/about/page.json');
+const copy = page.data;
+const branches = orderBranches();
+const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<main class="about">
+  <section class="opening band band--cream" aria-labelledby="about-title">
+    <div class="container opening-grid">
+      <div class="opening-copy">
+        <Chip variant="filled">{copy.opening.eyebrow}</Chip>
+        <h1 id="about-title">{copy.opening.headline}</h1>
+        <p>{copy.opening.body}</p>
+      </div>
+      <div class="opening-mark">
+        <Mark
+          height={632}
+          onDark
+          alt={copy.opening.markAlt}
+          sizes="(max-width: 767px) min(340px, 100vw - 48px), (max-width: 1280px) 42vw, 520px"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="gilda band band--sand band--roomy" aria-labelledby="gilda-title">
+    <div class="container gilda-grid">
+      <div class="gilda-definition">
+        <h2 class="meta" id="gilda-title">
+          {copy.gilda.label}
+        </h2>
+        <p>{copy.gilda.body}</p>
+      </div>
+      <p class="statement">{copy.gilda.statement}</p>
+    </div>
+  </section>
+
+  <section class="studio band band--brine band--roomy" aria-labelledby="studio-title">
+    <div class="container section-stack">
+      <SectionHeader
+        title={copy.studio.label}
+        number={copy.studio.number}
+        onDark
+        aria-hidden="true"
+      />
+      <h2 class="section-title" id="studio-title">
+        {copy.studio.headline}
+      </h2>
+      <div class="pillars">
+        {copy.studio.pillars.map((pillar, index) => (
+          <div class="pillar" style={`--pillar-rule: ${branches[index].onDark}`}>
+            <h3>{pillar.title}</h3>
+            <p>{pillar.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="branches band band--cream band--roomy" aria-labelledby="branches-title">
+    <div class="container section-stack">
+      <SectionHeader title={copy.branches.label} number={copy.branches.number} aria-hidden="true" />
+      <div class="branches-heading">
+        <h2 class="section-title" id="branches-title">
+          {copy.branches.headline}
+        </h2>
+        <p>{copy.branches.body}</p>
+      </div>
+      <div class="branch-grid">
+        {branches.map((branch) => {
+          const text = copy.branches.copy[branch.key];
+          const illustration = branchIllustrations[branch.key];
+          return (
+            <article
+              class="branch-card"
+              data-branch={branch.key}
+              style={`--branch-rule: ${branch.color}; --branch-label: ${branch.label}; --branch-image-ratio: ${illustration.width / illustration.height}`}
+              aria-labelledby={`about-${branch.key}`}
+            >
+              <div class="branch-heading">
+                <div class="branch-meta">
+                  <span>
+                    {branch.number} / {branch.name}
+                  </span>
+                  <span class="ingredient">{branch.ingredient}</span>
+                </div>
+                <h3 id={`about-${branch.key}`}>{branch.name}</h3>
+              </div>
+              <div class="branch-art">
+                <Picture
+                  src={illustration}
+                  alt=""
+                  formats={['avif', 'webp']}
+                  fallbackFormat="png"
+                  widths={[96, 192, 280, 480]}
+                  sizes="(max-width: 767px) 88px, 240px"
+                  loading="lazy"
+                />
+              </div>
+              <p class="branch-description">{text.description}</p>
+              <ul class="branch-services">
+                {text.services.map((service) => (
+                  <li>{service}</li>
+                ))}
+              </ul>
+              <p class="branch-services-short">{text.servicesShort}</p>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="team band band--sand band--roomy" aria-labelledby="team-title">
+    <div class="container section-stack">
+      <SectionHeader title={copy.team.label} number={copy.team.number} aria-hidden="true" />
+      <div class="team-heading">
+        <h2 class="section-title" id="team-title">
+          {copy.team.headline}
+        </h2>
+        <p>{copy.team.body}</p>
+      </div>
+      <div class="founders">
+        {founders.map(({ id, data: person }) => {
+          const affiliations = orderBranches(person.branches);
+          return (
+            <article
+              class="founder"
+              style={`--role-color: ${affiliations[0].label}`}
+              aria-labelledby={`founder-${id}`}
+            >
+              <div class="portrait" data-placeholder={person.portrait === null}>
+                {person.portrait ? (
+                  <Picture
+                    src={person.portrait}
+                    alt={person.alt}
+                    formats={['avif', 'webp']}
+                    width={400}
+                    height={500}
+                    widths={[320, 640]}
+                    sizes="(max-width: 767px) 70vw, 31vw"
+                    fit="cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <svg width="400" height="500" viewBox="0 0 400 500" aria-hidden="true">
+                    <rect width="400" height="500" fill="currentColor" />
+                  </svg>
+                )}
+              </div>
+              <div class="affiliations">
+                <BranchDots branches={person.branches} />
+                <span>{affiliations.map((branch) => branch.name).join(' · ')}</span>
+              </div>
+              <h3 id={`founder-${id}`}>{person.name}</h3>
+              <p class="role">{person.role}</p>
+              <p class="bio">{person.bio}</p>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+  <CtaBand content={copy.cta} variant="about" />
+</main>
+
+<style>
+  .about {
+    --about-mark-max: 520px;
+    --about-opening-body: 19px;
+    --about-body-size: 18px;
+    --about-copy-measure: 560px;
+    --about-title-measure: 820px;
+    --about-section-gap: 48px;
+    --about-phone-headline: 52px;
+    --about-rule-padding: 18px;
+    --about-pillar-gap: 14px;
+    --about-pillar-body: 16px;
+    --about-branch-gap: 18px;
+    --about-branch-rule: 3px;
+    --about-branch-slot: 220px;
+    --about-branch-art-width: 240px;
+    --about-branch-art-phone: 88px;
+    --about-service-padding: 10px;
+    --about-founder-gap: 22px;
+    --about-portrait-width: 62%;
+    --about-portrait-tint: color-mix(in srgb, var(--brine) 8%, var(--sand));
+  }
+
+  .opening {
+    --band-padding: var(--band-space-compact) var(--space-14);
+  }
+
+  .opening-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    align-items: center;
+    gap: var(--about-section-gap);
+  }
+
+  .opening-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
+  }
+
+  h1 {
+    font-size: var(--display-96);
+    line-height: 1;
+  }
+
+  .opening-copy p {
+    max-inline-size: var(--about-copy-measure);
+    color: var(--ink-2);
+    font-size: var(--about-opening-body);
+    line-height: 1.6;
+  }
+
+  .opening-mark {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Mark owns its aspect ratio. */
+  .opening-mark :global(.mark) {
+    --mark-block-size: auto;
+
+    inline-size: 100%;
+    max-inline-size: var(--about-mark-max);
+  }
+
+  .gilda-grid,
+  .branches-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--grid-gap-wide);
+  }
+
+  .gilda-definition {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    gap: var(--space-4);
+    padding-block-start: var(--about-rule-padding);
+    border-block-start: var(--border-rule-strong);
+  }
+
+  .meta {
+    color: var(--olive);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .gilda-definition p,
+  .bio {
+    color: var(--ink-2);
+    font: var(--type-body);
+  }
+
+  .statement {
+    font-family: var(--font-display);
+    font-size: var(--display-48);
+    line-height: 1.12;
+    text-wrap: pretty;
+  }
+
+  .section-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--about-section-gap);
+  }
+
+  .section-title {
+    font-size: var(--display-64);
+    text-wrap: wrap;
+  }
+
+  .studio .section-title {
+    max-inline-size: var(--about-title-measure);
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--about-pillar-gap);
+    padding-block-start: var(--about-rule-padding);
+    border-block-start: var(--rule-open-width) solid var(--pillar-rule);
+  }
+
+  .pillar h3 {
+    font-size: var(--display-36);
+    line-height: 1.08;
+  }
+
+  .pillar p {
+    color: var(--cream-2);
+    font-size: var(--about-pillar-body);
+    line-height: 1.6;
+  }
+
+  .branches-heading,
+  .team-heading {
+    align-items: end;
+  }
+
+  .branches-heading > p,
+  .team-heading > p {
+    max-inline-size: var(--about-copy-measure);
+    color: var(--ink-2);
+    font-size: var(--about-body-size);
+    line-height: 1.6;
+  }
+
+  .branch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+
+  .branch-card {
+    display: grid;
+    grid-row: span 5;
+    grid-template-rows: auto var(--about-branch-slot) auto auto auto;
+    row-gap: var(--about-branch-gap);
+    padding-block-start: var(--space-5);
+    border-block-start: var(--about-branch-rule) solid var(--branch-rule);
+  }
+
+  @supports (grid-template-rows: subgrid) {
+    .branch-card {
+      grid-template-rows: subgrid;
+    }
+  }
+
+  .branch-heading {
+    display: contents;
+  }
+
+  .branch-meta {
+    display: flex;
+    grid-row: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .ingredient {
+    color: var(--branch-label);
+  }
+
+  .branch-card h3 {
+    grid-row: 3;
+    font-size: var(--display-52);
+    line-height: 1;
+  }
+
+  .branch-art {
+    display: flex;
+    grid-row: 2;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--about-branch-slot);
+  }
+
+  .branch-art picture {
+    display: flex;
+    justify-content: center;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture owns the image. */
+  .branch-art :global(img) {
+    inline-size: 100%;
+    max-inline-size: var(--about-branch-art-width);
+    block-size: 100%;
+    max-block-size: var(--about-branch-slot);
+    object-fit: contain;
+  }
+
+  .branch-description {
+    grid-row: 4;
+    color: var(--ink-2);
+    font-size: var(--about-pillar-body);
+    line-height: 1.6;
+  }
+
+  .branch-services {
+    grid-row: 5;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .branch-services li {
+    padding-block: var(--about-service-padding);
+    border-block-start: var(--rule-row-width) solid var(--rule-light-soft);
+    font: var(--type-label-sm);
+    line-height: var(--label-leading);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .branch-services-short {
+    display: none;
+  }
+
+  .team-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: var(--grid-gap-wide);
+  }
+
+  .founders {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-12);
+  }
+
+  .founder {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--about-founder-gap);
+    min-inline-size: 0;
+  }
+
+  .portrait {
+    position: relative;
+    inline-size: var(--about-portrait-width);
+    aspect-ratio: 4 / 5;
+    color: var(--about-portrait-tint);
+  }
+
+  .portrait > svg,
+  .portrait picture {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Real portraits replace reserved placeholders. */
+  .portrait :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .affiliations {
+    display: flex;
+    align-items: center;
+    gap: var(--about-service-padding);
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .founder h3 {
+    font-size: var(--display-44);
+    line-height: 1;
+  }
+
+  .role {
+    color: var(--role-color);
+    font: var(--type-label);
+    line-height: 1.5;
+    letter-spacing: var(--tracking-label);
+  }
+
+  @media (width < 768px) {
+    .about {
+      --about-mark-max: 340px;
+      --about-opening-body: 16px;
+      --about-body-size: 15px;
+      --about-rule-padding: 14px;
+      --about-pillar-gap: var(--space-2);
+      --about-pillar-body: 15px;
+      --about-branch-art-width: 88px;
+      --about-branch-slot: 100px;
+      --about-founder-gap: 14px;
+      --about-founder-name-offset: 6px;
+      --about-portrait-width: 70%;
+    }
+
+    .gilda,
+    .studio,
+    .branches,
+    .team {
+      --band-padding: var(--band-space-default);
+    }
+
+    .opening {
+      --band-padding: var(--space-10) var(--band-space-default);
+    }
+
+    .opening-grid,
+    .gilda-grid,
+    .pillars {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6);
+    }
+
+    .opening-grid,
+    .opening-copy {
+      gap: var(--space-5);
+    }
+
+    .opening-mark {
+      padding-block-start: var(--space-3);
+    }
+
+    h1 {
+      font-size: var(--about-phone-headline);
+      line-height: var(--heading-leading);
+      text-wrap: wrap;
+    }
+
+    .gilda-definition {
+      gap: var(--space-3);
+    }
+
+    .gilda-definition p,
+    .bio {
+      font-size: var(--about-body-size);
+    }
+
+    .meta {
+      font-size: var(--label-phone-size);
+    }
+
+    .statement {
+      font-size: var(--display-30);
+      line-height: 1.14;
+      text-wrap: wrap;
+    }
+
+    .section-stack {
+      gap: var(--space-7);
+    }
+
+    .studio .section-stack {
+      gap: var(--space-6);
+    }
+
+    .section-title {
+      font-size: var(--display-36);
+      line-height: 1.06;
+    }
+
+    .pillar h3 {
+      font-size: var(--display-26);
+      line-height: var(--heading-leading-loose);
+    }
+
+    .pillar p,
+    .branch-description {
+      line-height: 1.55;
+    }
+
+    .branches-heading,
+    .team-heading {
+      display: contents;
+    }
+
+    .branch-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+
+    .branch-card {
+      grid-row: auto;
+      grid-template:
+        'heading art' auto 'description description' auto 'services services' auto / minmax(0, 1fr)
+        var(--about-branch-art-phone);
+      gap: var(--space-3) var(--space-4);
+      padding-block-start: var(--space-4);
+    }
+
+    .branch-heading {
+      display: flex;
+      grid-area: heading;
+      flex-direction: column;
+      justify-content: center;
+      gap: var(--about-service-padding);
+    }
+
+    .branch-meta {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      font-size: var(--label-phone-size);
+    }
+
+    .ingredient::before {
+      color: var(--brine);
+      content: '· ';
+    }
+
+    .branch-card h3 {
+      font-size: var(--display-36);
+    }
+
+    .branch-art {
+      grid-area: art;
+      justify-self: center;
+      inline-size: min(
+        var(--about-branch-art-width),
+        var(--about-branch-slot) * var(--branch-image-ratio)
+      );
+      block-size: min(
+        var(--about-branch-slot),
+        var(--about-branch-art-width) / var(--branch-image-ratio)
+      );
+    }
+
+    .branch-description {
+      grid-area: description;
+    }
+
+    .branch-services {
+      display: none;
+    }
+
+    .branch-services-short {
+      display: block;
+      grid-area: services;
+      font: var(--type-label-sm);
+      font-size: var(--about-service-padding);
+      line-height: 1.6;
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+    }
+
+    .founders {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-10);
+    }
+
+    .affiliations {
+      display: none;
+    }
+
+    .founder h3 {
+      margin-block-start: var(--about-founder-name-offset);
+      font-size: var(--space-8);
+    }
+
+    .role {
+      font-size: var(--about-service-padding);
+      line-height: 1.6;
+    }
+  }
+</style>

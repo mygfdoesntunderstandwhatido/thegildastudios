@@ -1,0 +1,15 @@
+{
+  "branch": "plan",
+  "number": "01.2",
+  "name": "Event management",
+  "description": "End-to-end event management across planning, coordination, and execution, ensuring seamless experiences from concept to delivery.",
+  "bestFor": "Businesses, organisations, and networks looking to deliver professional, well-executed events without the need for in-house event planning or coordination resources.",
+  "included": [
+    "Initial briefing and event scoping to define objectives, audience, and requirements.",
+    "Event planning and coordination across timelines, logistics, and stakeholders.",
+    "Social media marketing to promote events and drive attendance.",
+    "Setup and management of event ticketing platforms such as Eventbrite and Ticket Tailor.",
+    "Newsletter marketing and email campaigns using platforms such as Mailchimp."
+  ],
+  "order": 2
+}

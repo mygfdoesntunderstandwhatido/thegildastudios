@@ -1,18 +1,16 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Button from '../core/Button.astro';
-import { orderBranches, type BranchKey } from '../../lib/branches';
-import { serviceNumbers } from '../../lib/contact';
+import { orderBranches } from '../../lib/branches';
 
 const page = await getEntry('contact', 'page');
 if (!page) throw new Error('Missing the contact singleton: src/content/contact/page.json');
 const { form } = page.data;
-const branchCopy = await getCollection('branches');
-const services = serviceNumbers(
-  Object.fromEntries(branchCopy.map((entry) => [entry.id, entry.data.services])) as Record<
-    BranchKey,
-    string[]
-  >,
+const services = Object.fromEntries(
+  (await getCollection('services')).map(({ data }) => [
+    data.number,
+    { branch: data.branch, name: data.name },
+  ]),
 );
 
 const needs = [

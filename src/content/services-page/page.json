@@ -1,0 +1,39 @@
+{
+  "cta": {
+    "eyebrow": "We'll take it from here.",
+    "headline": "Not sure which you need?",
+    "body": "Tell us what you're planning and we'll put the right ingredients together.",
+    "booking": {
+      "label": "Book a call",
+      "href": "/contact/"
+    }
+  },
+  "meta": {
+    "title": "Services · The Gilda Studios",
+    "description": "Use one service or several. However many you need, you deal with one studio and get one invoice."
+  },
+  "opening": {
+    "eyebrow": "SERVICES · PLAN · BUILD · GROW",
+    "headline": "Everything we do, in three branches.",
+    "body": "Use one service or several. However many you need, you deal with one studio and get one invoice.",
+    "eyebrowShort": "SERVICES"
+  },
+  "jump": {
+    "label": "Service branches",
+    "lists": {
+      "plan": "PROJECT MANAGEMENT · EVENTS · BRAND AND NAMING",
+      "build": "WEB DESIGN · DEVELOPMENT · HOSTING AND CARE",
+      "grow": "SOCIAL MEDIA · MARKETING"
+    }
+  },
+  "branchIntros": {
+    "plan": "Projects and events, planned and run from the first brief to the final handover.",
+    "build": "Websites designed, built and looked after by the same people.",
+    "grow": "Social media and marketing, run month by month."
+  },
+  "labels": {
+    "bestFor": "BEST FOR",
+    "included": "WHAT IS INCLUDED",
+    "ask": "ASK ABOUT THIS SERVICE"
+  }
+}

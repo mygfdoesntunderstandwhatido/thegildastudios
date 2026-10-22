@@ -16,6 +16,8 @@ values, `preferred`, `message`, `service` and `branch`. The last two contain a
 validated prefilled service number and the selected branch keys. Deselecting a
 service's branch clears the hidden service number. Query-string prefill requires
 JavaScript; without it, the visitor can select needs and submit the native form.
+Service numbers and names come from the typed `services` collection, so the
+homepage's shorter branch summaries cannot change a service's prefilled name.
 
 With JavaScript, the form posts URL-encoded data to `/contact/thanks/`. It prevents
 duplicate requests, waits for a successful response before displaying the approved

@@ -1,4 +1,13 @@
 {
+  "allProjects": {
+    "label": "ALL PROJECTS",
+    "href": "/projects/"
+  },
+  "highlightLabel": "THE RESULT",
+  "pillarCount": "{n} THINGS WE DID",
+  "pillarCountOne": "{n} THING WE DID",
+  "nextProject": "NEXT PROJECT",
+  "galleryLabel": "Project images",
   "cta": {
     "eyebrow": "We'll take it from here.",
     "headline": "Start with a conversation.",

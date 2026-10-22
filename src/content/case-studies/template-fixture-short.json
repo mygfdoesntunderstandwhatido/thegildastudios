@@ -1,0 +1,72 @@
+{
+  "name": "Short fixture",
+  "slug": "template-fixture-short",
+  "draft": true,
+  "order": 901,
+  "featured": false,
+  "branches": ["plan", "grow"],
+  "sector": "FIXTURE · TWO SECTIONS · NO GALLERY",
+  "accent": "olive",
+  "short": "A test entry with two sections and no gallery. It has no public page.",
+  "summary": "We offer project and social media management to MBN. This includes end-to-end coordination, planning, and execution of events and member communications.",
+  "facts": [
+    {
+      "k": "CLIENT",
+      "v": "Malta Business Network (MBN MT and MBN UK)"
+    },
+    {
+      "k": "SECTOR",
+      "v": "Professional business organisation"
+    },
+    {
+      "k": "BRANCHES",
+      "v": "Plan · Grow"
+    },
+    {
+      "k": "SERVICES",
+      "v": "Event project management · Copywriting · Website · Email marketing"
+    }
+  ],
+  "cover": {
+    "src": "../../assets/graphics/photo-placeholder-feed.png",
+    "alt": "Placeholder cover image"
+  },
+  "hero": {
+    "src": "../../assets/graphics/photo-placeholder-feed.png",
+    "alt": "Placeholder hero image"
+  },
+  "sections": [
+    {
+      "title": "Our role",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We act as an operational and communications lead across multiple touchpoints of the organisation, managing projects from concept to execution. These services include:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Event project management",
+            "Strategic copywriting",
+            "Brand tone management",
+            "Website management",
+            "Email marketing"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "In their words",
+      "blocks": [
+        {
+          "type": "quote",
+          "testimonial": "christopher-naudi"
+        },
+        {
+          "type": "quote",
+          "testimonial": "joseph-zammit-tabona"
+        }
+      ]
+    }
+  ]
+}

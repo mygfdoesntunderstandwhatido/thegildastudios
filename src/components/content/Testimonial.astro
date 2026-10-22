@@ -10,6 +10,8 @@ interface Props extends Omit<HTMLAttributes<'figure'>, 'role'> {
   caseStudy: { slug: string };
   markColor?: 'olive' | 'anchovy' | 'pepper';
   variant?: 'dark' | 'light';
+  /** Show the READ THE PROJECT link. Off on the case study the quote belongs to. */
+  link?: boolean;
 }
 
 const {
@@ -20,6 +22,7 @@ const {
   caseStudy,
   markColor = 'olive',
   variant = 'dark',
+  link = true,
   class: className,
   'aria-label': ariaLabel,
   ...attrs
@@ -43,9 +46,11 @@ const href = `/projects/${encodeURIComponent(caseStudy.slug)}/`;
   <figcaption class="attribution">
     <span class="quote-name">{name}</span>
     {(role || business) && <span class="quote-role">{role || business}</span>}
-    <a class="project-link" href={href}>
-      {testimonialLabels.projectLink}
-    </a>
+    {link && (
+      <a class="project-link" href={href}>
+        {testimonialLabels.projectLink}
+      </a>
+    )}
   </figcaption>
 </figure>
 

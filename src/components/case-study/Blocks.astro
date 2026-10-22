@@ -1,0 +1,293 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { CaseStudyBlock } from '../../content/schemas/case-studies';
+import Testimonial from '../content/Testimonial.astro';
+import Pillars from './Pillars.astro';
+
+export type ResolvedBlock =
+  | Exclude<CaseStudyBlock, { type: 'quote' }>
+  | { type: 'quote'; testimonial: CollectionEntry<'testimonials'> };
+
+interface Props {
+  blocks: ResolvedBlock[];
+  /** Featured sections set paragraphs at display size. */
+  featured?: boolean;
+  highlightLabel: string;
+  pillarCount: { many: string; one: string };
+  /** Hide each quote's project link when the quotes belong to this page. */
+  quoteLinks?: boolean;
+}
+
+const { blocks, featured = false, highlightLabel, pillarCount, quoteLinks = true } = Astro.props;
+const pad = (index: number) => String(index + 1).padStart(2, '0');
+---
+
+<div class="blocks" data-featured={featured}>
+  {blocks.map((block) => {
+    switch (block.type) {
+      case 'paragraph':
+        return <p class="paragraph">{block.text}</p>;
+      case 'list':
+        return (
+          <ol class="list">
+            {block.items.map((item, index) => (
+              <li>
+                <span class="list-number" aria-hidden="true">
+                  {pad(index)}
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ol>
+        );
+      case 'callout':
+        return <p class="callout">{block.text}</p>;
+      case 'highlight':
+        return (
+          <div class="highlight">
+            <span class="highlight-mark" aria-hidden="true" />
+            <p class="highlight-label">{block.label ?? highlightLabel}</p>
+            <p class="highlight-text">{block.text}</p>
+          </div>
+        );
+      case 'quote':
+        return (
+          <Testimonial
+            variant="light"
+            quote={block.testimonial.data.quote}
+            name={block.testimonial.data.name}
+            role={block.testimonial.data.role}
+            caseStudy={{ slug: block.testimonial.data.caseStudy }}
+            link={quoteLinks}
+          />
+        );
+      case 'groups':
+        return (
+          <div class="groups">
+            {block.groups.map((group) => (
+              <div class="group">
+                <p class="group-title">{group.title}</p>
+                <ul class="group-items">
+                  {group.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        );
+      case 'pillars':
+        return <Pillars pillars={block.pillars} count={pillarCount} />;
+    }
+  })}
+</div>
+
+<style>
+  .blocks {
+    --block-rule: color-mix(in srgb, var(--brine) 25%, transparent);
+    --list-rule: color-mix(in srgb, var(--brine) 18%, transparent);
+    --item-rule: color-mix(in srgb, var(--brine) 15%, transparent);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-inline-size: 720px;
+    min-inline-size: 0;
+  }
+
+  .paragraph {
+    color: var(--ink-2);
+    font-size: 18px;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+
+  .blocks[data-featured='true'] .paragraph {
+    color: var(--brine);
+    font-family: var(--font-display);
+    font-size: 34px;
+    line-height: 1.22;
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    border-block-end: 1px solid var(--list-rule);
+    list-style: none;
+  }
+
+  .list li {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: var(--space-2);
+    padding-block: 14px;
+    border-block-start: 1px solid var(--list-rule);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .list-number {
+    color: var(--accent-color);
+    font: var(--type-label-sm);
+    line-height: 1.9;
+    letter-spacing: var(--tracking-label);
+  }
+
+  .callout {
+    margin-block: var(--space-2);
+    padding-block: var(--space-7);
+    border-block: 1px solid var(--block-rule);
+    border-block-start: 2px solid var(--brine);
+    font-family: var(--font-display);
+    font-size: 34px;
+    line-height: 1.2;
+    text-wrap: pretty;
+  }
+
+  .highlight {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    margin-block-start: var(--space-4);
+    padding: var(--space-11) 48px;
+    overflow: hidden;
+    background: var(--brine);
+    color: var(--cream);
+  }
+
+  .highlight-mark {
+    position: absolute;
+    z-index: -1;
+    right: -30px;
+    bottom: -70px;
+    inline-size: 190px;
+    block-size: 231px;
+    background: var(--olive);
+    mask: url('../../assets/logos/mask-engraved.png') center / contain no-repeat;
+  }
+
+  .highlight-label {
+    color: var(--pepper-pale);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .highlight-text {
+    max-inline-size: 520px;
+    font-family: var(--font-display);
+    font-size: 40px;
+    line-height: 1.15;
+    text-wrap: pretty;
+  }
+
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8) var(--space-10);
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-inline-size: 0;
+    padding-block-start: var(--space-4);
+    border-block-start: 2px solid var(--brine);
+  }
+
+  .group-title {
+    margin-block-end: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--display-26);
+    line-height: 1.1;
+  }
+
+  .group-items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .group-items li {
+    padding-block: var(--space-2);
+    border-block-end: 1px solid var(--item-rule);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  @media (width < 768px) {
+    .blocks {
+      gap: 18px;
+    }
+
+    .paragraph {
+      font-size: 16px;
+    }
+
+    .blocks[data-featured='true'] .paragraph {
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .list li {
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 6px;
+      padding-block: var(--space-3);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .list-number {
+      font-size: 10px;
+      letter-spacing: 0;
+    }
+
+    .callout {
+      margin-block: var(--space-1);
+      padding-block: var(--space-5);
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .highlight {
+      gap: 14px;
+      margin-block-start: var(--space-2);
+      padding: var(--space-7) var(--space-6);
+    }
+
+    .highlight-mark {
+      display: none;
+    }
+
+    .highlight-label {
+      font-size: 10px;
+    }
+
+    .highlight-text {
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .groups {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6);
+    }
+
+    .group {
+      gap: 2px;
+      padding-block-start: 14px;
+    }
+
+    .group-title {
+      margin-block-end: 6px;
+      font-size: var(--display-22);
+    }
+
+    .group-items li {
+      padding-block: 7px;
+      font-size: 14px;
+    }
+  }
+</style>

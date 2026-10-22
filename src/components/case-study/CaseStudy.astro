@@ -1,0 +1,471 @@
+---
+import { getEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import BranchDots from '../branch/BranchDots.astro';
+import CtaBand from '../layout/CtaBand.astro';
+import { caseStudyHref, type CaseStudy } from '../../lib/case-studies';
+import Blocks, { type ResolvedBlock } from './Blocks.astro';
+
+interface Props {
+  entry: CaseStudy;
+  next?: CaseStudy;
+  /** Fail the build when a quote's testimonial links to another case study. Off for fixtures. */
+  checkQuoteLinks?: boolean;
+}
+
+const { entry, next, checkQuoteLinks = true } = Astro.props;
+const page = await getEntry('case_study', 'page');
+if (!page) throw new Error('Missing the case study singleton: src/content/case-study/page.json');
+const copy = page.data;
+const study = entry.data;
+const pillarCount = { many: copy.pillarCount, one: copy.pillarCountOne };
+
+const grounds = ['sand', 'cream'] as const;
+const sections = await Promise.all(
+  study.sections.map(async (section, index) => {
+    const blocks: ResolvedBlock[] = await Promise.all(
+      section.blocks.map(async (block) => {
+        if (block.type !== 'quote') return block;
+        const testimonial = await getEntry(block.testimonial);
+        if (!testimonial) {
+          throw new Error(`${entry.id}: unknown testimonial "${block.testimonial.id}"`);
+        }
+        if (checkQuoteLinks && testimonial.data.caseStudy !== entry.id) {
+          throw new Error(
+            `${entry.id}: testimonial "${testimonial.id}" links to "${testimonial.data.caseStudy}". ` +
+              `Set its caseStudy to "${entry.id}" so READ THE PROJECT points back here.`,
+          );
+        }
+        return { type: 'quote', testimonial };
+      }),
+    );
+    return {
+      ...section,
+      blocks,
+      number: String(index + 1).padStart(2, '0'),
+      ground: section.featured ? 'pepper-pale' : grounds[index % 2],
+      headingId: `section-${index + 1}`,
+    };
+  }),
+);
+
+const heroSizes = '(width < 768px) calc(100vw - 48px), min(1168px, calc(100vw - 112px))';
+const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw - 160px) / 3))';
+---
+
+<article class="case-study" style={`--accent-color: var(--${study.accent})`}>
+  <header class="intro band band--cream">
+    <div class="container intro-inner">
+      <a class="all-projects" href={copy.allProjects.href}>
+        {copy.allProjects.label}
+      </a>
+      <div class="intro-grid">
+        <div class="intro-title">
+          <p class="meta">
+            <BranchDots branches={study.branches} size={12} />
+            <span>{study.sector}</span>
+          </p>
+          <h1>{study.name}</h1>
+        </div>
+        <p class="summary">{study.summary}</p>
+      </div>
+      <Picture
+        class="hero-image"
+        src={study.hero.src}
+        alt={study.hero.alt}
+        formats={['avif', 'webp']}
+        fallbackFormat="png"
+        widths={[400, 800, 1080]}
+        sizes={heroSizes}
+        loading="eager"
+      />
+      <dl class="facts">
+        {study.facts.map((fact) => (
+          <div class="fact">
+            <dt>{fact.k}</dt>
+            <dd>{fact.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </header>
+
+  {sections.map((section) => (
+    <section class={`cs-section band band--${section.ground}`} aria-labelledby={section.headingId}>
+      <div class="container section-grid">
+        <div class="section-head">
+          <span class="section-number" aria-hidden="true">
+            {section.number}
+          </span>
+          <h2 id={section.headingId}>{section.title}</h2>
+        </div>
+        <Blocks
+          blocks={section.blocks}
+          featured={section.featured}
+          highlightLabel={copy.highlightLabel}
+          pillarCount={pillarCount}
+          quoteLinks={false}
+        />
+      </div>
+    </section>
+  ))}
+
+  {study.gallery.length > 0 && (
+    <section class="gallery band band--cream" aria-label={copy.galleryLabel}>
+      <ul class="container gallery-grid">
+        {study.gallery.map((image) => (
+          <li>
+            <Picture
+              class="gallery-image"
+              src={image.src}
+              alt={image.alt}
+              formats={['avif', 'webp']}
+              fallbackFormat="png"
+              widths={[354, 708, 1080]}
+              sizes={gallerySizes}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {next && (
+    <a class="next band band--sand" href={caseStudyHref(next.id)}>
+      <span class="container next-inner">
+        <span class="next-title">
+          <span class="next-label">{copy.nextProject}</span>
+          <span class="next-name">{next.data.name}</span>
+        </span>
+        <span class="next-sector">{next.data.sector}</span>
+      </span>
+    </a>
+  )}
+</article>
+
+<CtaBand content={copy.cta} variant="case-study" />
+
+<style>
+  .intro {
+    --band-padding: var(--space-12);
+  }
+
+  .intro-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  .all-projects {
+    align-self: flex-start;
+    padding-block: var(--space-2);
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+    text-decoration: none;
+  }
+
+  .all-projects:hover {
+    color: var(--brine);
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: var(--space-12);
+  }
+
+  .intro-title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink-3);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  h1 {
+    font-size: var(--display-104);
+    line-height: 1;
+  }
+
+  .summary {
+    font-family: var(--font-display);
+    font-size: var(--display-26);
+    line-height: 1.3;
+    text-wrap: pretty;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .intro-inner :global(.hero-image) {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 21 / 8;
+    object-fit: cover;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-inline-size: 0;
+    padding-block-start: var(--space-4);
+    border-block-start: 2px solid var(--brine);
+  }
+
+  dt {
+    color: var(--ink-3);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  dd {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .cs-section {
+    --band-padding: 88px;
+  }
+
+  .section-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--grid-gap-wide);
+  }
+
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    gap: 14px;
+    padding-block-start: 18px;
+    border-block-start: 2px solid var(--brine);
+  }
+
+  .section-number {
+    color: var(--accent-color);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .section-head h2 {
+    font-size: var(--display-48);
+    line-height: 1.04;
+  }
+
+  .gallery {
+    --band-padding: 72px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin-block: 0;
+    list-style: none;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+  .gallery-grid :global(.gallery-image) {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .next {
+    --band-padding: var(--space-12);
+
+    display: block;
+    border-block-start: 1px solid var(--rule-light-soft);
+    color: var(--brine);
+    text-decoration: none;
+    transition: background-color var(--hover-duration) ease;
+  }
+
+  .next:hover {
+    --band-background: var(--pepper-pale);
+
+    color: var(--brine);
+  }
+
+  .next-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--space-8);
+  }
+
+  .next-title {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .next-label,
+  .next-sector {
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .next-label {
+    color: var(--ink-3);
+  }
+
+  .next-name {
+    font-family: var(--font-display);
+    font-size: var(--display-64);
+    line-height: 1;
+  }
+
+  .next-sector {
+    padding-block-end: 10px;
+    color: var(--olive);
+  }
+
+  @media (width < 768px) {
+    .intro {
+      --band-padding: var(--space-6) var(--space-10);
+    }
+
+    .intro-inner {
+      gap: var(--space-5);
+    }
+
+    .all-projects {
+      padding-block: 14px;
+      font-size: 10px;
+    }
+
+    .intro-grid,
+    .intro-title {
+      gap: var(--space-5);
+    }
+
+    .intro-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .meta {
+      gap: var(--space-2);
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Phone dots are 10px with a 4px gap. */
+    .meta :global(.branch-dots) {
+      gap: var(--space-1);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- See above. */
+    .meta :global(.branch-dot) {
+      inline-size: 10px;
+      block-size: 10px;
+    }
+
+    h1 {
+      font-size: 52px;
+      line-height: 1.02;
+    }
+
+    .summary {
+      font-size: 21px;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The phone hero is 16:9. */
+    .intro-inner :global(.hero-image) {
+      aspect-ratio: 16 / 9;
+    }
+
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+
+    .fact {
+      gap: var(--space-2);
+      padding-block-start: var(--space-3);
+    }
+
+    dt {
+      font-size: 10px;
+    }
+
+    dd {
+      font-size: 14px;
+    }
+
+    .cs-section {
+      --band-padding: 48px;
+    }
+
+    .section-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .section-head {
+      gap: 10px;
+      padding-block-start: 14px;
+    }
+
+    .section-number {
+      font-size: var(--label-phone-size);
+    }
+
+    .section-head h2 {
+      font-size: 34px;
+      line-height: 1.06;
+    }
+
+    /* The phone artboard has no gallery row. */
+    .gallery {
+      display: none;
+    }
+
+    .next {
+      --band-padding: var(--space-10);
+    }
+
+    .next-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .next-title {
+      gap: 10px;
+    }
+
+    .next-label {
+      font-size: 10px;
+    }
+
+    .next-name {
+      font-size: 36px;
+      line-height: 1.04;
+    }
+
+    .next-sector {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .next {
+      transition: none;
+    }
+  }
+</style>

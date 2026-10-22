@@ -92,11 +92,11 @@ report’s Performance score to 94; the 95-point gate rejected it with exit code
 
 | Page                    | Performance | Accessibility | Best Practices | SEO | Median LCP | CLS  |
 | ----------------------- | ----------- | ------------- | -------------- | --- | ---------- | ---- |
-| `/`                     | 99          | 100           | 100            | 100 | 1.957s     | 0.00 |
-| `/about/`               | 100         | 100           | 100            | 100 | 1.802s     | 0.00 |
-| `/services/`            | 100         | 100           | 100            | 100 | 1.731s     | 0.00 |
-| `/projects/`            | 100         | 100           | 100            | 100 | 1.805s     | 0.00 |
-| `/projects/cs-butcher/` | 100         | 100           | 100            | 100 | 1.656s     | 0.00 |
+| `/`                     | 99          | 100           | 100            | 100 | 1.887s     | 0.00 |
+| `/about/`               | 100         | 100           | 100            | 100 | 1.730s     | 0.00 |
+| `/services/`            | 99          | 100           | 100            | 100 | 1.878s     | 0.00 |
+| `/projects/`            | 100         | 100           | 100            | 100 | 1.803s     | 0.00 |
+| `/projects/cs-butcher/` | 100         | 100           | 100            | 100 | 1.654s     | 0.00 |
 | `/contact/`             | 100         | 100           | 100            | 100 | 1.504s     | 0.00 |
 
 The committed [Lighthouse results](qa/30-lighthouse.json) record the tool/browser,

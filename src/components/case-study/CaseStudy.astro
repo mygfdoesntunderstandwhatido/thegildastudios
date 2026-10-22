@@ -80,6 +80,7 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
         widths={[400, 800, 1080]}
         sizes={heroSizes}
         loading="eager"
+        fetchpriority="high"
       />
       <dl class="facts">
         {study.facts.map((fact) => (

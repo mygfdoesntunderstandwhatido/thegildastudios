@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-10-22T17:22:02.018Z",
+  "measuredAt": "2026-10-22T17:40:50.184Z",
   "lighthouseVersion": "12.6.1",
   "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
   "formFactor": "mobile",
@@ -22,9 +22,9 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1957,
+      "lcpMs": 1887,
       "cls": 0,
-      "lcpRangeMs": [1957, 1955, 1961],
+      "lcpRangeMs": [1956, 1887, 1655],
       "clsValues": [0, 0, 0]
     },
     {
@@ -36,23 +36,23 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1802,
+      "lcpMs": 1730,
       "cls": 0,
-      "lcpRangeMs": [1802, 1809, 1729],
+      "lcpRangeMs": [1730, 1805, 1728],
       "clsValues": [0, 0, 0]
     },
     {
       "path": "/services/",
       "runs": 3,
       "scores": {
-        "performance": 100,
+        "performance": 99,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1731,
+      "lcpMs": 1878,
       "cls": 0,
-      "lcpRangeMs": [1728, 1878, 1731],
+      "lcpRangeMs": [1879, 1807, 1878],
       "clsValues": [0, 0, 0]
     },
     {
@@ -64,9 +64,9 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1805,
+      "lcpMs": 1803,
       "cls": 0,
-      "lcpRangeMs": [1805, 1805, 1804],
+      "lcpRangeMs": [1804, 1802, 1803],
       "clsValues": [0, 0, 0]
     },
     {
@@ -78,9 +78,9 @@
         "best-practices": 100,
         "seo": 100
       },
-      "lcpMs": 1656,
+      "lcpMs": 1654,
       "cls": 0,
-      "lcpRangeMs": [1658, 1656, 1655],
+      "lcpRangeMs": [1805, 1653, 1654],
       "clsValues": [0, 0, 0]
     },
     {
@@ -94,7 +94,7 @@
       },
       "lcpMs": 1504,
       "cls": 0,
-      "lcpRangeMs": [1504, 1653, 1503],
+      "lcpRangeMs": [1503, 1504, 1504],
       "clsValues": [0, 0, 0]
     }
   ]

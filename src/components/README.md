@@ -2,7 +2,7 @@
 
 All visible copy is supplied by props or slots from typed data in `src/content`.
 The components use Astro and scoped CSS. Only toggle chips, disclosures, the
-testimonial rotator and the mobile menu ship JavaScript.
+testimonial rotator and the mobile menu, the hero mark and the branch strip ship JavaScript.
 
 ## Button (#7)
 
@@ -138,6 +138,24 @@ inside, Esc closes it, focus returns to the toggle, and the page doesn't
 scroll. MENU and CLOSE share one grid cell, so nothing shifts. Without
 JavaScript the links wrap under the name.
 
+## Hero, HeroMark and BranchStrip (#15, #17)
+
+`home/Hero.astro` is the dark homepage hero. It places `SiteHeader` on top, so
+the page uses `Base` with `header={false}`. Its copy comes from the `homepage`
+singleton, and the booking button from `settings`.
+
+`home/HeroMark.astro` stacks the base mark and the three piece images, and
+hit-tests the pointer against `mark-piece-map.png`. The map loads on first
+pointer contact. Three keyboard buttons, clipped to the design polygons, give
+each piece focus, `aria-pressed` and a polygon focus outline drawn in SVG.
+
+`home/BranchStrip.astro` is the three-column strip, with copy from the
+`branches` collection and colours from `branches.ts`. Below 768px it becomes
+the static stacked list.
+
+The mark and the strip share state through `src/lib/branch-focus.ts`, which
+also dispatches a `gilda:branch-focus` event on `document`.
+
 ## Previews
 
 - `/dev/button/`
@@ -149,6 +167,7 @@ JavaScript the links wrap under the name.
 - `/dev/disclosure/`
 - `/dev/testimonial-rotator/`
 - `/dev/header/`
+- `/dev/hero/`
 
 Each preview has its own page and reads typed specimen copy from
 `src/content/dev`. The primitive previews put light-only/dark-only variants on

@@ -72,9 +72,6 @@ h6 {
   font-weight: var(--weight-regular);
   line-height: var(--heading-leading);
   text-wrap: balance;
-
-  /* Reflow at 320px: a word wider than the column breaks instead of scrolling. */
-  overflow-wrap: break-word;
 }
 
 h1 {

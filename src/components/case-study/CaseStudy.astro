@@ -344,6 +344,15 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
     color: var(--olive-text);
   }
 
+  /* Tablet: the summary would be a 260px column of 14 lines, so it moves
+     under the name. */
+  @media (width < 1024px) {
+    .intro-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
   @media (width < 768px) {
     .intro {
       --band-padding: var(--space-6) var(--space-10);

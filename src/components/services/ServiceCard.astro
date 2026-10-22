@@ -165,6 +165,15 @@ const id = `service-${service.number.replace('.', '-')}`;
     text-wrap: pretty;
   }
 
+  /* Tablet: labels sit above their values, so "Best for" isn't squeezed
+     into a 150px column. */
+  @media (width < 1024px) {
+    .detail-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
+    }
+  }
+
   @media (width < 768px) {
     .service {
       --band-padding: var(--space-10);

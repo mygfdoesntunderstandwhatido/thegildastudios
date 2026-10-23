@@ -32,8 +32,14 @@ Prebuilt `-<width>.avif`, `.webp` and `.png` files provide matching fallback set
 hero widths 354, 708 and 823; illustration widths 96, 192, 280, 384 and 560,
 capped at source width; photo widths 354, 708 and 1080. Width descriptors and
 intrinsic height are recorded in `inventory.json`. These are alternatives, not
-files to load together. PNG variants are losslessly compressed; modern formats
-use AVIF quality 55 and WebP quality 80, preserving transparency.
+files to load together. These legacy prebuilt variants use AVIF quality 55 and
+WebP quality 80; components import the originals instead. The build-time Sharp
+service in `astro.config.mjs` generates lossless AVIF (4:4:4), lossless WebP and
+full-colour PNG, preserving fine artwork and text without lossy recompression.
+Pictures explicitly set `quality={100}`, which also gives these outputs new
+asset URLs and build-cache keys instead of reusing the previous lossy files.
+Responsive case-study heroes include widths up to 2336px for their 1168px
+desktop slot at 2× density, capped by Astro at the original image's width.
 
 Hero originals and pieces share an 823 × 1000 canvas and remain registered.
 A 708px hero would need 1416px for true 2× detail, but the source is only 823px.

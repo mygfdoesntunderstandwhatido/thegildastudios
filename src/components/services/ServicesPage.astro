@@ -48,7 +48,8 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
                   <Picture
                     src={branchIllustrations[branch.key]}
                     alt=""
-                    formats={['avif', 'webp']}
+                    formats={['webp', 'avif']}
+                    quality={100}
                     fallbackFormat="png"
                     widths={[96, 192, 280]}
                     sizes="(max-width: 767px) 56px, 96px"

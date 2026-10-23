@@ -30,7 +30,8 @@ const branch = branches[key];
       <Picture
         src={branchIllustrations[key]}
         alt=""
-        formats={['avif', 'webp']}
+        formats={['webp', 'avif']}
+        quality={100}
         fallbackFormat="png"
         widths={[96, 192, 280, 480]}
         sizes="(max-width: 767px) 60px, 200px"

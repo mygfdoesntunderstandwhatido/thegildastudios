@@ -16,6 +16,28 @@ assert.ok((await readFile(`${mask}.webp`)).length < 150 * 1024, 'CSS mask exceed
 
 const text = (file) => readFile(file, 'utf8');
 const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
+const candidates = (tag) =>
+  (attribute(tag, 'srcset') ?? '').split(',').map((item) => item.trim().split(/\s+/));
+const verifiedImages = new Set();
+
+async function verifyLosslessImage(url, reference) {
+  if (verifiedImages.has(url)) return;
+  const decode = (file) => sharp(`dist/client${file}`).ensureAlpha().raw().toBuffer();
+  const actual = await decode(url);
+  const expected = await decode(reference);
+  assert.equal(actual.length, expected.length, `${url}: decoded image size`);
+  // Lossless WebP may discard RGB under fully transparent pixels. Those values
+  // are invisible; every visible colour and every alpha value must stay exact.
+  for (let offset = 0; offset < expected.length; offset += 4) {
+    if (expected[offset + 3] === 0) {
+      actual.fill(0, offset, offset + 3);
+      expected.fill(0, offset, offset + 3);
+    }
+  }
+  assert.ok(actual.equals(expected), `${url}: image encoding must preserve pixels and alpha`);
+  verifiedImages.add(url);
+}
+
 const sitemap = await text('dist/client/sitemap-0.xml');
 const paths = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(
   (match) => new URL(match[1]).pathname,
@@ -50,6 +72,15 @@ for (const path of paths) {
   for (const [, picture] of html.matchAll(/<picture\b[^>]*>([\s\S]*?)<\/picture>/g)) {
     assert.ok(picture.includes('type="image/avif"'), `${path}: AVIF source`);
     assert.ok(picture.includes('type="image/webp"'), `${path}: WebP source`);
+    const image = picture.match(/<img\b[^>]*>/)?.[0] ?? '';
+    const references = new Map(candidates(image).map(([url, width]) => [width, url]));
+    for (const [source] of picture.matchAll(/<source\b[^>]*>/g)) {
+      for (const [url, width] of candidates(source)) {
+        const reference = references.get(width);
+        assert.ok(reference, `${path}: matching lossless PNG for ${url}`);
+        await verifyLosslessImage(url, reference);
+      }
+    }
   }
 
   const scripts = [];
@@ -98,3 +129,4 @@ console.table(
   report.map(({ path, jsBytes, jsGzip, cssGzip }) => ({ path, jsBytes, jsGzip, cssGzip })),
 );
 console.log('Public-page image, font, CSS and per-component JS budgets passed.');
+console.log(`${verifiedImages.size} generated images preserve visible pixels and transparency.`);

@@ -1,0 +1,113 @@
+{
+  "measuredAt": "2026-10-23T20:13:36.196Z",
+  "lighthouseVersion": "12.6.1",
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+  "formFactor": "mobile",
+  "throttlingMethod": "simulate",
+  "throttling": {
+    "rttMs": 150,
+    "throughputKbps": 1638.4,
+    "requestLatencyMs": 562.5,
+    "downloadThroughputKbps": 1474.5600000000002,
+    "uploadThroughputKbps": 675,
+    "cpuSlowdownMultiplier": 4
+  },
+  "pages": [
+    {
+      "path": "/",
+      "runs": 3,
+      "scores": {
+        "performance": 92,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 3311,
+      "cls": 0,
+      "lcpRangeMs": [3311, 3379, 3309],
+      "clsValues": [0, 0, 0],
+      "imageTransferBytes": 453020,
+      "totalTransferBytes": 564414
+    },
+    {
+      "path": "/about/",
+      "runs": 3,
+      "scores": {
+        "performance": 89,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 3758,
+      "cls": 0,
+      "lcpRangeMs": [3758, 3754, 3830],
+      "clsValues": [0, 0, 0],
+      "imageTransferBytes": 556400,
+      "totalTransferBytes": 661564
+    },
+    {
+      "path": "/services/",
+      "runs": 3,
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 2635,
+      "cls": 0,
+      "lcpRangeMs": [2632, 2635, 2635],
+      "clsValues": [0, 0, 0],
+      "imageTransferBytes": 270911,
+      "totalTransferBytes": 378666
+    },
+    {
+      "path": "/projects/",
+      "runs": 3,
+      "scores": {
+        "performance": 95,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 3006,
+      "cls": 0,
+      "lcpRangeMs": [3006, 3005, 3007],
+      "clsValues": [0, 0, 0],
+      "imageTransferBytes": 290539,
+      "totalTransferBytes": 393359
+    },
+    {
+      "path": "/projects/cs-butcher/",
+      "runs": 3,
+      "scores": {
+        "performance": 96,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 2706,
+      "cls": 0,
+      "lcpRangeMs": [2632, 2706, 2708],
+      "clsValues": [0, 0, 0],
+      "imageTransferBytes": 246947,
+      "totalTransferBytes": 354058
+    },
+    {
+      "path": "/contact/",
+      "runs": 3,
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1656,
+      "cls": 0,
+      "lcpRangeMs": [1656, 1654, 1656],
+      "clsValues": [0, 0, 0],
+      "imageTransferBytes": 22068,
+      "totalTransferBytes": 125991
+    }
+  ]
+}

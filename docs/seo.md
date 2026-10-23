@@ -45,8 +45,10 @@ pages, image endpoints, system pages and drafts are excluded.
   1200×630 PNGs. They use the page headline (case study name and sector),
   Gilda Display, the approved cream lockup and ordered branch dots on Brine.
   The system pages also get cards. Draft studies get neither a page nor a card.
-- `/icons/favicon-16.png` and `/icons/favicon-32.png` resize the approved GS
-  monogram tile. The small favicon never uses the ingredient mark.
+- `/icons/favicon-16.png` and `/icons/favicon-32.png` fit the full-colour
+  ingredient mark on a transparent ground. The studio chose the mark over the GS monogram
+  for the browser tab (#33), although the brand readme asks for the
+  monogram below 48px.
 - `/icons/apple-touch-icon.png` is 180px from `app-icon-mark.png`. The same
   asset supplies the 192px and 512px manifest icons. The manifest colours
   come from the CSS tokens. `/icons/logo.png` is used in structured data.

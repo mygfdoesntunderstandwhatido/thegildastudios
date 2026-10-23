@@ -125,8 +125,9 @@ export async function socialImage(page: SeoPage) {
 }
 
 export const iconSources = {
-  'favicon-16': { file: 'monogram-gs-tile.png', size: 16 },
-  'favicon-32': { file: 'monogram-gs-tile.png', size: 32 },
+  // The tab icons keep the mark's transparent ground, so they sit cleanly on light and dark tabs.
+  'favicon-16': { file: 'gilda-mark-full-colour.png', size: 16, transparent: true },
+  'favicon-32': { file: 'gilda-mark-full-colour.png', size: 32, transparent: true },
   'apple-touch-icon': { file: 'app-icon-mark.png', size: 180 },
   'app-192': { file: 'app-icon-mark.png', size: 192 },
   'app-512': { file: 'app-icon-mark.png', size: 512 },
@@ -134,10 +135,11 @@ export const iconSources = {
 } as const;
 
 export async function iconImage(name: keyof typeof iconSources) {
-  const { file, size } = iconSources[name];
+  const source = iconSources[name];
   const color = await palette;
-  return sharp(`src/assets/logos/${file}`)
-    .resize(size, size, { fit: 'contain', background: color('cream') })
+  const background = 'transparent' in source ? '#00000000' : color('cream');
+  return sharp(`src/assets/logos/${source.file}`)
+    .resize(source.size, source.size, { fit: 'contain', background })
     .png()
     .toBuffer();
 }

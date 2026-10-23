@@ -119,15 +119,18 @@ assert.equal(robots.includes('Disallow: /\n'), preview);
 const manifest = JSON.parse(await text('dist/client/site.webmanifest'));
 assert.equal(manifest.theme_color.toLowerCase(), '#24261a');
 assert.equal(manifest.background_color.toLowerCase(), '#f3eee2');
-for (const [name, source, size] of [
-  ['favicon-16', 'monogram-gs-tile.png', 16],
-  ['favicon-32', 'monogram-gs-tile.png', 32],
-  ['apple-touch-icon', 'app-icon-mark.png', 180],
-  ['app-192', 'app-icon-mark.png', 192],
-  ['app-512', 'app-icon-mark.png', 512],
+for (const [name, source, size, background] of [
+  ['favicon-16', 'gilda-mark-full-colour.png', 16, '#00000000'],
+  ['favicon-32', 'gilda-mark-full-colour.png', 32, '#00000000'],
+  ['apple-touch-icon', 'app-icon-mark.png', 180, manifest.background_color],
+  ['app-192', 'app-icon-mark.png', 192, manifest.background_color],
+  ['app-512', 'app-icon-mark.png', 512, manifest.background_color],
 ]) {
   const actual = await sharp(`dist/client/icons/${name}.png`).raw().toBuffer();
-  const expected = await sharp(`src/assets/logos/${source}`).resize(size, size).raw().toBuffer();
+  const expected = await sharp(`src/assets/logos/${source}`)
+    .resize(size, size, { fit: 'contain', background })
+    .raw()
+    .toBuffer();
   assert.deepEqual(actual, expected, `${name} must use the approved asset`);
 }
 for (const entry of studies.filter((entry) => entry.draft)) {

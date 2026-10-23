@@ -40,20 +40,20 @@
   },
   "hero": {
     "src": "../../assets/content/case-studies/malta-business-network/hero/src.jpg",
-    "alt": "Mobile"
+    "alt": "The Malta Business Network website on a phone, opening on Stronger Business Connections"
   },
   "gallery": [
     {
       "src": "../../assets/content/case-studies/malta-business-network/gallery/0/src.jpg",
-      "alt": "Testimonial 1"
+      "alt": "Social post quoting Christopher Naudi, Treasurer, Malta Business Network"
     },
     {
       "src": "../../assets/content/case-studies/malta-business-network/gallery/1/src.jpg",
-      "alt": "Testimonial 2"
+      "alt": "Social post quoting Joseph Zammit Tabona, Founder, Malta Business Network"
     },
     {
       "src": "../../assets/content/case-studies/malta-business-network/gallery/2/src.jpg",
-      "alt": "Testimonial 3"
+      "alt": "Social post quoting Martin V. Zahra, Chairman, Malta Business Network UK"
     }
   ],
   "sections": [

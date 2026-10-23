@@ -24,8 +24,8 @@ const year = new Date().getUTCFullYear();
       <div class="footer-column projects">
         <span class="column-label">{footer.projectsLabel}</span>
         <ul>
-          {footer.projectLinks.map((link, index) => (
-            <li class:list={{ 'desktop-only': index > 0 }}>
+          {footer.projectLinks.map((link) => (
+            <li>
               <a href={link.href}>{link.label}</a>
             </li>
           ))}
@@ -37,16 +37,14 @@ const year = new Date().getUTCFullYear();
           <li>
             <a href={`mailto:${email}`}>{email}</a>
           </li>
-          <li class="desktop-only">
+          <li>
             <a href={phone.href}>{phone.label}</a>
           </li>
         </ul>
       </div>
     </nav>
     <p class="copyright">
-      © {year}
-      <span class="desktop-only"> {footer.copyright}</span>
-      <span class="phone-only"> · {footer.copyrightShort}</span>
+      © {year} {footer.copyright}
     </p>
   </div>
 </footer>
@@ -57,7 +55,6 @@ const year = new Date().getUTCFullYear();
     --footer-link-gap: 10px;
     --footer-label-gap: 6px;
     --footer-phone-size: 15px;
-    --footer-copyright-phone-size: 10px;
     --band-padding: var(--space-12);
 
     padding-block-end: var(--space-8);
@@ -123,54 +120,34 @@ const year = new Date().getUTCFullYear();
     letter-spacing: var(--tracking-label);
   }
 
-  .phone-only {
-    display: none;
-  }
-
+  /* Phones keep every column and link, as on desktop: the lockup on top,
+     Studio and Projects side by side, Contact below with the long email. */
   @media (width < 768px) {
     .site-footer {
       --band-padding: var(--space-10);
     }
 
     .footer-inner {
-      gap: var(--space-6);
+      gap: var(--space-8);
     }
 
     .footer-grid {
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-3);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-8) var(--space-6);
     }
 
-    .studio {
-      margin-block-start: var(--space-3);
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The lockup is the Lockup component's root. */
+    .footer-grid > :global(.lockup),
+    .contact {
+      grid-column: 1 / -1;
     }
 
     .footer-column {
       font-size: var(--footer-phone-size);
     }
 
-    .column-label,
-    .desktop-only {
-      display: none;
-    }
-
-    .phone-only {
-      display: inline;
-    }
-
-    .studio ul {
-      flex-flow: row wrap;
-      gap: var(--footer-label-gap);
-    }
-
-    .studio li + li::before {
-      content: '·';
-      margin-inline-end: var(--footer-label-gap);
-    }
-
     .copyright {
       padding-block-start: var(--space-4);
-      font-size: var(--footer-copyright-phone-size);
     }
   }
 </style>

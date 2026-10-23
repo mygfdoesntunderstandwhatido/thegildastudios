@@ -22,8 +22,7 @@ Every one is edited in Keystatic at `/keystatic` on a preview or production.
       [Image sizes](#image-sizes) so nothing important is cropped off.
   - [x] CS Butcher (done). The card and main images come from a
         405 × 305 mockup. They are sharp enough on a standard screen but
-        soft on retina; replace them with the full-size mockup (at least
-        2336 × 890) when there is one.
+        soft on retina; replace them with the full-size mockup (2100 × 800) when there is one.
   - [ ] Drapp fuq Drapp: still the striped placeholders.
   - [x] Malta Business Network (done).
 - [ ] **Homepage Selected work.** These cards use the case-study card
@@ -43,12 +42,12 @@ Every one is edited in Keystatic at `/keystatic` on a preview or production.
 The site crops every image to fill its slot, from the centre. An image
 uploaded at the slot's own shape shows in full, so crop before uploading.
 
-| Image                 | Shape        | Upload at (at least) | Also shown at                                                         |
-| --------------------- | ------------ | -------------------- | --------------------------------------------------------------------- |
-| Case-study main image | 21:8, wide   | 2336 × 890           | 16:9 on phones: keep the subject in the middle two thirds             |
-| Case-study card image | 4:3          | 1080 × 810           | 4:5 on the homepage, 16:9 on phone Projects: keep the subject central |
-| Case-study gallery    | 3:2          | 1080 × 720           | Same shape everywhere                                                 |
-| Founder portrait      | 4:5, upright | 800 × 1000           | Same shape everywhere                                                 |
+| Image                 | Shape        | Make it at  | Smallest that works | Safe area                                                                                  |
+| --------------------- | ------------ | ----------- | ------------------- | ------------------------------------------------------------------------------------------ |
+| Case-study main image | 21:8, wide   | 2100 × 800  | 1050 × 400          | Phones show the middle 16:9: keep the subject in the centre two thirds of the width        |
+| Case-study card image | 4:3          | 1440 × 1080 | 1080 × 810          | Homepage shows 4:5, phone Projects 16:9: keep the subject in the centre 60% wide, 75% tall |
+| Case-study gallery    | 3:2          | 1620 × 1080 | 1080 × 720          | The whole image shows everywhere                                                           |
+| Founder portrait      | 4:5, upright | 1080 × 1350 | 640 × 800           | The whole image shows everywhere                                                           |
 
 Square social posts with a flat background can be widened to 3:2 by
 extending the background colour at the sides, instead of cropping off the

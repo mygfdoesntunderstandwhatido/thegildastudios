@@ -931,7 +931,6 @@ const settings = singleton({
         studioLinks: links('Studio links'),
         projectLinks: links('Projects links', 1),
         copyright: caps('Bottom line'),
-        copyrightShort: caps('Bottom line on phones'),
       },
       { label: 'Footer' },
     ),

@@ -75,8 +75,11 @@ The assertions use the median of the three runs per page:
 
 - Performance, Best Practices and SEO each at least 95, and Accessibility at
   100 (#29).
-- LCP at most 2,000ms and CLS exactly zero. Results are reported with the
-  numeric CLS value, without rounding away small shifts.
+- LCP at most 2,500ms, Google's threshold for a good LCP, and CLS exactly
+  zero. Results are reported with the numeric CLS value, without rounding
+  away small shifts. The LCP limit was 2,000ms until #33: with real photos
+  the simulated LCP sat at 1,880–2,040ms, and passed or failed depending on
+  the CI runner.
 - Transfer and request-count limits from `lighthouse-budgets.json`, applied
   to every audited page. Build checks separately enforce less than 5 KiB gzip
   for the hero script, less than 3 KiB for every other component/module,

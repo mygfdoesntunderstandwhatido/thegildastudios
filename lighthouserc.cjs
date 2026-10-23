@@ -41,7 +41,7 @@ module.exports = {
         'categories:seo': ['error', { minScore: 0.95, aggregationMethod: 'median' }],
         'largest-contentful-paint': [
           'error',
-          { maxNumericValue: 2000, aggregationMethod: 'median' },
+          { maxNumericValue: 2500, aggregationMethod: 'median' },
         ],
         'cumulative-layout-shift': ['error', { maxNumericValue: 0, aggregationMethod: 'median' }],
         ...resourceAssertions,

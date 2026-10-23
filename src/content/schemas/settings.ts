@@ -47,7 +47,6 @@ export const settings = defineCollection({
       studioLinks: z.array(link),
       projectLinks: z.array(link).min(1),
       copyright: text,
-      copyrightShort: text,
     }),
     /** The written name of the studio, used by the wordmark and monogram. */
     brand: z.object({

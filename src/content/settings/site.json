@@ -8,7 +8,8 @@
     "locale": "en_MT",
     "socialProfiles": [],
     "homeLabel": "Home",
-    "projectsLabel": "Projects"
+    "projectsLabel": "Projects",
+    "publishedPhone": "+356 9969 0850"
   },
   "nav": [
     {
@@ -43,8 +44,8 @@
   },
   "email": "hello@thegildastudios.com",
   "phone": {
-    "label": "+356 99690850",
-    "href": "tel:+356 99690850"
+    "label": "+356 9969 0850",
+    "href": "tel:+35699690850"
   },
   "footer": {
     "navLabel": "Footer navigation",

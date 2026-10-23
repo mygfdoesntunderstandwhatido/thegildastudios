@@ -21,7 +21,7 @@ variant's dimensions and byte size. Paths in that file are relative to this fold
 ## Rendering contract for #8 and #15
 
 Rendering components are outside #5. Use Astro's `Picture` from `astro:assets`
-with `formats={['avif', 'webp']}` and `fallbackFormat="png"`. Import the original
+with `formats={['webp', 'avif']}` and `fallbackFormat="png"`. Import the original
 PNG as image metadata, provide meaningful alt text (or empty alt for decorative
 pieces), and set the actual layout width / height. Astro emits intrinsic dimensions.
 For responsive widths, supply a matching `sizes` and widths no greater than twice
@@ -36,6 +36,7 @@ files to load together. These legacy prebuilt variants use AVIF quality 55 and
 WebP quality 80; components import the originals instead. The build-time Sharp
 service in `astro.config.mjs` generates lossless AVIF (4:4:4), lossless WebP and
 full-colour PNG, preserving fine artwork and text without lossy recompression.
+WebP comes first because its lossless output is smaller for the current assets.
 Pictures explicitly set `quality={100}`, which also gives these outputs new
 asset URLs and build-cache keys instead of reusing the previous lossy files.
 Responsive case-study heroes include widths up to 2336px for their 1168px
@@ -57,14 +58,19 @@ alpha channel is byte-identical to the original mask.
 The map must compare byte-for-byte with the design original. The machine inventory
 allows variant dimensions, registration and image budgets to be checked without
 shipping any files: `src/assets` only emits assets that components import.
-At the largest native width, the base hero plus all three pieces total 63,156
+For the legacy lossy prebuilt variants at the largest native width, the base
+hero plus all three pieces total 63,156
 bytes in AVIF or 79,964 bytes in WebP (excluding the hit-test map). PNG
 fallbacks total 1,145,936 bytes, so the 300 KB target relies on modern-format
 negotiation. Avoid preloading multiple formats or both original and variant.
 
-The assembled page must still be checked at 1280 and 390 on a Cloudflare preview
-for the 2× delivery cap, image quality and the complete above-the-fold
-300 KB budget. That cannot be measured on the scaffold before #8 / #15 / #19.
+The current lossless delivery policy prioritises sharpness over the earlier
+300 KB target. `lighthouserc.cjs` sets measured transfer, performance-score and
+LCP limits for each image-heavy page; Contact retains the original limits.
+Font, script, stylesheet, accessibility and zero-layout-shift requirements stay
+unchanged. `scripts/verify-performance.mjs` decodes generated AVIF and WebP and
+checks every visible pixel and alpha value against the matching PNG fallback.
+See `docs/qa/64-image-quality.md` for measurements and the performance tradeoff.
 
 CSS dots (`graphics/dot-*.png`, `branch-dots-*.png`) remain reference-only.
 Wordmarks and lockups are typeset in #8; no raster text graphics are needed.

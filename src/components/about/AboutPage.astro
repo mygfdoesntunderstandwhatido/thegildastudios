@@ -103,7 +103,7 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
                 <Picture
                   src={illustration}
                   alt=""
-                  formats={['avif', 'webp']}
+                  formats={['webp', 'avif']}
                   quality={100}
                   fallbackFormat="png"
                   widths={[96, 192, 280, 480]}
@@ -148,8 +148,9 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
                   <Picture
                     src={person.portrait}
                     alt={person.alt}
-                    formats={['avif', 'webp']}
+                    formats={['webp', 'avif']}
                     quality={100}
+                    fallbackFormat="png"
                     width={400}
                     height={500}
                     widths={[320, 640]}

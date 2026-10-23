@@ -41,20 +41,20 @@
   },
   "hero": {
     "src": "../../assets/content/case-studies/cs-butcher/hero/src.jpg",
-    "alt": "Photo placeholder for the CS Butcher project"
+    "alt": "The CS Butcher website on a laptop and a phone, side by side on a wooden desk"
   },
   "gallery": [
     {
       "src": "../../assets/content/case-studies/cs-butcher/gallery/0/src.jpg",
-      "alt": "Fresh Cuts"
+      "alt": "CS Butcher social post: fresh cuts, chuck at €19.50/kg, with online ordering and free delivery"
     },
     {
       "src": "../../assets/content/case-studies/cs-butcher/gallery/1/src.jpg",
-      "alt": "Butcher"
+      "alt": "CS Butcher social post: a butcher in his apron behind the counter, with Order Online, Visit us at Marsaxlokk and Free Delivery"
     },
     {
       "src": "../../assets/content/case-studies/cs-butcher/gallery/2/src.jpg",
-      "alt": "Pork Belly"
+      "alt": "CS Butcher social post: pork belly at €6.00/kg, with online ordering and free delivery"
     }
   ],
   "sections": [

@@ -48,16 +48,8 @@
         "href": "/about/"
       },
       {
-        "label": "Plan",
-        "href": "/services/#plan"
-      },
-      {
-        "label": "Build",
-        "href": "/services/#build"
-      },
-      {
-        "label": "Grow",
-        "href": "/services/#grow"
+        "label": "Services",
+        "href": "/services/"
       }
     ],
     "projectLinks": [

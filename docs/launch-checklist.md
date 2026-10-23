@@ -72,9 +72,9 @@ site and note the change.
 - [ ] #9: the header is not sticky. Accept.
 - [ ] #9: the wording is "Book a chat" in the header and hero but "Book a
       call" in the CTA bands, as designed. Confirm.
-- [ ] #10: the phone footer reads "About · Plan · Build · Grow" on every
-      page. The Projects artboard shows "About · Services · Projects".
-      Confirm.
+- [x] #10: the footer's Studio links read "About · Services" on every page,
+      and the header reads "About · Services · Projects". (done, the studio's
+      choice in #60)
 - [ ] #11: section labels use the pages' .06em tracking, not the component's
       .1em. Accept.
 - [x] #15: the shadow on the lit hero piece is the agreed exception to the

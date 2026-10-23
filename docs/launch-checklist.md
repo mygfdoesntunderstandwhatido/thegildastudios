@@ -2,27 +2,33 @@
 
 Work through this list to put the site live on `www.thegildastudios.com`.
 It is written so a relaunch can follow it again. Tick each item, or accept it
-with a reason. Most items need an account (Netlify, Cloudflare, Google,
-GitHub) or a decision from the studio, so a person does them.
+with a reason. Most items need an account (Cloudflare, Google, GitHub) or a
+decision from the studio, so a person does them.
 
 Items marked **(done)** are already in the repo; the rest are still to do.
 
 ## 1. Content: replace the placeholders
 
-The build still shows these placeholders. Every one is edited in Keystatic at
-`/keystatic` on the Deploy Preview or production.
+Every one is edited in Keystatic at `/keystatic` on a preview or production.
 
-- [ ] **Phone number.** Site settings → Phone shows `+356 0000 0000` in
-      the footer and on Contact. Also fill Site settings → Search and social
-      previews → Confirmed public phone, which adds the phone to the
-      structured data (it is left out while empty).
+- [x] **Phone number** (done). Site settings → Phone is `+356 9969 0850`
+      (link `tel:+35699690850`, no spaces), in the footer and on Contact.
+      Site settings → Search and social previews → Confirmed public phone
+      has the same number, so it is in the structured data.
 - [ ] **Founder portraits** (About → Team): Maronia Falzon and Chris Vella,
-      with alt text.
-- [ ] **Case-study images** for CS Butcher, Drapp fuq Drapp and Malta
-      Business Network: the card image, main image and gallery. The main and
-      gallery images need alt text (Keystatic requires it).
+      with alt text. Still the empty portrait slots.
+- [ ] **Case-study images**: the card image, main image and gallery, each
+      with alt text. Upload them at the sizes in
+      [Image sizes](#image-sizes) so nothing important is cropped off.
+  - [x] CS Butcher (done). The card and main images come from a
+        405 × 305 mockup. They are sharp enough on a standard screen but
+        soft on retina; replace them with the full-size mockup (at least
+        2336 × 890) when there is one.
+  - [ ] Drapp fuq Drapp: still the striped placeholders.
+  - [x] Malta Business Network (done).
 - [ ] **Homepage Selected work.** These cards use the case-study card
-      images, so they update with the item above.
+      images, so they update with the item above. Waiting on Drapp fuq
+      Drapp.
 - [ ] **Social profiles and address** (Site settings → Search and social
       previews): social profile URLs for `sameAs`, and the public locality or
       street address you are happy to publish. Both are left out of the structured data while empty (#28).
@@ -31,6 +37,23 @@ The build still shows these placeholders. Every one is edited in Keystatic at
 - [ ] Look through every page for the striped "PHOTO · Drag your image onto
       this to replace" placeholders. They are images, so a text search can't
       find them.
+
+### Image sizes
+
+The site crops every image to fill its slot, from the centre. An image
+uploaded at the slot's own shape shows in full, so crop before uploading.
+
+| Image                 | Shape        | Upload at (at least) | Also shown at                                                         |
+| --------------------- | ------------ | -------------------- | --------------------------------------------------------------------- |
+| Case-study main image | 21:8, wide   | 2336 × 890           | 16:9 on phones: keep the subject in the middle two thirds             |
+| Case-study card image | 4:3          | 1080 × 810           | 4:5 on the homepage, 16:9 on phone Projects: keep the subject central |
+| Case-study gallery    | 3:2          | 1080 × 720           | Same shape everywhere                                                 |
+| Founder portrait      | 4:5, upright | 800 × 1000           | Same shape everywhere                                                 |
+
+Square social posts with a flat background can be widened to 3:2 by
+extending the background colour at the sides, instead of cropping off the
+heading or the signature. That is how the Malta Business Network and CS
+Butcher galleries were fitted.
 
 ## 2. Close the open flags from earlier issues
 
@@ -94,25 +117,23 @@ nothing, and contact-form notifications depend on it.
       (Google Workspace, Microsoft 365, Fastmail) and set it up.
 - [ ] Add SPF, DKIM and DMARC records in Cloudflare.
 - [ ] Send a test email to `hello@` and reply from it.
-- [ ] In Netlify → Forms → `contact`, add the email notification to
-      `hello@` ([operations](operations.md#contact-form)).
+- [ ] The contact form delivers to `hello@` (#52). Check its sending setup
+      matches the choice above ([operations](operations.md)).
 
 ## 4. Domain
 
-`thegildastudios.com` is registered with Cloudflare Registrar, so it keeps
-Cloudflare's nameservers. DNS stays in Cloudflare, and Netlify is set up as
-external DNS. Do not move the nameservers to Netlify.
+`thegildastudios.com` is registered with Cloudflare Registrar, and the site
+runs as the `thegildastudios` Worker in the same Cloudflare account (#51). DNS
+stays in Cloudflare and needs no external records.
 
-- [ ] Netlify → Domain management → Add a domain: add
-      `www.thegildastudios.com` as the **primary domain**. Netlify adds the
-      apex and redirects it to `www`.
-- [ ] Cloudflare DNS: `CNAME www → thegildastudios.netlify.app`, **DNS only**
-      (grey cloud).
-- [ ] Cloudflare DNS: `CNAME @ → apex-loadbalancer.netlify.com`, **DNS
-      only**. (Cloudflare flattens it. Fallback: `A @ → 75.2.60.5`.)
-- [ ] If any `CAA` records exist, they allow `letsencrypt.org`.
-- [ ] Netlify shows the domain verified and the certificate provisioned.
-- [ ] Turn on Force HTTPS and HSTS.
+- [ ] Cloudflare → Workers & Pages → `thegildastudios` → Settings → Domains
+      & Routes: add `www.thegildastudios.com` and `thegildastudios.com` as
+      **Custom Domains**. Cloudflare creates the DNS records and the
+      certificates.
+- [ ] Make `www` canonical: a **Redirect Rule** sends
+      `thegildastudios.com/*` to `https://www.thegildastudios.com/` with the
+      same path, as a 301 that keeps the query string.
+- [ ] SSL/TLS → Edge Certificates: turn on **Always Use HTTPS** and HSTS.
 - [ ] In Keystatic, set Site settings → Search and social previews → Public
       site address to
       `https://www.thegildastudios.com`. This changes the canonical URLs,
@@ -122,14 +143,16 @@ external DNS. Do not move the nameservers to Netlify.
 - [ ] Check: `http://thegildastudios.com`, `https://thegildastudios.com` and
       `http://www.thegildastudios.com` all end at
       `https://www.thegildastudios.com/` with one redirect each.
+- [ ] Leave the old Netlify project untouched for two weeks after launch as a
+      fallback, then delete it.
 
 ## 5. Search and monitoring
 
 - [ ] Verify the domain in Google Search Console (a DNS TXT record in
       Cloudflare) and submit `https://www.thegildastudios.com/sitemap-index.xml`.
 - [ ] Optional: link a Google Business Profile.
-- [ ] Uptime monitoring: Netlify deploy notifications, or an external check
-      on the homepage.
+- [ ] Uptime monitoring: Cloudflare notifications, or an external check on
+      the homepage.
 - [ ] Facebook Sharing Debugger and LinkedIn Post Inspector show the right
       previews for home, About, Services, Projects and one case study (#28).
 - [ ] Google's Rich Results Test validates Organization and LocalBusiness
@@ -142,7 +165,7 @@ external DNS. Do not move the nameservers to Netlify.
 - [ ] axe on production: no violations (the same checks as
       `npm run test:a11y`).
 - [ ] Send the contact form on production. The message arrives at `hello@`
-      and in Netlify Forms, and the thanks page shows.
+      and the thanks page shows.
 - [ ] Analytics shows the visit and the form submission.
 - [ ] Sign in to Keystatic on production, change some copy, save, and see the
       change deploy.

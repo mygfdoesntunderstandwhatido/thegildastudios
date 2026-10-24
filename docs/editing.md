@@ -107,6 +107,22 @@ shows the old version, wait a minute and reload: each save rebuilds the preview.
 Open the pull request when you’re ready to publish, not before: once it’s open, every save builds a
 preview twice. Afterwards, start a new branch for the next round of changes.
 
+### When two branches change the same thing
+
+Each photo is saved in a fixed place, such as the case study’s main image. So when two branches
+replace the same photo and one is published, the other can’t be merged as it is, and GitHub can’t fix
+a photo clash in the browser.
+
+GitHub now takes care of this. When you open a pull request, and whenever something is published,
+it brings the latest live site into every open `content-` pull request:
+
+- **Same photo changed on both:** your branch’s photo is kept, and a comment on the pull request lists
+  it. Check the preview. If you wanted the other photo, upload it again on your branch.
+- **Same words changed on both:** a comment names the file. On the pull request, choose **Resolve
+  conflicts**, keep the lines you want, and choose **Mark as resolved** and **Commit merge**.
+
+If saving in the admin fails just after this, reload the page and save again.
+
 ---
 
 ## One-time setup (Chris)

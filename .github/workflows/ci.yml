@@ -4,6 +4,8 @@ on:
   pull_request:
   push:
     branches: [main]
+  # Started by content-sync.yml after it merges main into a content branch.
+  workflow_dispatch:
 
 permissions:
   contents: read

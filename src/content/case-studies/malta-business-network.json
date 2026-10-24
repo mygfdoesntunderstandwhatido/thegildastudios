@@ -45,15 +45,15 @@
   "gallery": [
     {
       "src": "../../assets/content/case-studies/malta-business-network/gallery/0/src.jpg",
-      "alt": "Social post quoting Christopher Naudi, Treasurer, Malta Business Network"
+      "alt": "Event1"
     },
     {
       "src": "../../assets/content/case-studies/malta-business-network/gallery/1/src.jpg",
-      "alt": "Social post quoting Joseph Zammit Tabona, Founder, Malta Business Network"
+      "alt": "Event 2"
     },
     {
       "src": "../../assets/content/case-studies/malta-business-network/gallery/2/src.jpg",
-      "alt": "Social post quoting Martin V. Zahra, Chairman, Malta Business Network UK"
+      "alt": "Event 3"
     }
   ],
   "sections": [

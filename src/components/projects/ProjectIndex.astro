@@ -64,7 +64,8 @@ const filters = orderBranches().map((branch) => ({
                 class="cover"
                 src={data.cover.src}
                 alt={data.cover.alt}
-                formats={['avif', 'webp']}
+                formats={['webp', 'avif']}
+                quality={100}
                 fallbackFormat="png"
                 widths={[354, 708, 1080]}
                 sizes="(width < 768px) calc(100vw - 48px), min(368px, calc((100vw - 176px) / 3))"

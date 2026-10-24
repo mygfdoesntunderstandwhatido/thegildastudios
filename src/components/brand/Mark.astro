@@ -71,7 +71,8 @@ const monogramVariant = variant === 'single' ? 'outline' : onDark ? 'tile' : 'da
       <Picture
         src={onDark ? fullColourOnDark : fullColour}
         alt={alt}
-        formats={['avif', 'webp']}
+        formats={['webp', 'avif']}
+        quality={100}
         fallbackFormat="png"
         width={width}
         height={height}

@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, sharpImageService } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
@@ -15,6 +15,14 @@ export default defineConfig({
   site: settings.seo.siteUrl,
   // Each page has a small stylesheet. Inlining avoids a blocking CSS round trip.
   build: { inlineStylesheets: 'always' },
+  image: {
+    service: sharpImageService({
+      // Preserve fine artwork and text in every negotiated image format.
+      avif: { lossless: true, chromaSubsampling: '4:4:4' },
+      webp: { lossless: true },
+      png: { palette: false },
+    }),
+  },
   adapter: cloudflare({
     // Images stay optimised with Sharp at build time, so no Images binding.
     imageService: 'compile',

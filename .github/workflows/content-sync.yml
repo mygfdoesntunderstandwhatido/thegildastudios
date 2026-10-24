@@ -1,0 +1,91 @@
+# Keeps the Keystatic content branches (content-*) in step with main, so their
+# pull requests don't stop on a merge conflict whenever two branches change the
+# same photo. scripts/sync-content-branch.sh does the merge; see docs/editing.md.
+#
+# Runs when main changes (for every open content pull request) and when a
+# content pull request is opened. pull_request_target is used because GitHub
+# skips pull_request runs while a pull request has a conflict. It runs this
+# file and the script from main and never runs code from the branch.
+name: Content branches
+
+on:
+  push:
+    branches: [main]
+  pull_request_target:
+    types: [opened, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: content-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Merge main into content branches
+    if: >-
+      github.event_name != 'pull_request_target' ||
+      (startsWith(github.head_ref, 'content-') &&
+      github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Merge main into each branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp scripts/sync-content-branch.sh "$RUNNER_TEMP/sync.sh"
+
+          gh pr list --base main --state open --limit 100 \
+            --json number,headRefName,isCrossRepository \
+            --jq '.[] | select(.headRefName | startswith("content-")) | select(.isCrossRepository | not) | "\(.number) \(.headRefName)"' \
+            > "$RUNNER_TEMP/prs"
+
+          while read -r pr branch; do
+            echo "::group::#$pr $branch"
+            git fetch -q origin main "$branch"
+            result="$(bash "$RUNNER_TEMP/sync.sh" "$branch")"
+            echo "$result"
+            status="$(sed -n 's/^status=//p' <<< "$result")"
+            photos="$(sed -n 's/^photos=//p' <<< "$result")"
+            files="$(sed -n 's/^files=//p' <<< "$result")"
+
+            if [[ "$status" == merged ]]; then
+              git push -q origin "HEAD:refs/heads/$branch"
+              # Pushes made with this token don't start other workflows.
+              gh workflow run ci.yml --ref "$branch"
+              if [[ -n "$photos" ]]; then
+                {
+                  echo "Main was merged into this branch. Both had changed the same photos, so this branch’s version was kept:"
+                  echo
+                  for file in $photos; do echo "- \`$file\`"; done
+                  echo
+                  echo "The preview shows what will go live. If you wanted the photo from main instead, upload it again on this branch."
+                } > "$RUNNER_TEMP/comment.md"
+                gh pr comment "$pr" --body-file "$RUNNER_TEMP/comment.md"
+              fi
+            elif [[ "$status" == conflict ]]; then
+              # Say it once for each set of files, not on every change to main.
+              marker="<!-- content-sync conflict: $files -->"
+              if ! gh pr view "$pr" --json comments --jq '.comments[].body' | grep -qF "$marker"; then
+                {
+                  echo "$marker"
+                  echo "This branch and main both changed the same words, so main couldn’t be merged in automatically. On this pull request, choose **Resolve conflicts** and keep the lines you want in:"
+                  echo
+                  for file in $files; do echo "- \`$file\`"; done
+                } > "$RUNNER_TEMP/comment.md"
+                gh pr comment "$pr" --body-file "$RUNNER_TEMP/comment.md"
+              fi
+            fi
+            git checkout -q main
+            echo "::endgroup::"
+          done < "$RUNNER_TEMP/prs"

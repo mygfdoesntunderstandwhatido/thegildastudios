@@ -33,18 +33,27 @@ budgets and request counts retain their earlier requirements.
 
 | Page                | Minimum performance | Maximum LCP ms | Maximum image KiB | Maximum total KiB |
 | ------------------- | ------------------: | -------------: | ----------------: | ----------------: |
-| Home                |                  90 |           4000 |               560 |               720 |
+| Home                |                  86 |           4300 |               800 |               960 |
 | About               |                  82 |           4800 |              1440 |              1600 |
 | Services            |                  95 |           3000 |               320 |               480 |
-| Projects            |                  92 |           3500 |               360 |               520 |
+| Projects            |                  88 |           4000 |               620 |               760 |
 | CS Butcher          |                  94 |           3200 |               320 |               480 |
 | Contact (unchanged) |                  95 |           2500 |               200 |               400 |
 
-The About limits were raised from 87 / 4300 ms / 640 KiB / 800 KiB when the two
-founder portraits replaced the placeholders. A lossless 640px portrait is about
-700 KiB, and it competes with the hero mark (the LCP element) on Slow 4G. Local
-runs measured 1242 KiB of images and 1368 KiB in total, with scores from 84 to 94
-and LCP from 3153 to 4507 ms.
+Home, About and Projects were re-measured on 24 October 2026 after new photos
+were uploaded through the admin (#66, #67 and #63): new case-study covers and
+heroes, and the two founder portraits in place of the placeholders. A lossless
+640px portrait is about 700 KiB, and it competes with the hero mark (the LCP
+element) on Slow 4G. Six local runs per page measured:
+
+| Page     | Image KiB | Total KiB |    Score | LCP ms      |
+| -------- | --------: | --------: | -------: | ----------- |
+| Home     |       678 |       811 |  89 – 97 | 2558 – 3762 |
+| About    |      1242 |      1368 |  85 – 92 | 3308 – 4429 |
+| Projects |       520 |       644 | 91 – 100 | 1879 – 3533 |
+
+The limits above add 15 to 20 % headroom to these byte counts. New or larger
+photos can push a page past them again: re-measure and update both tables.
 
 `lighthouserc.cjs` applies these limits only to the matching page. The baseline
 resource budgets remain in `lighthouse-budgets.json`. The collection URLs and

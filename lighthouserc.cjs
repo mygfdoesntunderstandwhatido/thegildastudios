@@ -14,10 +14,10 @@ const resourceAssertions = Object.fromEntries([
 // Lossless delivery is the chosen image policy (#64). Keep the original limits
 // for other pages; bound each image-heavy page using the measured WebP output.
 const imageBudgets = {
-  '/': { performance: 0.9, lcpMs: 4000, imageKiB: 560, totalKiB: 720 },
+  '/': { performance: 0.86, lcpMs: 4300, imageKiB: 800, totalKiB: 960 },
   '/about/': { performance: 0.82, lcpMs: 4800, imageKiB: 1440, totalKiB: 1600 },
   '/services/': { performance: 0.95, lcpMs: 3000, imageKiB: 320, totalKiB: 480 },
-  '/projects/': { performance: 0.92, lcpMs: 3500, imageKiB: 360, totalKiB: 520 },
+  '/projects/': { performance: 0.88, lcpMs: 4000, imageKiB: 620, totalKiB: 760 },
   '/projects/cs-butcher/': { performance: 0.94, lcpMs: 3200, imageKiB: 320, totalKiB: 480 },
 };
 const pages = [...Object.keys(imageBudgets), '/contact/'];

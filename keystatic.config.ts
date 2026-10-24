@@ -288,7 +288,8 @@ const caseStudies = collection({
     }),
     featured: fields.checkbox({
       label: 'Show on the homepage',
-      description: 'Featured projects appear under Selected work on the homepage.',
+      description:
+        'Saved for the unused Selected work component. The homepage no longer shows project cards.',
     }),
     homeTitle: optional('Homepage card title', {
       description: 'Leave empty to use the Projects card line.',
@@ -512,7 +513,8 @@ const home = singleton({
       },
       {
         label: 'Selected work',
-        description: 'The cards come from case studies marked Show on the homepage.',
+        description:
+          'Saved for the unused Selected work component. This section is not displayed on the homepage.',
       },
     ),
     testimonials: fields.object(
@@ -520,10 +522,6 @@ const home = singleton({
         number: required('Section number'),
         title: caps('Section label'),
         controlsLabel: required('Dots label (screen readers)'),
-        pause: caps('Pause button'),
-        play: caps('Play button'),
-        pauseLabel: required('Pause button (screen readers)'),
-        playLabel: required('Play button (screen readers)'),
         slideLabel: required('Slide name (screen readers)', {
           description: '{index}, {total} and {name} are filled in for each testimonial.',
         }),
@@ -538,6 +536,7 @@ const home = singleton({
     ),
     story: fields.object(
       {
+        number: required('Section number'),
         label: required('Section label'),
         headline: required('Headline'),
         body: required('Text', { multiline: true }),

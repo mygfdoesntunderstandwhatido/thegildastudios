@@ -116,10 +116,10 @@ open with a static label. Circles and numbers follow the branch colours.
 
 `content/TestimonialRotator.astro` renders the Brine "In their words" section
 (`id="in-their-words"`) from `testimonials` collection entries, sorted by the
-caller by `homeOrder`. Each slide is a dark `Testimonial`. All slides share one
-grid cell to reserve the longest quote's height. Autoplay runs every 8 seconds.
-It pauses on hover, focus within, the pause control and hidden tabs, and never
-runs under reduced motion. Dot changes made by a visitor are announced politely.
+caller by `homeOrder`. Each slide is a dark `Testimonial`. The active quote sets
+the section height. Visitors choose a dot with the pointer or keyboard, or swipe
+left or right on a phone. There is no autoplay or playback control. Changes are
+announced politely; inactive slides are hidden and inert.
 Copy lives in the `testimonials` group of `src/content/homepage/home.json`.
 
 ## SiteHeader (#9)
@@ -161,8 +161,9 @@ also dispatches a `gilda:branch-focus` event on `document`.
 
 `home/SelectedWork.astro` is the cream "01 Selected work" band. Its cards are
 the `featured` case studies in `order`, using each entry's `homeTitle` and
-`homeSector` (falling back to `short` and `sector`). `src/pages/index.astro` assembles the hero, Selected work, the
-rotator and the origin story; the footer comes from `Base`.
+`homeSector` (falling back to `short` and `sector`). The component is retained for
+reference but is no longer shown on the homepage (#72). `src/pages/index.astro`
+assembles the hero, origin story and rotator (#76); the footer comes from `Base`.
 
 ## Case study template (#24)
 

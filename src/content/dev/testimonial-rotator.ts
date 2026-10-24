@@ -2,8 +2,8 @@ export const testimonialRotatorPreview = {
   title: 'Testimonial rotator · dev',
   heading: 'In their words, in turn.',
   intro:
-    'The homepage rotator with the four testimonials from the collection. It advances every 8 seconds, and pauses on hover, on focus, in a hidden tab and with the pause button. Under reduced motion it never advances on its own.',
+    'The homepage rotator with the four testimonials from the collection. Choose a dot with the pointer or keyboard, or swipe on a phone. Quotes change only when you choose them.',
   afterHeading: 'Below the rotator.',
   afterBody:
-    'This band should never move while the quotes change. The rotator reserves the height of the longest quote.',
+    'The section fits the active quote. Short quotes take less space, and long quotes remain fully visible.',
 } as const;

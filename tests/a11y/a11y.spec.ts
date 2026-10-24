@@ -266,7 +266,7 @@ test.describe('keyboard paths', () => {
     await expect(page.locator('gilda-hero-mark')).not.toHaveAttribute('data-active', /.*/);
   });
 
-  test('rotator dots and pause respond to the keyboard and announce changes', async ({ page }) => {
+  test('rotator dots respond to the keyboard and announce changes', async ({ page }) => {
     await page.goto('/');
     const dots = page.locator('[data-dot]');
     await dots.nth(1).focus();
@@ -275,18 +275,17 @@ test.describe('keyboard paths', () => {
     await expect(page.locator('gilda-testimonial-rotator [data-status]')).toHaveText(
       (await dots.nth(1).getAttribute('aria-label')) ?? '',
     );
-    const playback = page.locator('[data-playback]');
-    await expect(playback).toBeVisible();
-    const pauseLabel = await playback.getAttribute('aria-label');
-    await playback.focus();
-    await page.keyboard.press('Enter');
-    await expect(playback).not.toHaveAttribute('aria-label', pauseLabel ?? '');
+    await expect(page.locator('[data-playback]')).toHaveCount(0);
+    await expect(page.locator('[data-slide]:not([data-active]) a').first()).not.toBeVisible();
   });
 
   test('rotator never autoplays with reduced motion', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.clock.install();
     await page.goto('/');
-    await expect(page.locator('[data-playback]')).toBeHidden();
+    await page.clock.fastForward(60_000);
+    await expect(page.locator('[data-dot]').first()).toHaveAttribute('aria-current', 'true');
+    await expect(page.locator('[data-playback]')).toHaveCount(0);
   });
 
   test('disclosures expand and collapse with the keyboard', async ({ page }) => {

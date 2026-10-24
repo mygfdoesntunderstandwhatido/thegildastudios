@@ -13,7 +13,7 @@ const headingId = uniqueId('origin-story');
 <section class="story band band--sand" aria-labelledby={headingId}>
   <div class="container story-grid">
     <div class="section-label">
-      <SectionHeader number="03" title={story.label} />
+      <SectionHeader number={story.number} title={story.label} />
     </div>
     <h3 id={headingId}>{story.headline}</h3>
     <div class="story-mark">

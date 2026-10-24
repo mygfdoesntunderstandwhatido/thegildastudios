@@ -536,6 +536,7 @@ const home = singleton({
     ),
     story: fields.object(
       {
+        number: required('Section number'),
         label: required('Section label'),
         headline: required('Headline'),
         body: required('Text', { multiline: true }),

@@ -63,6 +63,17 @@ test('homepage leaves project cards on the Projects page and never rotates autom
   await expect(page.locator('[data-dot]').nth(1)).toHaveAttribute('aria-current', 'true');
 });
 
+test('homepage shows the name story before the testimonials, numbered 01 and 02', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const sections = page.locator('#main > section');
+  await expect(sections.nth(1)).toHaveClass(/\bstory\b/);
+  await expect(sections.nth(1)).toContainText('01');
+  await expect(sections.nth(2)).toHaveId('in-their-words');
+  await expect(sections.nth(2).locator('.counter')).toContainText('02');
+});
+
 test.describe('phone gestures', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 

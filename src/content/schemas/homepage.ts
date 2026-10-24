@@ -26,6 +26,7 @@ export const homepage = defineCollection({
       controlsLabel: text,
     }),
     story: z.object({
+      number: text,
       label: text,
       headline: text,
       body: text,

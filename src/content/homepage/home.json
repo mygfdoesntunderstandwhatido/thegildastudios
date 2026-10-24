@@ -25,7 +25,7 @@
     "cardLink": "Read the case study"
   },
   "testimonials": {
-    "number": "01",
+    "number": "02",
     "title": "IN THEIR WORDS",
     "controlsLabel": "Choose a testimonial",
     "slideLabel": "Testimonial {index} of {total}: {name}",
@@ -33,6 +33,7 @@
     "slideRoleDescription": "slide"
   },
   "story": {
+    "number": "01",
     "label": "Where the name comes from",
     "headline": "Three ingredients. One skewer.",
     "body": "The name comes from the gilda, a Spanish tapa we were served in Seville: a green olive, a salt-cured anchovy and a pickled pepper on one skewer. Each ingredient is one branch of the studio. The skewer is the team that holds them together.",

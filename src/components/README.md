@@ -163,7 +163,7 @@ also dispatches a `gilda:branch-focus` event on `document`.
 the `featured` case studies in `order`, using each entry's `homeTitle` and
 `homeSector` (falling back to `short` and `sector`). The component is retained for
 reference but is no longer shown on the homepage (#72). `src/pages/index.astro`
-assembles the hero, rotator and origin story; the footer comes from `Base`.
+assembles the hero, origin story and rotator (#76); the footer comes from `Base`.
 
 ## Case study template (#24)
 

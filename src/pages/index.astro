@@ -4,7 +4,6 @@ import Base from '../layouts/Base.astro';
 import TestimonialRotator from '../components/content/TestimonialRotator.astro';
 import Hero from '../components/home/Hero.astro';
 import OriginStory from '../components/home/OriginStory.astro';
-import SelectedWork from '../components/home/SelectedWork.astro';
 import { getCaseStudies } from '../lib/case-studies';
 
 const home = await getEntry('homepage', 'home');
@@ -28,7 +27,6 @@ for (const { id, data } of testimonials) {
 <Base title={home.data.meta.title} description={home.data.meta.description} header={false}>
   <main id="main">
     <Hero />
-    <SelectedWork />
     <TestimonialRotator testimonials={testimonials} />
     <OriginStory />
   </main>

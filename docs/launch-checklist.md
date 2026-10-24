@@ -25,9 +25,8 @@ Every one is edited in Keystatic at `/keystatic` on a preview or production.
         soft on retina; replace them with the full-size mockup (2100 × 800) when there is one.
   - [ ] Drapp fuq Drapp: still the striped placeholders.
   - [x] Malta Business Network (done).
-- [ ] **Homepage Selected work.** These cards use the case-study card
-      images, so they update with the item above. Waiting on Drapp fuq
-      Drapp.
+- [x] **Homepage Selected work.** Removed at the owner’s request in #72.
+      Projects remain available from the navigation and homepage work link.
 - [ ] **Social profiles and address** (Site settings → Search and social
       previews): social profile URLs for `sameAs`, and the public locality or
       street address you are happy to publish. Both are left out of the structured data while empty (#28).
@@ -86,10 +85,10 @@ site and note the change.
       or fade. Confirm, or switch the highlight off too.
 - [ ] #15: clicking a lit piece does not navigate; the strip links do.
       Accept.
-- [ ] #18: the rotator autoplays every 8 seconds, with PAUSE, and never
-      under reduced motion. Confirm the interval.
+- [x] #18: superseded by #71 and #73. The owner chose manual dots and
+      phone swipes, with no autoplay or pause/play controls.
 - [ ] #18: quote 3 keeps the client's hyphen ("events - be it"). Accept.
-- [ ] #19: Selected work is on the homepage. Accept.
+- [x] #19: superseded by #72. The owner requested removing homepage project cards.
 - [ ] #21: 01.3 is "Brand and naming projects", as in the design. Accept.
 - [ ] #22: the Build jump card lists "Web design · Development · Hosting and
       care" but there is one Build service (02.1). Confirm.

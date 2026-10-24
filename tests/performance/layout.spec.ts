@@ -65,9 +65,7 @@ for (const width of [390, 1280]) {
       });
     }
 
-    test('hero overlays load on first use and rotator changes keep their height', async ({
-      page,
-    }) => {
+    test('hero overlays load on first use and quotes fit their active text', async ({ page }) => {
       const overlayRequests: string[] = [];
       page.on('request', (request) => {
         if (/mark-piece-[012]/.test(request.url())) overlayRequests.push(request.url());
@@ -107,11 +105,16 @@ for (const width of [390, 1280]) {
       const slides = rotator.locator('.slides');
       await slides.scrollIntoViewIfNeeded();
       await settle(page);
-      const height = (await slides.boundingBox())?.height;
+      const heights = [];
       for (const dot of await rotator.locator('[data-dot]').all()) {
         await dot.click();
-        expect((await slides.boundingBox())?.height).toBe(height);
+        const height = (await slides.boundingBox())!.height;
+        const active = rotator.locator('[data-slide][data-active]');
+        expect((await active.boundingBox())!.height).toBeCloseTo(height, 0);
+        expect((await active.locator('figure').boundingBox())!.height).toBeCloseTo(height, 0);
+        heights.push(height);
       }
+      expect(new Set(heights).size).toBeGreaterThan(1);
     });
 
     test('filter and disclosure controls keep stable anchors', async ({ page }) => {

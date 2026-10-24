@@ -153,8 +153,8 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
                     fallbackFormat="png"
                     width={400}
                     height={500}
-                    widths={[320, 640]}
-                    sizes="(max-width: 767px) 70vw, 31vw"
+                    widths={[320, 640, 1080]}
+                    sizes="(max-width: 767px) calc((100vw - 48px) * 0.7), (max-width: 1392px) calc((100vw - 168px) / 2), 612px"
                     fit="cover"
                     loading="lazy"
                   />
@@ -199,7 +199,7 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
     --about-branch-art-phone: 88px;
     --about-service-padding: 10px;
     --about-founder-gap: 22px;
-    --about-portrait-width: 62%;
+    --about-portrait-width: 100%;
     --about-portrait-tint: color-mix(in srgb, var(--brine) 8%, var(--sand));
   }
 
@@ -451,6 +451,16 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
     min-inline-size: 0;
   }
 
+  /* Share caption rows so different role lengths cannot stagger the biographies. */
+  @supports (grid-template-rows: subgrid) {
+    .founder {
+      display: grid;
+      grid-row: span 6;
+      grid-template-rows: subgrid;
+      align-items: start;
+    }
+  }
+
   .portrait {
     position: relative;
     inline-size: var(--about-portrait-width);
@@ -661,6 +671,11 @@ const founders = (await getCollection('team')).sort((a, b) => a.data.order - b.d
     .founders {
       grid-template-columns: minmax(0, 1fr);
       gap: var(--space-10);
+    }
+
+    .founder {
+      display: flex;
+      grid-row: auto;
     }
 
     .affiliations {

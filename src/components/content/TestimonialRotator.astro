@@ -4,9 +4,6 @@ import { BRANCH_BY_COLOR, branches } from '../../lib/branches';
 import { typography } from '../../lib/typography';
 import Testimonial from './Testimonial.astro';
 
-// Proposed autoplay interval, flagged for review in #18.
-const AUTOPLAY_INTERVAL = 8000;
-
 interface Props {
   testimonials: CollectionEntry<'testimonials'>[];
   id?: string;
@@ -38,14 +35,7 @@ const slides = testimonials.map(({ data }, index) => ({
   aria-roledescription={copy.roleDescription}
   aria-labelledby={titleId}
 >
-  <gilda-testimonial-rotator
-    class="container rotator"
-    data-interval={AUTOPLAY_INTERVAL}
-    data-pause={copy.pause}
-    data-play={copy.play}
-    data-pause-label={copy.pauseLabel}
-    data-play-label={copy.playLabel}
-  >
+  <gilda-testimonial-rotator class="container rotator">
     <h2 class="counter">
       <span aria-hidden="true">
         {number} {typography.dot}{' '}
@@ -92,9 +82,6 @@ const slides = testimonials.map(({ data }, index) => ({
           </button>
         ))}
       </div>
-      <button class="playback" type="button" aria-label={copy.pauseLabel} hidden data-playback>
-        {copy.pause}
-      </button>
     </div>
     <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-status></p>
   </gilda-testimonial-rotator>
@@ -104,116 +91,81 @@ const slides = testimonials.map(({ data }, index) => ({
   class GildaTestimonialRotator extends HTMLElement {
     private slides: HTMLElement[] = [];
     private dots: HTMLButtonElement[] = [];
-    private counter: HTMLElement | null = null;
-    private status: HTMLElement | null = null;
-    private playback: HTMLButtonElement | null = null;
-    private reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     private index = 0;
-    private timer: number | undefined;
-    private paused = false;
-    private hovering = false;
-    private focused = false;
+    private gesture: { id: number; x: number; y: number } | null = null;
+    private swiped = false;
+    private events?: AbortController;
 
     connectedCallback() {
+      this.events?.abort();
+      this.events = new AbortController();
+      const { signal } = this.events;
       this.slides = [...this.querySelectorAll<HTMLElement>('[data-slide]')];
       this.dots = [...this.querySelectorAll<HTMLButtonElement>('[data-dot]')];
-      this.counter = this.querySelector('[data-counter]');
-      this.status = this.querySelector('[data-status]');
-      this.playback = this.querySelector('[data-playback]');
-
       this.dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => this.show(index, true));
+        dot.addEventListener('click', () => this.show(index, true), { signal });
       });
-      this.playback?.addEventListener('click', this.togglePlayback);
-      this.addEventListener('mouseenter', this.onPointerEnter);
-      this.addEventListener('mouseleave', this.onPointerLeave);
-      this.addEventListener('focusin', this.onFocusIn);
-      this.addEventListener('focusout', this.onFocusOut);
-      document.addEventListener('visibilitychange', this.update);
-      this.reducedMotion.addEventListener('change', this.update);
-
-      this.show(0, false);
-      this.update();
+      const slides = this.querySelector<HTMLElement>('.slides');
+      slides?.addEventListener('pointerdown', this.onPointerDown, { signal });
+      slides?.addEventListener('pointerup', this.onPointerUp, { signal });
+      slides?.addEventListener('pointercancel', this.onPointerCancel, { signal });
+      // A swipe that starts on the project link must not follow it on release.
+      slides?.addEventListener('click', this.onClick, { capture: true, signal });
+      this.show(this.index, false);
     }
 
     disconnectedCallback() {
-      this.stop();
-      document.removeEventListener('visibilitychange', this.update);
-      this.reducedMotion.removeEventListener('change', this.update);
+      this.events?.abort();
+      this.gesture = null;
     }
 
     private show(index: number, announce: boolean) {
-      this.index = index;
+      if (!this.slides.length) return;
+      this.index = (index + this.slides.length) % this.slides.length;
       this.slides.forEach((slide, slideIndex) => {
-        const active = slideIndex === index;
+        const active = slideIndex === this.index;
         slide.toggleAttribute('data-active', active);
         slide.inert = !active;
       });
       this.dots.forEach((dot, dotIndex) => {
-        if (dotIndex === index) dot.setAttribute('aria-current', 'true');
+        if (dotIndex === this.index) dot.setAttribute('aria-current', 'true');
         else dot.removeAttribute('aria-current');
       });
-      if (this.counter) this.counter.textContent = this.slides[index]?.dataset.counterText ?? '';
-      // Announce only changes the visitor asked for, never autoplay.
-      if (announce && this.status)
-        this.status.textContent = this.dots[index]?.getAttribute('aria-label') ?? '';
+      const counter = this.querySelector('[data-counter]');
+      if (counter) counter.textContent = this.slides[this.index]?.dataset.counterText ?? '';
+      const status = this.querySelector('[data-status]');
+      if (announce && status)
+        status.textContent = this.dots[this.index]?.getAttribute('aria-label') ?? '';
     }
 
-    private next = () => {
-      this.show((this.index + 1) % this.slides.length, false);
+    private onPointerDown = (event: PointerEvent) => {
+      this.swiped = false;
+      if (!event.isPrimary) this.gesture = null;
+      if (event.pointerType !== 'touch' || !event.isPrimary || this.slides.length < 2) return;
+      this.gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
     };
 
-    private update = () => {
-      const motionAllowed = !this.reducedMotion.matches;
-      if (this.playback) {
-        this.playback.hidden = !motionAllowed || this.slides.length < 2;
-        const { pause = '', play = '', pauseLabel = '', playLabel = '' } = this.dataset;
-        this.playback.textContent = this.paused ? play : pause;
-        this.playback.setAttribute('aria-label', this.paused ? playLabel : pauseLabel);
-      }
-
-      const running =
-        motionAllowed &&
-        !this.paused &&
-        !this.hovering &&
-        !this.focused &&
-        !document.hidden &&
-        this.slides.length > 1;
-      if (running && this.timer === undefined) {
-        this.timer = window.setInterval(this.next, Number(this.dataset.interval) || 8000);
-      } else if (!running) {
-        this.stop();
-      }
+    private onPointerUp = (event: PointerEvent) => {
+      const gesture = this.gesture;
+      this.gesture = null;
+      if (!gesture || gesture.id !== event.pointerId) return;
+      const dx = event.clientX - gesture.x;
+      const dy = event.clientY - gesture.y;
+      // Leave vertical scrolling, taps and small diagonal movements to the browser.
+      if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) return;
+      this.swiped = true;
+      this.show(this.index + (dx < 0 ? 1 : -1), true);
     };
 
-    private stop() {
-      window.clearInterval(this.timer);
-      this.timer = undefined;
-    }
-
-    private togglePlayback = () => {
-      this.paused = !this.paused;
-      this.update();
+    private onPointerCancel = () => {
+      this.gesture = null;
     };
 
-    private onPointerEnter = () => {
-      this.hovering = true;
-      this.update();
-    };
-
-    private onPointerLeave = () => {
-      this.hovering = false;
-      this.update();
-    };
-
-    private onFocusIn = () => {
-      this.focused = true;
-      this.update();
-    };
-
-    private onFocusOut = (event: FocusEvent) => {
-      this.focused = this.contains(event.relatedTarget as Node | null);
-      this.update();
+    private onClick = (event: MouseEvent) => {
+      if (!this.swiped || event.detail === 0) return;
+      event.preventDefault();
+      event.stopPropagation();
+      this.swiped = false;
     };
   }
 
@@ -244,25 +196,14 @@ const slides = testimonials.map(({ data }, index) => ({
     letter-spacing: var(--tracking-label);
   }
 
-  /* Every quote shares one grid cell, so the tallest one sets the height
-     and switching quotes never moves the content around it. */
+  /* Only the chosen quote contributes height; short quotes leave no empty slot. */
   .slides {
-    display: grid;
     inline-size: 100%;
-  }
-
-  .slide {
-    grid-area: 1 / 1;
+    touch-action: pan-y pinch-zoom;
   }
 
   .slide:not([data-active]) {
-    visibility: hidden;
-  }
-
-  /* The pause control sits beside the dots, out of the flow, so showing it
-     or changing its label never moves the dots. */
-  .controls {
-    position: relative;
+    display: none;
   }
 
   .dots {
@@ -308,31 +249,6 @@ const slides = testimonials.map(({ data }, index) => ({
     block-size: var(--dot-size-active);
   }
 
-  .playback {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 100%;
-    min-block-size: var(--dot-target);
-    margin-inline-start: var(--space-3);
-    padding: 0 var(--space-2);
-    white-space: nowrap;
-    border: 0;
-    background: none;
-    color: var(--cream-2);
-    font: var(--type-label-sm);
-    letter-spacing: var(--tracking-label);
-    cursor: pointer;
-    transition: opacity var(--hover-duration) ease;
-  }
-
-  .playback:hover {
-    opacity: var(--hover-opacity);
-  }
-
-  .playback[hidden] {
-    display: none;
-  }
-
   .visually-hidden {
     position: absolute;
     inline-size: 1px;
@@ -345,15 +261,12 @@ const slides = testimonials.map(({ data }, index) => ({
   /* Without JavaScript, every quote is listed and the controls are hidden. */
   @media (scripting: none) {
     .slides {
+      display: grid;
       gap: var(--space-14);
     }
 
-    .slide {
-      grid-area: auto;
-    }
-
     .slide:not([data-active]) {
-      visibility: visible;
+      display: block;
     }
 
     .counter-position,
@@ -381,8 +294,7 @@ const slides = testimonials.map(({ data }, index) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .dot-mark,
-    .playback {
+    .dot-mark {
       transition: none;
     }
   }

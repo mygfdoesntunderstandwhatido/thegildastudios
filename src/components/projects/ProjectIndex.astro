@@ -346,9 +346,9 @@ const filters = orderBranches().map((branch) => ({
       gap: var(--space-3);
     }
 
-    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The phone cover is 16:9. */
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Show the full cover on phones. */
     .card :global(.cover) {
-      aspect-ratio: 16 / 9;
+      aspect-ratio: auto;
     }
 
     .meta {

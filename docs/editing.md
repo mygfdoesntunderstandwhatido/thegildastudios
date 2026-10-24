@@ -71,7 +71,8 @@ To quote the client, first add them under **Content → Testimonials** with this
 homepage** to show it in the homepage rotator too.
 
 The new project appears on the Projects page, in its count and filters, and in the **Next project** links
-at the end of each case study. Tick **Show on the homepage** to add it to Selected work.
+at the end of each case study. Homepage project previews were removed in #72; the saved
+**Show on the homepage** setting does not display a card there.
 
 To hide a project for a while, tick **Draft**. To edit one, open it, change it and save.
 

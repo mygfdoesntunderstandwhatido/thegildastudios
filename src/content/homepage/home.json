@@ -25,13 +25,9 @@
     "cardLink": "Read the case study"
   },
   "testimonials": {
-    "number": "02",
+    "number": "01",
     "title": "IN THEIR WORDS",
     "controlsLabel": "Choose a testimonial",
-    "pause": "PAUSE",
-    "play": "PLAY",
-    "pauseLabel": "Pause the testimonials",
-    "playLabel": "Play the testimonials",
     "slideLabel": "Testimonial {index} of {total}: {name}",
     "roleDescription": "carousel",
     "slideRoleDescription": "slide"

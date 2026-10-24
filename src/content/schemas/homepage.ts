@@ -24,10 +24,6 @@ export const homepage = defineCollection({
       slideRoleDescription: text,
       slideLabel: text,
       controlsLabel: text,
-      pause: text,
-      play: text,
-      pauseLabel: text,
-      playLabel: text,
     }),
     story: z.object({
       label: text,

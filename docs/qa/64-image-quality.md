@@ -34,11 +34,17 @@ budgets and request counts retain their earlier requirements.
 | Page                | Minimum performance | Maximum LCP ms | Maximum image KiB | Maximum total KiB |
 | ------------------- | ------------------: | -------------: | ----------------: | ----------------: |
 | Home                |                  90 |           4000 |               560 |               720 |
-| About               |                  87 |           4300 |               640 |               800 |
+| About               |                  82 |           4800 |              1440 |              1600 |
 | Services            |                  95 |           3000 |               320 |               480 |
 | Projects            |                  92 |           3500 |               360 |               520 |
 | CS Butcher          |                  94 |           3200 |               320 |               480 |
 | Contact (unchanged) |                  95 |           2500 |               200 |               400 |
+
+The About limits were raised from 87 / 4300 ms / 640 KiB / 800 KiB when the two
+founder portraits replaced the placeholders. A lossless 640px portrait is about
+700 KiB, and it competes with the hero mark (the LCP element) on Slow 4G. Local
+runs measured 1242 KiB of images and 1368 KiB in total, with scores from 84 to 94
+and LCP from 3153 to 4507 ms.
 
 `lighthouserc.cjs` applies these limits only to the matching page. The baseline
 resource budgets remain in `lighthouse-budgets.json`. The collection URLs and

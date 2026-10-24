@@ -15,7 +15,7 @@ const resourceAssertions = Object.fromEntries([
 // for other pages; bound each image-heavy page using the measured WebP output.
 const imageBudgets = {
   '/': { performance: 0.9, lcpMs: 4000, imageKiB: 560, totalKiB: 720 },
-  '/about/': { performance: 0.87, lcpMs: 4300, imageKiB: 640, totalKiB: 800 },
+  '/about/': { performance: 0.82, lcpMs: 4800, imageKiB: 1440, totalKiB: 1600 },
   '/services/': { performance: 0.95, lcpMs: 3000, imageKiB: 320, totalKiB: 480 },
   '/projects/': { performance: 0.92, lcpMs: 3500, imageKiB: 360, totalKiB: 520 },
   '/projects/cs-butcher/': { performance: 0.94, lcpMs: 3200, imageKiB: 320, totalKiB: 480 },

@@ -62,6 +62,7 @@ const filters = orderBranches().map((branch) => ({
             <a class="card" href={caseStudyHref(id)}>
               <Picture
                 class="cover"
+                style={`--image-ratio: ${data.cover.src.width} / ${data.cover.src.height}`}
                 src={data.cover.src}
                 alt={data.cover.alt}
                 formats={['webp', 'avif']}
@@ -348,7 +349,8 @@ const filters = orderBranches().map((branch) => ({
 
     /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Show the full cover on phones. */
     .card :global(.cover) {
-      aspect-ratio: auto;
+      aspect-ratio: var(--image-ratio);
+      object-fit: contain;
     }
 
     .meta {

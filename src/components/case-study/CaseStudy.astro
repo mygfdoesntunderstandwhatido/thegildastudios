@@ -73,6 +73,7 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
       </div>
       <Picture
         class="hero-image"
+        style={`--image-ratio: ${study.hero.src.width} / ${study.hero.src.height}`}
         src={study.hero.src}
         alt={study.hero.alt}
         formats={['webp', 'avif']}
@@ -125,6 +126,7 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
           <li>
             <Picture
               class="gallery-image"
+              style={`--image-ratio: ${image.src.width} / ${image.src.height}`}
               src={image.src}
               alt={image.alt}
               formats={['webp', 'avif']}
@@ -410,7 +412,8 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
     .intro-inner :global(.hero-image),
     /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro owns the image. */
     .gallery-grid :global(.gallery-image) {
-      aspect-ratio: auto;
+      aspect-ratio: var(--image-ratio);
+      object-fit: contain;
     }
 
     .facts {

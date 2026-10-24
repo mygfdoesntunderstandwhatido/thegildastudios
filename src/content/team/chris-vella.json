@@ -5,5 +5,7 @@
   "branches": [
     "build"
   ],
+  "portrait": "../../assets/content/team/chris-vella/portrait.jpg",
+  "alt": "Chris Vella in glasses and a blue T-shirt, standing in front of a wall of patterned blue and yellow tiles",
   "order": 2
 }

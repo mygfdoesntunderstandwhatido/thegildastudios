@@ -1,5 +1,9 @@
 {
   "name": "Drapp fuq Drapp",
+  "meta": {
+    "title": "Drapp fuq Drapp",
+    "description": "Maronia’s own business: from pandemic face masks to a lifestyle brand, grown through social media over almost four years."
+  },
   "order": 3,
   "draft": false,
   "featured": true,
@@ -151,9 +155,5 @@
         }
       ]
     }
-  ],
-  "meta": {
-    "title": "Drapp fuq Drapp",
-    "description": "Maronia’s own business: from pandemic face masks to a lifestyle brand, grown through social media over almost four years."
-  }
+  ]
 }

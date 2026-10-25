@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import TestimonialRotator from '../components/content/TestimonialRotator.astro';
+import ContactBand from '../components/home/ContactBand.astro';
 import Hero from '../components/home/Hero.astro';
 import OriginStory from '../components/home/OriginStory.astro';
 import { getCaseStudies } from '../lib/case-studies';
@@ -29,5 +30,6 @@ for (const { id, data } of testimonials) {
     <Hero />
     <OriginStory />
     <TestimonialRotator testimonials={testimonials} />
+    <ContactBand />
   </main>
 </Base>

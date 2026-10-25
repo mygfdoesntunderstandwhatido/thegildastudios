@@ -1,0 +1,231 @@
+---
+import { getEntry } from 'astro:content';
+import { getSettings } from '../../lib/settings';
+import Button from '../core/Button.astro';
+import SectionHeader from '../layout/SectionHeader.astro';
+
+const home = await getEntry('homepage', 'home');
+if (!home) throw new Error('Missing the homepage singleton: src/content/homepage/home.json');
+const copy = home.data.contact;
+const { booking, email, phone, social } = await getSettings();
+---
+
+<section class="contact-band band band--sand" aria-labelledby="contact-band-title">
+  <div class="container">
+    <SectionHeader class="contact-header" number={copy.number} title={copy.label} />
+    <div class="contact-grid">
+      <div class="intro">
+        <div class="intro-copy">
+          <h3 id="contact-band-title">{copy.title}</h3>
+          <p class="body">{copy.body}</p>
+        </div>
+        <div class="actions">
+          <Button variant="dark" href={booking.href}>
+            {booking.label}
+          </Button>
+          <p class="details">
+            <a href={`mailto:${email}`}>{email}</a>
+            <a href={phone.href}>{phone.label}</a>
+          </p>
+        </div>
+      </div>
+      <div class="channels">
+        <h4 class="channels-label">{copy.channelsLabel}</h4>
+        <ul>
+          {social.map((channel) => (
+            <li>
+              <a class="channel" href={channel.href}>
+                <span class="channel-name">{channel.name}</span>
+                <span class="channel-main">
+                  <span class="channel-handle">{channel.handle}</span>
+                  <span class="channel-description">{channel.description}</span>
+                </span>
+                <span class="channel-action" aria-hidden="true">
+                  {channel.action}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-band {
+    --channel-name-width: 140px;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro forwards this class to SectionHeader. */
+  .contact-band :global(.contact-header) {
+    margin-block-end: var(--space-12);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-12);
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-10);
+  }
+
+  .intro-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  h3 {
+    font-size: var(--display-64);
+    line-height: 1;
+  }
+
+  .body {
+    max-inline-size: 400px;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font: var(--type-label);
+    font-size: 13px;
+    line-height: 1.8;
+    letter-spacing: var(--tracking-label);
+  }
+
+  /* At least 24px tall each, so the two stacked links pass target size. */
+  .details a {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--space-6);
+    color: var(--brine);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .details a:hover {
+    color: var(--olive-text);
+  }
+
+  .channels-label {
+    padding-block-end: var(--space-4);
+    border-block-end: var(--rule-open-width) solid var(--brine);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    border-block-end: var(--rule-row-width) solid var(--rule-light);
+  }
+
+  .channel {
+    display: grid;
+    grid-template-columns: var(--channel-name-width) minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: var(--space-6);
+    padding-block: var(--space-7);
+    color: var(--brine);
+    text-decoration: none;
+  }
+
+  .channel:hover {
+    color: var(--olive-text);
+  }
+
+  .channel-name,
+  .channel-action {
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .channel-name {
+    color: var(--olive-text);
+  }
+
+  .channel-main {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .channel-handle {
+    font-family: var(--font-display);
+    font-size: var(--display-30);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+  }
+
+  .channel-description {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .channel-action {
+    text-decoration: underline;
+    text-underline-offset: var(--space-1);
+  }
+
+  @media (width < 900px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (width < 768px) {
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro forwards this class to SectionHeader. */
+    .contact-band :global(.contact-header) {
+      margin-block-end: var(--space-8);
+    }
+
+    .contact-grid {
+      gap: var(--space-10);
+    }
+
+    h3 {
+      font-size: var(--display-44);
+    }
+
+    .body {
+      font-size: 16px;
+    }
+  }
+
+  @media (width < 560px) {
+    .channel {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: var(--space-2);
+    }
+
+    .channel-name {
+      grid-column: 1 / -1;
+    }
+
+    .channel-handle {
+      font-size: var(--display-26);
+    }
+  }
+</style>

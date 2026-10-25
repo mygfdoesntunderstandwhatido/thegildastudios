@@ -6,7 +6,11 @@
     "defaultDescription": "Websites, projects, events and social media from one team in Malta. One contact, one plan, one invoice.",
     "language": "en-MT",
     "locale": "en_MT",
-    "socialProfiles": [],
+    "socialProfiles": [
+      "https://www.instagram.com/thegildastudios/",
+      "https://www.linkedin.com/company/the-gilda-studios/",
+      "https://www.facebook.com/profile.php?id=61595796783964"
+    ],
     "homeLabel": "Home",
     "projectsLabel": "Projects",
     "publishedPhone": "+356 9969 0850"
@@ -37,11 +41,35 @@
     "label": "+356 9969 0850",
     "href": "tel:+35699690850"
   },
+  "social": [
+    {
+      "name": "Instagram",
+      "handle": "@thegildastudios",
+      "href": "https://www.instagram.com/thegildastudios/",
+      "description": "Client launches, event nights and the work in progress.",
+      "action": "Follow"
+    },
+    {
+      "name": "LinkedIn",
+      "handle": "The Gilda Studios",
+      "href": "https://www.linkedin.com/company/the-gilda-studios/",
+      "description": "Studio news, case studies and project write-ups.",
+      "action": "Connect"
+    },
+    {
+      "name": "Facebook",
+      "handle": "The Gilda Studios",
+      "href": "https://www.facebook.com/profile.php?id=61595796783964",
+      "description": "Event dates, and photos from the night.",
+      "action": "Like"
+    }
+  ],
   "footer": {
     "navLabel": "Footer navigation",
     "studioLabel": "Studio",
     "projectsLabel": "Projects",
     "contactLabel": "Contact",
+    "followLabel": "Follow",
     "studioLinks": [
       {
         "label": "About",
@@ -80,7 +108,8 @@
     "home": "The Gilda Studios, home",
     "menu": "MENU",
     "close": "CLOSE",
-    "menuTitle": "Menu"
+    "menuTitle": "Menu",
+    "follow": "Follow the studio"
   },
   "labels": {
     "disclosure": {

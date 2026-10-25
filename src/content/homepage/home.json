@@ -42,5 +42,12 @@
       "label": "Read our story",
       "href": "/about/"
     }
+  },
+  "contact": {
+    "number": "03",
+    "label": "Contact",
+    "title": "Start with a conversation.",
+    "body": "Book a chat, write to us, or find us where you already spend your week.",
+    "channelsLabel": "Where to find us"
   }
 }

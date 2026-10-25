@@ -3,7 +3,8 @@ import { getEntry } from 'astro:content';
 import Lockup from '../brand/Lockup.astro';
 
 const settings = (await getEntry('settings', 'site'))!.data;
-const { footer, email, phone } = settings;
+const { footer, email, phone, social } = settings;
+const [lead] = social;
 const year = new Date().getUTCFullYear();
 ---
 
@@ -31,6 +32,16 @@ const year = new Date().getUTCFullYear();
           ))}
         </ul>
       </div>
+      <div class="footer-column follow">
+        <span class="column-label">{footer.followLabel}</span>
+        <ul>
+          {social.map((channel) => (
+            <li>
+              <a href={channel.href}>{channel.name}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
       <div class="footer-column contact">
         <span class="column-label">{footer.contactLabel}</span>
         <ul>
@@ -43,9 +54,12 @@ const year = new Date().getUTCFullYear();
         </ul>
       </div>
     </nav>
-    <p class="copyright">
-      © {year} {footer.copyright}
-    </p>
+    <div class="bottom">
+      <p>
+        © {year} {footer.copyright}
+      </p>
+      {lead && <a href={lead.href}>{lead.handle}</a>}
+    </div>
   </div>
 </footer>
 
@@ -69,7 +83,7 @@ const year = new Date().getUTCFullYear();
      address stays on one line on tablets. */
   .footer-grid {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) repeat(3, minmax(max-content, 1fr));
+    grid-template-columns: minmax(0, 2fr) repeat(4, minmax(max-content, 1fr));
     gap: var(--space-8);
   }
 
@@ -112,7 +126,11 @@ const year = new Date().getUTCFullYear();
     text-underline-offset: var(--link-underline-offset);
   }
 
-  .copyright {
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
     padding-block-start: var(--space-5);
     border-block-start: var(--rule-row-width) solid var(--rule-dark-strong);
     color: var(--anchovy-label);
@@ -120,8 +138,23 @@ const year = new Date().getUTCFullYear();
     letter-spacing: var(--tracking-label);
   }
 
+  /* Four link columns don't fit beside the lockup on tablets, so the lockup
+     takes its own row. */
+  @media (width < 1100px) {
+    .footer-grid {
+      grid-template-columns: repeat(4, max-content);
+      justify-content: space-between;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- The lockup is the Lockup component's root. */
+    .footer-grid > :global(.lockup) {
+      grid-column: 1 / -1;
+    }
+  }
+
   /* Phones keep every column and link, as on desktop: the lockup on top,
-     Studio and Projects side by side, Contact below with the long email. */
+     Studio and Projects side by side, then Follow, then Contact with the
+     long email on its own row. */
   @media (width < 768px) {
     .site-footer {
       --band-padding: var(--space-10);
@@ -146,7 +179,7 @@ const year = new Date().getUTCFullYear();
       font-size: var(--footer-phone-size);
     }
 
-    .copyright {
+    .bottom {
       padding-block-start: var(--space-4);
     }
   }

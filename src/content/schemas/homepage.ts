@@ -25,6 +25,14 @@ export const homepage = defineCollection({
       slideLabel: text,
       controlsLabel: text,
     }),
+    /** The contact band that closes the page. The button, email, phone and channels are in Site settings. */
+    contact: z.object({
+      number: text,
+      label: text,
+      title: text,
+      body: text,
+      channelsLabel: text,
+    }),
     story: z.object({
       number: text,
       label: text,

@@ -12,6 +12,15 @@ const navLink = link.extend({
     .transform((branch) => (branch === 'none' ? undefined : branch)),
 });
 
+/** A social profile, listed in the footer, the phone menu and the homepage contact band. */
+const socialChannel = z.object({
+  name: text,
+  handle: text,
+  href: z.url({ protocol: /^https$/ }),
+  description: text,
+  action: text,
+});
+
 // A singleton: the only entry is src/content/settings/site.json.
 export const settings = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/settings' }),
@@ -39,11 +48,14 @@ export const settings = defineCollection({
     booking: link,
     email: z.email(),
     phone: link,
+    /** In order. The first one's handle also closes the footer. */
+    social: z.array(socialChannel).min(1),
     footer: z.object({
       navLabel: text,
       studioLabel: text,
       projectsLabel: text,
       contactLabel: text,
+      followLabel: text,
       studioLinks: z.array(link),
       projectLinks: z.array(link).min(1),
       copyright: text,
@@ -62,6 +74,8 @@ export const settings = defineCollection({
       menu: text,
       close: text,
       menuTitle: text,
+      /** The label above the social links in the phone menu. */
+      follow: text,
     }),
     /** Labels shared by components on several pages. */
     labels: z.object({

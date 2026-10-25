@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { ground = 'cream', currentPath = Astro.url.pathname, skipTo = 'main' } = Astro.props;
-const { nav, booking, email, header: headerLabels } = await getSettings();
+const { nav, booking, email, social, header: headerLabels } = await getSettings();
 
 const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
 const here = withSlash(currentPath);
@@ -32,6 +32,7 @@ const links = nav.map((item) => {
   };
 });
 const menuId = uniqueId('site-menu');
+const followId = uniqueId('menu-follow');
 ---
 
 <header class="site-header strip" data-ground={ground}>
@@ -112,9 +113,23 @@ const menuId = uniqueId('site-menu');
           <Button class="menu-booking" variant="anchovy" href={booking.href}>
             {booking.label}
           </Button>
-          <a class="menu-email" href={`mailto:${email}`}>
-            {email}
-          </a>
+          <div class="menu-contact">
+            <a class="menu-email" href={`mailto:${email}`}>
+              {email}
+            </a>
+            <nav class="menu-follow" aria-labelledby={followId}>
+              <span id={followId} class="menu-follow-label">
+                {headerLabels.follow}
+              </span>
+              <ul class="menu-follow-list">
+                {social.map((channel) => (
+                  <li>
+                    <a href={channel.href}>{channel.name}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
       </dialog>
     </gilda-site-menu>
@@ -394,9 +409,50 @@ const menuId = uniqueId('site-menu');
     margin-block-start: var(--space-4);
   }
 
+  .menu-contact {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    gap: var(--space-5);
+    padding-block-start: var(--space-6);
+    border-block-start: var(--rule-open-width) solid var(--brine);
+  }
+
   .menu-email {
     color: var(--brine);
-    font-size: 16px;
+    font-size: 17px;
+    text-decoration: none;
+  }
+
+  .menu-follow-label {
+    color: var(--olive-text);
+    font: var(--type-label-sm);
+    letter-spacing: var(--tracking-running);
+    text-transform: uppercase;
+  }
+
+  .menu-follow-list {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .menu-follow-list a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--space-11);
+    color: var(--brine);
+    font: var(--type-label);
+    font-size: 13px;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  :is(.menu-email, .menu-follow-list a):hover {
+    color: var(--olive-text);
   }
 
   @media (width < 960px) {

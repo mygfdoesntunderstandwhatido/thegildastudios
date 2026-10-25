@@ -545,6 +545,20 @@ const home = singleton({
       },
       { label: 'Where the name comes from' },
     ),
+    contact: fields.object(
+      {
+        number: required('Section number'),
+        label: required('Section label'),
+        title: required('Headline'),
+        body: required('Text', { multiline: true }),
+        channelsLabel: required('Channels heading'),
+      },
+      {
+        label: 'Contact band',
+        description:
+          'The band that closes the page. The button, email, phone and social channels are in Site settings.',
+      },
+    ),
   },
 });
 
@@ -877,7 +891,8 @@ const settings = singleton({
           }),
           {
             label: 'Social profiles',
-            description: 'Leave empty until Chris supplies them.',
+            description:
+              'Profile addresses for search engines. Keep them in step with Social channels below.',
             itemLabel: (props) => props.value || 'Profile',
           },
         ),
@@ -921,12 +936,44 @@ const settings = singleton({
       },
       { label: 'Phone' },
     ),
+    social: fields.array(
+      fields.object({
+        name: required('Network', { description: 'Such as Instagram.' }),
+        handle: required('Handle or page name', {
+          description: 'As shown on the homepage, such as @thegildastudios.',
+        }),
+        href: fields.text({
+          label: 'Profile address',
+          description: 'The full HTTPS address of the profile.',
+          validation: {
+            isRequired: true,
+            pattern: { regex: /^https:\/\/[^\s]+$/, message: 'Use a full HTTPS profile address.' },
+          },
+        }),
+        description: required('Description', {
+          description: 'One line on the homepage about what is posted there.',
+        }),
+        action: required('Link text', {
+          description: 'Shown on the homepage next to the profile, such as Follow.',
+        }),
+      }),
+      {
+        label: 'Social channels',
+        description:
+          'Listed in this order in the footer, the phone menu and the homepage contact band. The first one’s handle also closes the footer.',
+        itemLabel: (props) => props.fields.name.value || 'Channel',
+        validation: { length: { min: 1 } },
+      },
+    ),
     footer: fields.object(
       {
         navLabel: required('Footer label (screen readers)'),
         studioLabel: required('Studio column heading'),
         projectsLabel: required('Projects column heading'),
         contactLabel: required('Contact column heading'),
+        followLabel: required('Follow column heading', {
+          description: 'Above the links in Social channels.',
+        }),
         studioLinks: links('Studio links'),
         projectLinks: links('Projects links', 1),
         copyright: caps('Bottom line'),
@@ -957,6 +1004,9 @@ const settings = singleton({
         menu: caps('Menu button'),
         close: caps('Close button'),
         menuTitle: required('Menu label (screen readers)'),
+        follow: required('Follow label in the phone menu', {
+          description: 'Above the links in Social channels.',
+        }),
       },
       { label: 'Header' },
     ),

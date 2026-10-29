@@ -182,8 +182,9 @@ const slides = testimonials.map(({ data }, index) => ({
         status.textContent = this.dots[this.index]?.getAttribute('aria-label') ?? '';
     }
 
-    // The old quote slips out towards the side it came from while the new one
-    // slides in after it, and the section eases between the two heights.
+    // The old quote slips out towards one side while the new one slides in from
+    // the other. The section eases gently between the two heights and clips the
+    // quotes meanwhile, so neither spills over the dots as it grows or shrinks.
     private slide(
       previous: HTMLElement,
       next: HTMLElement,
@@ -191,16 +192,16 @@ const slides = testimonials.map(({ data }, index) => ({
       from: number,
       direction: number,
     ) {
-      const distance = 48 * direction;
-      const easing = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
+      const distance = 32 * direction;
       previous.toggleAttribute('data-leaving', true);
+      box.toggleAttribute('data-resizing', true);
       const to = box.offsetHeight;
       const leave = previous.animate(
         [
           { opacity: 1, transform: 'none' },
           { opacity: 0, transform: `translateX(${-distance}px)` },
         ],
-        { duration: 240, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' },
+        { duration: 220, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' },
       );
       leave.addEventListener('finish', () => {
         previous.removeAttribute('data-leaving');
@@ -211,12 +212,14 @@ const slides = testimonials.map(({ data }, index) => ({
           { opacity: 0, transform: `translateX(${distance}px)` },
           { opacity: 1, transform: 'none' },
         ],
-        { duration: 520, delay: 120, easing, fill: 'backwards' },
+        { duration: 560, delay: 160, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'backwards' },
       );
+      // Slow at both ends, so the dots and the page below never jolt.
       const resize = box.animate([{ blockSize: `${from}px` }, { blockSize: `${to}px` }], {
-        duration: 520,
-        easing,
+        duration: 640,
+        easing: 'cubic-bezier(0.45, 0, 0.2, 1)',
       });
+      resize.addEventListener('finish', () => box.removeAttribute('data-resizing'));
       this.animations = [leave, enter, resize];
     }
 
@@ -224,6 +227,7 @@ const slides = testimonials.map(({ data }, index) => ({
       this.animations.forEach((animation) => animation.cancel());
       this.animations = [];
       this.slides.forEach((slide) => slide.removeAttribute('data-leaving'));
+      this.querySelector('.slides')?.removeAttribute('data-resizing');
     }
 
     private onPointerDown = (event: PointerEvent) => {
@@ -273,8 +277,9 @@ const slides = testimonials.map(({ data }, index) => ({
     --dot-duration: 150ms;
     --step-size: var(--space-11);
 
-    /* Level with the quote mark. */
-    --step-offset: var(--space-2);
+    /* Centred on the shortest quote's text (176px down, about 234px tall at
+       1280), so the arrows sit beside the words and stay put between quotes. */
+    --step-offset: 270px;
 
     display: flex;
     flex-direction: column;
@@ -307,6 +312,10 @@ const slides = testimonials.map(({ data }, index) => ({
     touch-action: pan-y pinch-zoom;
   }
 
+  .slides[data-resizing] {
+    overflow: clip;
+  }
+
   .slide:not([data-active]) {
     display: none;
   }
@@ -320,8 +329,8 @@ const slides = testimonials.map(({ data }, index) => ({
     display: block;
   }
 
-  /* Previous and next sit either side of the quote, level with the quote
-     mark, so they stay put whatever the length of the quote. */
+  /* Previous and next sit either side of the quote at a fixed height, so they
+     stay put whatever the length of the quote. */
   .step {
     display: flex;
     align-items: center;

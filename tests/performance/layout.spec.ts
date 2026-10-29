@@ -108,6 +108,12 @@ for (const width of [390, 1280]) {
       const heights = [];
       for (const dot of await rotator.locator('[data-dot]').all()) {
         await dot.click();
+        // The section eases to the new quote's height; measure once it lands.
+        await rotator.evaluate((element) =>
+          Promise.allSettled(
+            element.getAnimations({ subtree: true }).map((animation) => animation.finished),
+          ),
+        );
         const height = (await slides.boundingBox())!.height;
         const active = rotator.locator('[data-slide][data-active]');
         expect((await active.boundingBox())!.height).toBeCloseTo(height, 0);

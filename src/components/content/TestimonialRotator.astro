@@ -46,25 +46,49 @@ const slides = testimonials.map(({ data }, index) => ({
         <span data-counter>{counter(0)}</span>
       </span>
     </h2>
-    <div class="slides">
-      {slides.map((slide, index) => (
-        <div
-          class="slide"
-          data-slide
-          data-counter-text={counter(index)}
-          data-active={index === 0 ? '' : undefined}
-        >
-          <Testimonial
-            quote={slide.quote}
-            name={slide.name}
-            role={slide.role}
-            caseStudy={{ slug: slide.caseStudy }}
-            markColor={slide.markColor}
-            aria-roledescription={copy.slideRoleDescription}
-            aria-label={slide.label}
-          />
-        </div>
-      ))}
+    <div class="stage">
+      <button
+        class="step"
+        type="button"
+        aria-label={copy.previousLabel}
+        data-step="-1"
+        hidden={total < 2}
+      >
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M12 4 6 10l6 6" />
+        </svg>
+      </button>
+      <div class="slides">
+        {slides.map((slide, index) => (
+          <div
+            class="slide"
+            data-slide
+            data-counter-text={counter(index)}
+            data-active={index === 0 ? '' : undefined}
+          >
+            <Testimonial
+              quote={slide.quote}
+              name={slide.name}
+              role={slide.role}
+              caseStudy={{ slug: slide.caseStudy }}
+              markColor={slide.markColor}
+              aria-roledescription={copy.slideRoleDescription}
+              aria-label={slide.label}
+            />
+          </div>
+        ))}
+      </div>
+      <button
+        class="step"
+        type="button"
+        aria-label={copy.nextLabel}
+        data-step="1"
+        hidden={total < 2}
+      >
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="m8 4 6 6-6 6" />
+        </svg>
+      </button>
     </div>
     <div class="controls">
       <div class="dots" role="group" aria-label={copy.controlsLabel}>
@@ -95,6 +119,8 @@ const slides = testimonials.map(({ data }, index) => ({
     private gesture: { id: number; x: number; y: number } | null = null;
     private swiped = false;
     private events?: AbortController;
+    private animations: Animation[] = [];
+    private reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
     connectedCallback() {
       this.events?.abort();
@@ -103,7 +129,15 @@ const slides = testimonials.map(({ data }, index) => ({
       this.slides = [...this.querySelectorAll<HTMLElement>('[data-slide]')];
       this.dots = [...this.querySelectorAll<HTMLButtonElement>('[data-dot]')];
       this.dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => this.show(index, true), { signal });
+        dot.addEventListener('click', () => this.show(index, true, Math.sign(index - this.index)), {
+          signal,
+        });
+      });
+      this.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((button) => {
+        const step = Number(button.dataset.step);
+        button.addEventListener('click', () => this.show(this.index + step, true, step), {
+          signal,
+        });
       });
       const slides = this.querySelector<HTMLElement>('.slides');
       slides?.addEventListener('pointerdown', this.onPointerDown, { signal });
@@ -117,16 +151,26 @@ const slides = testimonials.map(({ data }, index) => ({
     disconnectedCallback() {
       this.events?.abort();
       this.gesture = null;
+      this.stopAnimations();
     }
 
-    private show(index: number, announce: boolean) {
+    /** direction is 1 for the next quote, -1 for the previous, 0 for no movement. */
+    private show(index: number, announce: boolean, direction = 0) {
       if (!this.slides.length) return;
+      const box = this.querySelector<HTMLElement>('.slides');
+      // Measured before stopping, so a quick second click starts from where the first got to.
+      const from = box?.offsetHeight ?? 0;
+      this.stopAnimations();
+      const previous = this.slides[this.index];
       this.index = (index + this.slides.length) % this.slides.length;
+      const next = this.slides[this.index];
       this.slides.forEach((slide, slideIndex) => {
         const active = slideIndex === this.index;
         slide.toggleAttribute('data-active', active);
         slide.inert = !active;
       });
+      if (direction && box && previous && next && previous !== next && !this.reducedMotion.matches)
+        this.slide(previous, next, box, from, direction);
       this.dots.forEach((dot, dotIndex) => {
         if (dotIndex === this.index) dot.setAttribute('aria-current', 'true');
         else dot.removeAttribute('aria-current');
@@ -136,6 +180,54 @@ const slides = testimonials.map(({ data }, index) => ({
       const status = this.querySelector('[data-status]');
       if (announce && status)
         status.textContent = this.dots[this.index]?.getAttribute('aria-label') ?? '';
+    }
+
+    // The old quote slips out towards one side while the new one slides in from
+    // the other. The section eases gently between the two heights and clips the
+    // quotes meanwhile, so neither spills over the dots as it grows or shrinks.
+    private slide(
+      previous: HTMLElement,
+      next: HTMLElement,
+      box: HTMLElement,
+      from: number,
+      direction: number,
+    ) {
+      const distance = 32 * direction;
+      previous.toggleAttribute('data-leaving', true);
+      box.toggleAttribute('data-resizing', true);
+      const to = box.offsetHeight;
+      const leave = previous.animate(
+        [
+          { opacity: 1, transform: 'none' },
+          { opacity: 0, transform: `translateX(${-distance}px)` },
+        ],
+        { duration: 220, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' },
+      );
+      leave.addEventListener('finish', () => {
+        previous.removeAttribute('data-leaving');
+        leave.cancel();
+      });
+      const enter = next.animate(
+        [
+          { opacity: 0, transform: `translateX(${distance}px)` },
+          { opacity: 1, transform: 'none' },
+        ],
+        { duration: 560, delay: 160, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'backwards' },
+      );
+      // Slow at both ends, so the dots and the page below never jolt.
+      const resize = box.animate([{ blockSize: `${from}px` }, { blockSize: `${to}px` }], {
+        duration: 640,
+        easing: 'cubic-bezier(0.45, 0, 0.2, 1)',
+      });
+      resize.addEventListener('finish', () => box.removeAttribute('data-resizing'));
+      this.animations = [leave, enter, resize];
+    }
+
+    private stopAnimations() {
+      this.animations.forEach((animation) => animation.cancel());
+      this.animations = [];
+      this.slides.forEach((slide) => slide.removeAttribute('data-leaving'));
+      this.querySelector('.slides')?.removeAttribute('data-resizing');
     }
 
     private onPointerDown = (event: PointerEvent) => {
@@ -154,7 +246,8 @@ const slides = testimonials.map(({ data }, index) => ({
       // Leave vertical scrolling, taps and small diagonal movements to the browser.
       if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) return;
       this.swiped = true;
-      this.show(this.index + (dx < 0 ? 1 : -1), true);
+      const step = dx < 0 ? 1 : -1;
+      this.show(this.index + step, true, step);
     };
 
     private onPointerCancel = () => {
@@ -182,6 +275,11 @@ const slides = testimonials.map(({ data }, index) => ({
     --dot-target: var(--space-11);
     --dot-gap: 6px;
     --dot-duration: 150ms;
+    --step-size: var(--space-11);
+
+    /* Centred on the shortest quote's text (176px down, about 234px tall at
+       1280), so the arrows sit beside the words and stay put between quotes. */
+    --step-offset: 270px;
 
     display: flex;
     flex-direction: column;
@@ -197,13 +295,74 @@ const slides = testimonials.map(({ data }, index) => ({
   }
 
   /* Only the chosen quote contributes height; short quotes leave no empty slot. */
-  .slides {
+  .stage {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-6);
     inline-size: 100%;
+  }
+
+  /* The quote slides sideways inside its own column, never across the arrows
+     or past the page edge. */
+  .slides {
+    position: relative;
+    inline-size: 100%;
+    overflow-x: clip;
     touch-action: pan-y pinch-zoom;
+  }
+
+  .slides[data-resizing] {
+    overflow: clip;
   }
 
   .slide:not([data-active]) {
     display: none;
+  }
+
+  /* The outgoing quote stays on top while it fades, out of the flow so the
+     section can ease to the new quote's height. */
+  .slide[data-leaving] {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    display: block;
+  }
+
+  /* Previous and next sit either side of the quote at a fixed height, so they
+     stay put whatever the length of the quote. */
+  .step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--step-size);
+    block-size: var(--step-size);
+    margin-block-start: var(--step-offset);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    box-shadow: inset 0 0 0 1.5px var(--cream);
+    color: var(--cream);
+    cursor: pointer;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .step:hover {
+    opacity: var(--hover-opacity);
+  }
+
+  .step[hidden] {
+    display: none;
+  }
+
+  .step svg {
+    inline-size: var(--space-5);
+    block-size: var(--space-5);
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.5;
+    stroke-linecap: square;
   }
 
   .dots {
@@ -270,31 +429,65 @@ const slides = testimonials.map(({ data }, index) => ({
     }
 
     .counter-position,
-    .controls {
+    .controls,
+    .step {
       display: none;
     }
   }
 
+  /* On a phone the quote keeps the full width and the arrows join the section
+     label, where they don't move as quotes change length. */
   @media (width < 768px) {
     .rotator {
       --rotator-gap: var(--space-6);
       --dot-gap: 2px;
 
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      grid-template-areas:
+        'counter previous next'
+        'slides slides slides'
+        'controls controls controls';
+      align-items: center;
+      gap: var(--rotator-gap) var(--space-2);
       text-align: start;
     }
 
     .counter {
+      grid-area: counter;
       font-size: var(--label-phone-size);
     }
 
+    .stage {
+      display: contents;
+    }
+
+    .slides {
+      grid-area: slides;
+    }
+
+    .step {
+      margin-block-start: 0;
+    }
+
+    .step[data-step='-1'] {
+      grid-area: previous;
+    }
+
+    .step[data-step='1'] {
+      grid-area: next;
+    }
+
     .controls {
+      grid-area: controls;
+      justify-self: start;
       margin-inline-start: -14px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .dot-mark {
+    .dot-mark,
+    .step {
       transition: none;
     }
   }

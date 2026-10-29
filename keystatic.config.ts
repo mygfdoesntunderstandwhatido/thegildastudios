@@ -522,6 +522,12 @@ const home = singleton({
         number: required('Section number'),
         title: caps('Section label'),
         controlsLabel: required('Dots label (screen readers)'),
+        previousLabel: required('Previous button (screen readers)', {
+          description: 'The arrow to the left of the quote, on wider screens.',
+        }),
+        nextLabel: required('Next button (screen readers)', {
+          description: 'The arrow to the right of the quote, on wider screens.',
+        }),
         slideLabel: required('Slide name (screen readers)', {
           description: '{index}, {total} and {name} are filled in for each testimonial.',
         }),

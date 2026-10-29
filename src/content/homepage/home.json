@@ -28,6 +28,8 @@
     "number": "02",
     "title": "IN THEIR WORDS",
     "controlsLabel": "Choose a testimonial",
+    "previousLabel": "Previous testimonial",
+    "nextLabel": "Next testimonial",
     "slideLabel": "Testimonial {index} of {total}: {name}",
     "roleDescription": "carousel",
     "slideRoleDescription": "slide"

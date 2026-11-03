@@ -104,6 +104,9 @@ site and note the change.
       [accessibility](a11y.md)).
 - [ ] #32: analytics provider: Netlify Analytics or Plausible. See
       [operations](operations.md#optional-plausible-integration).
+- [ ] Meta Pixel: it loads on every visit with no consent step. Decide on a
+      cookie consent banner and privacy notice. See
+      [operations](operations.md#meta-pixel).
 - [ ] #33: `hello@` email: Cloudflare Email Routing (free forwarding) or a
       hosted mailbox.
 

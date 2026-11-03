@@ -69,6 +69,29 @@ tracker by default. To verify on a Deploy Preview, set the build variable
 verification is finished. If no Netlify `CONTEXT` is present, a local production
 build with an explicit script URL also enables the integration for local testing.
 
+## Meta Pixel
+
+`src/components/analytics/MetaPixel.astro` loads Meta's pixel (ID
+`2113217752636950`) and records a `PageView` on every page that uses the base
+layout. Without JavaScript, a 1×1 fallback image at the start of `<body>`
+records the same page view.
+
+Only the production build on Workers Builds includes it (`WORKERS_CI_BRANCH` is
+`main`). Branch previews, `npm run dev`, local builds and the GitHub CI checks
+never load it, so test visits stay out of the ad data and the performance
+budgets keep measuring the site alone. To check it locally, run
+`WORKERS_CI_BRANCH=main npm run build && npm run preview`.
+
+Unlike the Plausible integration, the pixel sets a cookie (`_fbp`) and sends
+each visit to Meta. It loads on every visit, with no consent step. Before
+relying on it, decide on a cookie consent banner and a privacy notice: EU rules
+normally require consent before this kind of tracking. In Events Manager, leave
+Automatic Advanced Matching off unless that notice covers it: it can read the
+contact form's name, email and phone fields and send them to Meta in hashed form.
+
+After the first production deploy, check one `PageView` per page load with
+Events Manager → Test events or the Meta Pixel Helper browser extension.
+
 ## Missing pages and redirects
 
 Astro emits the branded `dist/404.html`. Netlify uses it with status 404 for

@@ -5,6 +5,7 @@ import '../styles/base.css';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import Analytics from '../components/analytics/Analytics.astro';
+import MetaPixel from '../components/analytics/MetaPixel.astro';
 import Seo from '../components/seo/Seo.astro';
 import { getSettings } from '../lib/settings';
 
@@ -42,8 +43,10 @@ const { seo } = await getSettings();
     />
     <Seo title={title} description={description} caseStudy={caseStudy} />
     <Analytics />
+    <MetaPixel />
   </head>
   <body>
+    <MetaPixel fallback />
     {header && <SiteHeader ground={header} />}
     <slot />
     <SiteFooter />

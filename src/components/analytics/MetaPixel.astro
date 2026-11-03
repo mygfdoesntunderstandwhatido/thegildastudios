@@ -1,0 +1,54 @@
+---
+import { isPreviewBuild } from '../../lib/seo-policy.mjs';
+
+interface Props {
+  /** Render the no-JavaScript fallback image. It belongs in <body>, not <head>. */
+  fallback?: boolean;
+}
+
+const { fallback = false } = Astro.props;
+
+// Meta Pixel for Meta ads measurement. It records a PageView on every page.
+const pixelId = '2113217752636950';
+
+// Only the live site reports to Meta: the production build on Workers Builds.
+// Branch previews, local builds and the GitHub CI checks never load it, so test
+// visits stay out of the ad data. `WORKERS_CI_BRANCH=main npm run build`
+// includes it in a local build.
+const enabled = import.meta.env.PROD && Boolean(process.env.WORKERS_CI_BRANCH) && !isPreviewBuild();
+---
+
+{enabled && !fallback && <script is:inline define:vars={{ pixelId }}>
+  /* eslint-disable prefer-rest-params, prefer-spread -- Meta's loader queues the
+         original arguments objects, as published. */
+  (function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      if (n.callMethod) n.callMethod.apply(n, arguments);
+      else n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+  window.fbq('init', pixelId);
+  window.fbq('track', 'PageView');
+</script>}
+{enabled && fallback && (
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      alt=""
+      style="display:none"
+      src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+    />
+  </noscript>
+)}

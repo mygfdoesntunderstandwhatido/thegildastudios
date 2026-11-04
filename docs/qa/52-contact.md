@@ -15,3 +15,7 @@ Checked locally on 22 October 2026. This is not a live delivery sign-off.
 - Check the real Managed widget at 390 and 1280 on the Cloudflare preview, compare the Contact layout against the approved page, and inspect cookies with pre-clearance disabled.
 - Resolve the issue’s no-JavaScript requirement: Turnstile needs JavaScript. The implementation enforces verification, supports native POST with a token, and offers email when scripts are disabled.
 - Email is the only stored copy. There is no D1 archive or automatic retry queue; a lost response after acceptance can result in a duplicate on manual retry.
+
+## Account setup
+
+4 November 2026: Chris verified `thegildastudios.com` in Resend and set up the Turnstile widget, the build variable and both Worker secrets. The live preview check follows.

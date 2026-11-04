@@ -62,6 +62,8 @@ if (enabled) {
         new URL(trigger.href).searchParams.has('service')
       ) {
         track('Ask about this service');
+      } else if (trigger instanceof HTMLButtonElement && trigger.type === 'submit') {
+        track('Send message');
       } else {
         const label = trigger.textContent?.replace(/\s+/g, ' ').trim();
         track(label === 'Book a call' ? 'Book a call' : 'Book a chat');

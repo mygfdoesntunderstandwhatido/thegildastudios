@@ -46,7 +46,7 @@
       "call": "Call",
       "meeting": "Meeting in person"
     },
-    "submit": "Book a call",
+    "submit": "Send message",
     "sending": "Sending…",
     "submissionError": "Your message could not be sent. Please try again, or email hello@thegildastudios.com.",
     "verificationRequired": "Complete the verification before sending your message.",

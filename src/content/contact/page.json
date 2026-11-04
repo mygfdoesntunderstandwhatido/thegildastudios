@@ -49,6 +49,13 @@
     "submit": "Book a call",
     "sending": "Sending…",
     "submissionError": "Your message could not be sent. Please try again, or email hello@thegildastudios.com.",
+    "verificationRequired": "Complete the verification before sending your message.",
+    "noJavaScript": "To send this form, enable JavaScript for verification. You can also email hello@thegildastudios.com.",
+    "delivery": {
+      "subject": "Website enquiry",
+      "service": "Service",
+      "branch": "Branch"
+    },
     "honeypot": "Leave this field empty.",
     "servicePrefill": "I'd like to ask about {service}.",
     "errors": {

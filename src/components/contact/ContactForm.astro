@@ -6,6 +6,7 @@ import { orderBranches } from '../../lib/branches';
 const page = await getEntry('contact', 'page');
 if (!page) throw new Error('Missing the contact singleton: src/content/contact/page.json');
 const { form } = page.data;
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 const services = Object.fromEntries(
   (await getCollection('services')).map(({ data }) => [
     data.number,
@@ -37,16 +38,9 @@ const text = [
   data-summary-one={form.summary.one}
   data-summary-many={form.summary.many}
   data-sending={form.sending}
+  data-verification-required={siteKey ? form.verificationRequired : form.submissionError}
 >
-  <form
-    name="contact"
-    method="post"
-    action="/contact/thanks/"
-    data-netlify="true"
-    netlify-honeypot="bot-field"
-    data-form
-  >
-    <input type="hidden" name="form-name" value="contact" />
+  <form name="contact" method="post" action="/api/contact" data-form>
     <input type="hidden" name="service" value="" />
     <input type="hidden" name="branch" value="" />
     <div hidden>
@@ -128,6 +122,20 @@ const text = [
         <p class="error" id="contact-message-error" data-error></p>
       </div>
     </div>
+    <div class="verification">
+      {siteKey && (
+        <div
+          class="cf-turnstile"
+          data-sitekey={siteKey}
+          data-action="contact"
+          data-size="flexible"
+          data-theme="light"
+        ></div>
+      )}
+      <noscript>
+        <p>{form.noJavaScript}</p>
+      </noscript>
+    </div>
     <div class="actions">
       <Button type="submit" data-analytics-cta>
         {form.submit}
@@ -143,6 +151,15 @@ const text = [
     <p>{form.success.body}</p>
   </div>
 </gilda-contact-form>
+
+{siteKey && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+)}
 
 <script>
   type Errors = Record<'name' | 'email' | 'emailFormat' | 'phone' | 'message', string>;
@@ -262,6 +279,10 @@ const text = [
         this.field(invalid[0])?.focus();
         return;
       }
+      if (!this.field('cf-turnstile-response')?.value) {
+        if (summary) summary.textContent = this.dataset.verificationRequired ?? '';
+        return;
+      }
       if (summary) summary.textContent = '';
       this.syncBranches();
       const failure = this.querySelector<HTMLElement>('[data-submission-error]');
@@ -282,19 +303,32 @@ const text = [
       try {
         const response = await fetch(this.form.action, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Accept: 'application/json',
+          },
           body: body.toString(),
           signal: AbortSignal.timeout(20_000),
         });
         if (!response.ok) throw new Error(`Form submission failed: ${response.status}`);
+        const result = (await response.json()) as { accepted?: boolean };
+        if (typeof result.accepted !== 'boolean') throw new Error('Invalid submission response');
         const success = this.querySelector<HTMLElement>('[data-success]');
         if (success) {
           this.form.hidden = true;
           success.hidden = false;
           success.focus();
         }
-        this.dispatchEvent(new CustomEvent('gilda:form-submitted', { bubbles: true }));
+        if (result.accepted === true) {
+          this.dispatchEvent(new CustomEvent('gilda:form-submitted', { bubbles: true }));
+        }
       } catch {
+        // Tokens are single-use, including when delivery failed after verification.
+        const turnstile = (
+          window as Window & { turnstile?: { reset(container: HTMLElement): void } }
+        ).turnstile;
+        const widget = this.querySelector<HTMLElement>('.cf-turnstile');
+        if (widget) turnstile?.reset(widget);
         if (failure) {
           failure.hidden = false;
           failure.focus();
@@ -507,6 +541,11 @@ const text = [
   .choice:has(input:focus-visible) {
     outline: var(--focus-width) solid var(--focus-color, var(--brine));
     outline-offset: var(--focus-offset);
+  }
+
+  .verification {
+    margin-block-start: var(--space-6);
+    min-inline-size: 0;
   }
 
   .actions {

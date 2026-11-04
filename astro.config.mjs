@@ -7,8 +7,8 @@ import sitemap from '@astrojs/sitemap';
 import settings from './src/content/settings/site.json' with { type: 'json' };
 import { isIndexablePath } from './src/lib/seo-policy.mjs';
 
-// Static output: every public page is prerendered. Keystatic adds the only
-// on-demand routes, /keystatic and /api/keystatic/*, which run in the
+// Static output: every public page is prerendered. The contact handler and
+// Keystatic admin provide on-demand routes, which run in the
 // Cloudflare Worker (wrangler.jsonc). React renders the admin only.
 export default defineConfig({
   output: 'static',

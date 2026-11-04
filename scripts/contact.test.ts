@@ -7,7 +7,7 @@ function setup() {
   let verifications = 0;
   const env = {
     TURNSTILE_SECRET_KEY: 'test-secret',
-    CONTACT_BACKUP_EMAIL: 'backup@example.com',
+    CONTACT_RECIPIENTS: 'inbox@example.com, backup@example.com, inbox@example.com',
     CONTACT_EMAIL: {
       send: async (message: ContactMessage) => {
         messages.push(message);
@@ -71,7 +71,7 @@ test('validated enquiry sends labelled Unicode fields to both fixed recipients, 
   assert.deepEqual(await response.json(), { accepted: true });
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.equal(s.messages.length, 1);
-  assert.deepEqual(s.messages[0].to, ['hello@thegildastudios.com', 'backup@example.com']);
+  assert.deepEqual(s.messages[0].to, ['inbox@example.com', 'backup@example.com']);
   assert.equal(s.messages[0].replyTo, 'zoe@example.com');
   assert.match(s.messages[0].text, /message: A & B \+ café/);
   assert.match(s.messages[0].text, /service: 01.2/);
@@ -146,7 +146,7 @@ for (const result of [
 test('missing configuration, provider errors and malformed responses fail closed without leaking data', async () => {
   for (const mode of ['config', 'verification', 'json', 'delivery']) {
     const s = setup();
-    if (mode === 'config') s.env.CONTACT_BACKUP_EMAIL = '';
+    if (mode === 'config') s.env.CONTACT_RECIPIENTS = 'inbox@example.com, not-an-address';
     if (mode === 'verification')
       s.options.fetch = (async () => {
         throw new Error('secret');

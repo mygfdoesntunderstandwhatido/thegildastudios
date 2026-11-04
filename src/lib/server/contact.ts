@@ -9,7 +9,8 @@ export interface ContactMessage {
 
 export interface ContactEnvironment {
   TURNSTILE_SECRET_KEY?: string;
-  CONTACT_BACKUP_EMAIL?: string;
+  /** Comma-separated inboxes verified as Email Routing destination addresses. */
+  CONTACT_RECIPIENTS?: string;
   CONTACT_EMAIL?: { send(message: ContactMessage): Promise<unknown> };
 }
 
@@ -111,11 +112,21 @@ export async function handleContact(
   values.needs = needs.join(',');
   const token = data.get('cf-turnstile-response') ?? '';
   if (!token || token.length > 2048) return fail(403);
+  // The free send_email binding delivers only to verified destination
+  // addresses, so this lists the inboxes hello@ forwards to, not hello@ itself.
+  const recipients = [
+    ...new Set(
+      (env.CONTACT_RECIPIENTS ?? '')
+        .split(',')
+        .map((address) => address.trim())
+        .filter(Boolean),
+    ),
+  ];
   if (
     !env.TURNSTILE_SECRET_KEY ||
     !env.CONTACT_EMAIL ||
-    !env.CONTACT_BACKUP_EMAIL ||
-    !EMAIL.test(env.CONTACT_BACKUP_EMAIL)
+    !recipients.length ||
+    !recipients.every((address) => EMAIL.test(address))
   )
     return fail(503);
   try {
@@ -137,7 +148,7 @@ export async function handleContact(
       return fail(403);
     await env.CONTACT_EMAIL.send({
       from: 'website@thegildastudios.com',
-      to: [...new Set(['hello@thegildastudios.com', env.CONTACT_BACKUP_EMAIL])],
+      to: recipients,
       replyTo: values.email,
       subject: options.subject,
       text: [...fields, 'needs']

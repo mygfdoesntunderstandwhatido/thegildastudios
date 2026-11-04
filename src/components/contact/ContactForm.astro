@@ -6,7 +6,12 @@ import { orderBranches } from '../../lib/branches';
 const page = await getEntry('contact', 'page');
 if (!page) throw new Error('Missing the contact singleton: src/content/contact/page.json');
 const { form } = page.data;
-const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+// The Turnstile site key is public: every page with the widget shows it. Only
+// Cloudflare's builds (WORKERS_CI) use it, so CI and local builds don't load
+// the live widget. PUBLIC_TURNSTILE_SITE_KEY overrides it, e.g. with a test key.
+const siteKey =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ||
+  (process.env.WORKERS_CI ? '0x4AAAAAAFz93LCv3djryo8e' : undefined);
 const services = Object.fromEntries(
   (await getCollection('services')).map(({ data }) => [
     data.number,

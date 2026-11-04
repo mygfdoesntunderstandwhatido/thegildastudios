@@ -129,4 +129,4 @@ gate requires it. See [the accessibility record](a11y.md).
 
 ## Contact verification (#52)
 
-When `PUBLIC_TURNSTILE_SITE_KEY` is configured, Contact loads Cloudflare’s Turnstile script. The asset budget report lists this exact URL separately as `remoteScripts`; first-party JavaScript budgets remain unchanged. Those byte totals exclude the remote script and challenge iframe. Run a live Lighthouse check with the real widget before launch; a build without the site key does not measure verification overhead.
+On Cloudflare’s builds (or when `PUBLIC_TURNSTILE_SITE_KEY` is set), Contact loads Cloudflare’s Turnstile script. The asset budget report lists this exact URL separately as `remoteScripts`; first-party JavaScript budgets remain unchanged. Those byte totals exclude the remote script and challenge iframe. Run a live Lighthouse check with the real widget before launch; a build without the site key does not measure verification overhead.

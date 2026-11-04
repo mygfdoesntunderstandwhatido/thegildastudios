@@ -11,29 +11,26 @@ The hidden `bot-field` honeypot discards filled submissions without email. Turns
 
 Successful enhanced submissions show the existing confirmation; `Form submitted` is emitted only after the email binding accepts the send. A provider acceptance is not proof of inbox delivery. Native submissions with a valid Turnstile token receive a 303 to `/contact/thanks/`. **With JavaScript completely disabled, Turnstile cannot issue a token.** The page explains the email alternative, and the server rejects a missing token. This is an explicit deviation from #52’s full no-JavaScript criterion; do not bypass spam protection to make it pass.
 
-The user chose Cloudflare Email Routing (free forwarding) with `hello@` and a backup inbox. Delivery uses `CONTACT_EMAIL`, a `send_email` binding, with sender `website@thegildastudios.com` and the visitor’s address as Reply-To. On the free plan the binding can send only to **verified destination addresses**, and `hello@` is a routing rule, not a destination. So the Worker secret `CONTACT_RECIPIENTS` lists the inbox `hello@` forwards to and the backup, comma-separated; keep it out of public content and client bundles. Addresses never come from a visitor-controlled field. This is email-only: no D1 copy, dashboard submission archive or automatic retry queue. A response lost after acceptance can lead to a duplicate if the visitor retries.
+`hello@thegildastudios.com` is a Google Workspace address, so the domain’s MX records point to Google and Cloudflare Email Routing can’t run beside them. The Worker sends each enquiry through [Resend](https://resend.com) (free tier: 3,000 emails a month, 100 a day) to the email in Site settings (`hello@`), and Google Workspace delivers it to the team. The sender is `website@thegildastudios.com` and the visitor’s address is the Reply-To. The Resend API key is the Worker secret `RESEND_API_KEY`. Addresses never come from a visitor-controlled field. This is email-only: no D1 copy, dashboard submission archive or automatic retry queue. A response lost after acceptance can lead to a duplicate if the visitor retries.
 
 ### One-time setup (Chris)
 
-1. **Email Routing.** Cloudflare → Compute → Email Service → Email Routing → **Onboard Domain** → `thegildastudios.com`, and accept the DNS records.
-2. **Destination addresses.** Email Routing → Destination Addresses: add the inbox that should receive `hello@` mail and the backup inbox. Open each verification email and choose **Verify email address**.
-3. **Forward `hello@`.** Email Routing → Routing Rules → **Create routing rule**: pattern `hello`, action **Send to an email**, destination the first inbox. Send a test email to `hello@` and check it arrives.
-4. **Sender domain.** Compute → Email Service → Email Sending → **Onboard Domain** → `thegildastudios.com`, and accept the records. The `from` address must be on an onboarded sending domain. Sends to verified destinations are free on every plan; don’t start a paid plan for this.
-5. **Turnstile.** Cloudflare → Turnstile → **Add widget**: mode **Managed**, hostnames `thegildastudios.com`, `www.thegildastudios.com` and `chris-aa-vella.workers.dev` (previews), pre-clearance **off** (it sets a `cf_clearance` cookie). Copy the site key and secret key.
-6. **Worker settings.** Workers & Pages → `thegildastudios` → Settings:
+1. **Resend account.** Sign up at resend.com. Domains → **Add Domain** → `thegildastudios.com` (region EU, Ireland).
+2. **DNS records.** Resend lists a DKIM record (`resend._domainkey`) and an MX and SPF TXT record on the `send` subdomain. Add them in Cloudflare → `thegildastudios.com` → DNS → Records, with **Proxy status off** (DNS only), or use Resend’s Cloudflare auto-configure. They don’t touch Google Workspace’s records on the root domain. Back in Resend, choose **Verify DNS Records** and wait for **Verified**.
+3. **API key.** Resend → API Keys → **Create API Key**: name `Website contact form`, permission **Sending access**, domain `thegildastudios.com`. Copy it; Resend shows it once.
+4. **Turnstile.** Cloudflare → Turnstile → **Add widget**: mode **Managed**, hostnames `thegildastudios.com`, `www.thegildastudios.com` and `chris-aa-vella.workers.dev` (previews), pre-clearance **off** (it sets a `cf_clearance` cookie). Copy the site key and secret key.
+5. **Worker settings.** Workers & Pages → `thegildastudios` → Settings:
    - **Build → Build variables and secrets:** `PUBLIC_TURNSTILE_SITE_KEY` = the site key. It’s read when the site builds.
-   - **Variables and Secrets**, under both **Production** and **Previews Base**, as type **Secret**: `TURNSTILE_SECRET_KEY` = the secret key, and `CONTACT_RECIPIENTS` = the two verified inboxes, comma-separated.
-   - Previews Base changes reach new previews only. For an existing preview, run `npx wrangler preview secret put <NAME> --name <branch>` for each secret, or push a new commit after a fresh preview.
-7. **Rebuild and test.** Re-run the latest build (or push), then send a clearly labelled enquiry from the preview at 390 and 1280. Check both inboxes (and spam), that Reply-To is the visitor, and that branch and service are filled in. Check DevTools shows no cookies.
-
-Cloudflare’s current [email pricing](https://developers.cloudflare.com/email-service/platform/pricing/) says sends to verified destinations are free even with routing only. See [binding configuration](https://developers.cloudflare.com/email-service/configuration/send-bindings/) and the [Workers API](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/). The structured API supplies plain text and Reply-To without constructing MIME headers by hand. Turnstile [requires server validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/); [pre-clearance](https://developers.cloudflare.com/turnstile/additional-configuration/hostname-management/pre-clearance/) controls its clearance cookie.
+   - **Variables and Secrets**, under both **Production** and **Previews Base**, as type **Secret**: `TURNSTILE_SECRET_KEY` = the Turnstile secret key, and `RESEND_API_KEY` = the Resend key.
+   - Previews Base changes reach new previews only. For an existing preview, run `npx wrangler preview secret put <NAME> --name <branch>` for each secret.
+6. **Rebuild and test.** Re-run the latest build (or push), then send a clearly labelled enquiry from the preview at 390 and 1280. Check it reaches `hello@` (and spam), that Reply-To is the visitor, and that branch and service are filled in. Resend → Emails shows each send. Check DevTools shows no cookies.
 
 ### Local checks
 
 - `node --test scripts/contact.test.ts` exercises validation, spoofed services, honeypot, token checks, email payloads and provider failures with injected stubs; it sends no real email.
 - `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build` includes Cloudflare’s public dummy widget for local browser checks only.
 - `npx playwright test tests/contact` exercises the enhanced UI with an intercepted widget and POSTs.
-- `npx wrangler dev --port 8787` serves the built Worker. Use an ignored `.dev.vars` for local test configuration, never real visitor data. Email is simulated locally. Dummy Turnstile tokens still need the corresponding test secret and Siteverify connectivity; local stubs do not establish real spam protection or email delivery.
+- `npx wrangler dev --port 8787` serves the built Worker. Use an ignored `.dev.vars` for local test configuration, never real visitor data. Leave `RESEND_API_KEY` unset locally (the handler then answers 503 before sending), or use a test key and Resend’s test recipients; a real key sends real email. Dummy Turnstile tokens still need the corresponding test secret and Siteverify connectivity; local stubs do not establish real spam protection or email delivery.
 
 ## Optional Plausible integration
 

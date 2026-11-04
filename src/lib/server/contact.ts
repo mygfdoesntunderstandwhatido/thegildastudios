@@ -9,9 +9,8 @@ export interface ContactMessage {
 
 export interface ContactEnvironment {
   TURNSTILE_SECRET_KEY?: string;
-  /** Comma-separated inboxes verified as Email Routing destination addresses. */
-  CONTACT_RECIPIENTS?: string;
-  CONTACT_EMAIL?: { send(message: ContactMessage): Promise<unknown> };
+  /** Resend API key with sending access for thegildastudios.com. */
+  RESEND_API_KEY?: string;
 }
 
 export interface ContactOptions {
@@ -20,6 +19,8 @@ export interface ContactOptions {
   failureMessage: string;
   subject: string;
   labels: Record<string, string>;
+  /** The studio inbox (site settings). Google Workspace delivers it to the team. */
+  to: string;
   fetch?: typeof fetch;
 }
 
@@ -112,23 +113,7 @@ export async function handleContact(
   values.needs = needs.join(',');
   const token = data.get('cf-turnstile-response') ?? '';
   if (!token || token.length > 2048) return fail(403);
-  // The free send_email binding delivers only to verified destination
-  // addresses, so this lists the inboxes hello@ forwards to, not hello@ itself.
-  const recipients = [
-    ...new Set(
-      (env.CONTACT_RECIPIENTS ?? '')
-        .split(',')
-        .map((address) => address.trim())
-        .filter(Boolean),
-    ),
-  ];
-  if (
-    !env.TURNSTILE_SECRET_KEY ||
-    !env.CONTACT_EMAIL ||
-    !recipients.length ||
-    !recipients.every((address) => EMAIL.test(address))
-  )
-    return fail(503);
+  if (!env.TURNSTILE_SECRET_KEY || !env.RESEND_API_KEY || !EMAIL.test(options.to)) return fail(503);
   try {
     const verification = await (options.fetch ?? fetch)(
       'https://challenges.cloudflare.com/turnstile/v0/siteverify',
@@ -146,15 +131,31 @@ export async function handleContact(
     };
     if (result.success !== true || result.hostname !== url.hostname || result.action !== 'contact')
       return fail(403);
-    await env.CONTACT_EMAIL.send({
-      from: 'website@thegildastudios.com',
-      to: recipients,
+    const message: ContactMessage = {
+      from: 'The Gilda Studios website <website@thegildastudios.com>',
+      to: [options.to],
       replyTo: values.email,
       subject: options.subject,
       text: [...fields, 'needs']
         .map((key) => `${options.labels[key]}: ${values[key]}`)
         .join('\n\n'),
+    };
+    const delivery = await (options.fetch ?? fetch)('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: message.from,
+        to: message.to,
+        reply_to: message.replyTo,
+        subject: message.subject,
+        text: message.text,
+      }),
+      signal: AbortSignal.timeout(8_000),
     });
+    if (!delivery.ok) return fail(503);
     return success(true);
   } catch {
     // Neither provider errors nor form values belong in Worker logs/responses.

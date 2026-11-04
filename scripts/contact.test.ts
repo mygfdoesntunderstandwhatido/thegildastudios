@@ -5,15 +5,9 @@ import { handleContact, type ContactMessage } from '../src/lib/server/contact.ts
 function setup() {
   const messages: ContactMessage[] = [];
   let verifications = 0;
-  const env = {
-    TURNSTILE_SECRET_KEY: 'test-secret',
-    CONTACT_RECIPIENTS: 'inbox@example.com, backup@example.com, inbox@example.com',
-    CONTACT_EMAIL: {
-      send: async (message: ContactMessage) => {
-        messages.push(message);
-      },
-    },
-  };
+  const env = { TURNSTILE_SECRET_KEY: 'test-secret', RESEND_API_KEY: 're_test' };
+  const requests: { authorization: string | null; body: Record<string, unknown> }[] = [];
+  let delivery: () => Promise<Response> = async () => Response.json({ id: 'email-id' });
   const options = {
     services: { '01.2': { branch: 'plan', name: 'Event' } },
     branches: ['plan', 'build', 'grow'],
@@ -32,9 +26,26 @@ function setup() {
         'needs',
       ].map((key) => [key, key]),
     ),
-    fetch: (async () => {
+    to: 'hello@studio.example',
+    verify: async () =>
+      Response.json({ success: true, hostname: 'studio.example', action: 'contact' }),
+    fetch: (async (input: string | URL | Request, init?: RequestInit) => {
+      if (String(input) === 'https://api.resend.com/emails') {
+        const body = JSON.parse(String(init?.body)) as Record<string, unknown>;
+        const response = await delivery();
+        requests.push({ authorization: new Headers(init?.headers).get('authorization'), body });
+        if (response.ok)
+          messages.push({
+            from: body.from as string,
+            to: body.to as string[],
+            replyTo: body.reply_to as string,
+            subject: body.subject as string,
+            text: body.text as string,
+          });
+        return response;
+      }
       verifications++;
-      return Response.json({ success: true, hostname: 'studio.example', action: 'contact' });
+      return options.verify();
     }) as typeof fetch,
   };
   const data = new URLSearchParams({
@@ -61,17 +72,28 @@ function setup() {
       env,
       options,
     );
-  return { env, options, data, send, messages, verifications: () => verifications };
+  return {
+    env,
+    options,
+    data,
+    send,
+    messages,
+    requests,
+    verifications: () => verifications,
+    failDelivery: (response: () => Promise<Response>) => (delivery = response),
+  };
 }
 
-test('validated enquiry sends labelled Unicode fields to both fixed recipients, with Reply-To', async () => {
+test('validated enquiry sends labelled Unicode fields to the studio inbox through Resend, with Reply-To', async () => {
   const s = setup();
   const response = await s.send();
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), { accepted: true });
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.equal(s.messages.length, 1);
-  assert.deepEqual(s.messages[0].to, ['inbox@example.com', 'backup@example.com']);
+  assert.deepEqual(s.messages[0].to, ['hello@studio.example']);
+  assert.equal(s.requests[0].authorization, 'Bearer re_test');
+  assert.match(s.messages[0].from, /<website@thegildastudios\.com>$/);
   assert.equal(s.messages[0].replyTo, 'zoe@example.com');
   assert.match(s.messages[0].text, /message: A & B \+ café/);
   assert.match(s.messages[0].text, /service: 01.2/);
@@ -137,25 +159,27 @@ for (const result of [
 ]) {
   test(`rejects unverified challenge ${JSON.stringify(result)}`, async () => {
     const s = setup();
-    s.options.fetch = (async () => Response.json(result)) as typeof fetch;
+    s.options.verify = async () => Response.json(result);
     assert.equal((await s.send()).status, 403);
     assert.equal(s.messages.length, 0);
   });
 }
 
 test('missing configuration, provider errors and malformed responses fail closed without leaking data', async () => {
-  for (const mode of ['config', 'verification', 'json', 'delivery']) {
+  for (const mode of ['config', 'verification', 'json', 'delivery', 'network']) {
     const s = setup();
-    if (mode === 'config') s.env.CONTACT_RECIPIENTS = 'inbox@example.com, not-an-address';
+    if (mode === 'config') s.env.RESEND_API_KEY = '';
     if (mode === 'verification')
-      s.options.fetch = (async () => {
+      s.options.verify = async () => {
         throw new Error('secret');
-      }) as typeof fetch;
-    if (mode === 'json') s.options.fetch = (async () => new Response('invalid')) as typeof fetch;
-    if (mode === 'delivery')
-      s.env.CONTACT_EMAIL.send = async () => {
-        throw new Error('private message');
       };
+    if (mode === 'json') s.options.verify = async () => new Response('invalid');
+    if (mode === 'delivery')
+      s.failDelivery(async () => Response.json({ message: 'private' }, { status: 422 }));
+    if (mode === 'network')
+      s.failDelivery(async () => {
+        throw new Error('private message');
+      });
     const response = await s.send();
     assert.equal(response.status, 503);
     assert.deepEqual(await response.json(), { accepted: false });

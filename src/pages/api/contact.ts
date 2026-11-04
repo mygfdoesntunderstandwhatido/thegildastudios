@@ -8,7 +8,8 @@ export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   const page = await getEntry('contact', 'page');
-  if (!page) return new Response(null, { status: 503 });
+  const site = await getEntry('settings', 'site');
+  if (!page || !site) return new Response(null, { status: 503 });
   const { form } = page.data;
   const services = Object.fromEntries(
     (await getCollection('services')).map(({ data }) => [data.number, data]),
@@ -18,6 +19,7 @@ export const POST: APIRoute = async ({ request }) => {
     branches: BRANCH_ORDER,
     failureMessage: form.submissionError,
     subject: form.delivery.subject,
+    to: site.data.email,
     labels: {
       ...Object.fromEntries(Object.entries(form.fields).map(([key, field]) => [key, field.label])),
       needs: form.needs.legend,

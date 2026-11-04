@@ -1,37 +1,35 @@
 # Forms, analytics and routing
 
-Implementation for #32. The code is prepared; the account configuration and live
-checks below are still required before the issue can be considered complete.
+Implementation for #32. Contact delivery moved to Cloudflare in #52; its account
+setup and live checks below are still required before launch.
 
 ## Contact form
 
-`/contact/` contains the static `contact` form, with `data-netlify="true"`,
-`form-name=contact` and the `bot-field` honeypot. Enable **form detection** in the
-Netlify project and deploy this branch. Netlify must list a form named `contact`
-before testing delivery. Netlify performs spam filtering; the hidden honeypot
-field is submitted with both enhanced and native submissions.
+`/contact/` posts URL-encoded fields to the on-demand Astro route `/api/contact`. `wrangler.jsonc` sends this path to the Worker before static asset handling. The server validates required fields, email, a phone when Call is selected, known service numbers and branch selections. It derives branch values from the validated needs, including for native forms. Every email labels `name`, `email`, `business`, `phone`, repeated `needs`, `preferred`, `message`, `service` and `branch`.
 
-The stored fields are `name`, `email`, `business`, `phone`, repeated `needs`
-values, `preferred`, `message`, `service` and `branch`. The last two contain a
-validated prefilled service number and the selected branch keys. Deselecting a
-service's branch clears the hidden service number. Query-string prefill requires
-JavaScript; without it, the visitor can select needs and submit the native form.
-Service numbers and names come from the typed `services` collection, so the
-homepage's shorter branch summaries cannot change a service's prefilled name.
+The hidden `bot-field` honeypot discards filled submissions without email. Turnstile is verified on the server, including hostname and the `contact` action. Missing, expired or failed tokens send no email. HTTP, network and delivery errors keep the enhanced form’s values and enable retry; the widget resets because tokens are single-use. Requests time out in the browser after 20 seconds. No submitted values or provider errors are logged by the handler.
 
-With JavaScript, the form posts URL-encoded data to `/contact/thanks/`. It prevents
-duplicate requests, waits for a successful response before displaying the approved
-success message, and preserves values on HTTP, network or timeout errors. Requests
-time out after 20 seconds. Without JavaScript, Netlify redirects the native POST
-to the same confirmation page. The confirmation page itself is not evidence that
-a particular submission was received.
+Successful enhanced submissions show the existing confirmation; `Form submitted` is emitted only after the email binding accepts the send. A provider acceptance is not proof of inbox delivery. Native submissions with a valid Turnstile token receive a 303 to `/contact/thanks/`. **With JavaScript completely disabled, Turnstile cannot issue a token.** The page explains the email alternative, and the server rejects a missing token. This is an explicit deviation from #52’s full no-JavaScript criterion; do not bypass spam protection to make it pass.
 
-In Netlify's form notifications, add email notifications for `contact` to
-`hello@thegildastudios.com` **and a working backup inbox supplied by Chris**. The
-backup is needed until domain email is configured in #33. No email notification
-has been configured from this workspace, and a backup address has not been
-selected. The #26 review approved a request form with no scheduling embed:
-[recorded decision](https://github.com/mygfdoesntunderstandwhatido/thegildastudios/pull/45#issuecomment-6339440553).
+`hello@thegildastudios.com` is a Google Workspace address, so the domain’s MX records point to Google and Cloudflare Email Routing can’t run beside them. The Worker sends each enquiry through [Resend](https://resend.com) (free tier: 3,000 emails a month, 100 a day) to the email in Site settings (`hello@`), and Google Workspace delivers it to the team. The sender is `website@thegildastudios.com` and the visitor’s address is the Reply-To. The Resend API key is the Worker secret `RESEND_API_KEY`. Addresses never come from a visitor-controlled field. This is email-only: no D1 copy, dashboard submission archive or automatic retry queue. A response lost after acceptance can lead to a duplicate if the visitor retries.
+
+### One-time setup (Chris)
+
+1. **Resend account.** Sign up at resend.com. Domains → **Add Domain** → `thegildastudios.com` (region EU, Ireland).
+2. **DNS records.** Resend lists a DKIM record (`resend._domainkey`) and an MX and SPF TXT record on the `send` subdomain. Add them in Cloudflare → `thegildastudios.com` → DNS → Records, with **Proxy status off** (DNS only), or use Resend’s Cloudflare auto-configure. They don’t touch Google Workspace’s records on the root domain. Back in Resend, choose **Verify DNS Records** and wait for **Verified**.
+3. **API key.** Resend → API Keys → **Create API Key**: name `Website contact form`, permission **Sending access**, domain `thegildastudios.com`. Copy it; Resend shows it once.
+4. **Turnstile.** Cloudflare → Turnstile → **Add widget**: mode **Managed**, hostnames `thegildastudios.com`, `www.thegildastudios.com` and `chris-aa-vella.workers.dev` (previews), pre-clearance **off** (it sets a `cf_clearance` cookie). The site key is public and lives in `ContactForm.astro`, used only by Cloudflare’s builds; copy the secret key.
+5. **Worker settings.** Workers & Pages → `thegildastudios` → Settings:
+   - **Variables and Secrets**, under both **Production** and **Previews Base**, as type **Secret**: `TURNSTILE_SECRET_KEY` = the Turnstile secret key, and `RESEND_API_KEY` = the Resend key.
+   - Previews Base changes reach new previews only. For an existing preview, run `npx wrangler preview secret put <NAME> --name <branch>` for each secret.
+6. **Rebuild and test.** Re-run the latest build (or push), then send a clearly labelled enquiry from the preview at 390 and 1280. Check it reaches `hello@` (and spam), that Reply-To is the visitor, and that branch and service are filled in. Resend → Emails shows each send. Check DevTools shows no cookies.
+
+### Local checks
+
+- `node --test scripts/contact.test.ts` exercises validation, spoofed services, honeypot, token checks, email payloads and provider failures with injected stubs; it sends no real email.
+- `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build` includes Cloudflare’s public dummy widget for local browser checks only.
+- `npx playwright test tests/contact` exercises the enhanced UI with an intercepted widget and POSTs.
+- `npx wrangler dev --port 8787` serves the built Worker. Use an ignored `.dev.vars` for local test configuration, never real visitor data. Leave `RESEND_API_KEY` unset locally (the handler then answers 503 before sending), or use a test key and Resend’s test recipients; a real key sends real email. Dummy Turnstile tokens still need the corresponding test secret and Siteverify connectivity; local stubs do not establish real spam protection or email delivery.
 
 ## Optional Plausible integration
 
@@ -49,15 +47,15 @@ If Plausible is chosen:
 2. Set the public build variable `PUBLIC_PLAUSIBLE_SCRIPT_URL` in Netlify and
    rebuild. It contains a public script URL, never an API key.
 3. Add these custom event goals, matching names exactly: `Book a chat`,
-   `Book a call`, `Ask about this service`, `Form submitted`.
+   `Book a call`, `Ask about this service`, `Send message`, `Form submitted`.
 4. In the provider's measurements, keep automatic form submissions disabled:
    this form explicitly records `Form submitted` only after an accepted POST.
-5. Confirm page views and all four goals in Plausible. Check DevTools for cookies
+5. Confirm page views and all five goals in Plausible. Check DevTools for cookies
    and storage. Test failures must not produce a `Form submitted` conversion.
 
 Contact links rendered by `Button` are marked automatically for click tracking,
 including future service links built with `contactHref({ service: '01.2' })`.
-The form's submit button records `Book a call` clicks independently of whether
+The form's submit button records `Send message` clicks independently of whether
 validation succeeds. Accepted submissions record `Form submitted` once. Event
 calls contain only the event name. Form values are never passed to analytics;
 the initialization transform removes query strings and hashes from page URLs.
@@ -113,11 +111,11 @@ they do not demonstrate real Netlify delivery, spam rejection or dashboard data.
   are created. The provider script is mocked, so actual page views and dashboard
   receipt remain unverified.
 
-Before marking #32 complete, verify on its Deploy Preview:
+Before launch, verify on a Cloudflare preview:
 
-- [ ] Form detection lists `contact` and a real submission includes branch/service.
-- [ ] The submission arrives in the dashboard and both email inboxes.
-- [ ] A filled honeypot is rejected as spam, with no email notification.
+- [ ] A real submission arrives in both inboxes and includes branch/service
+      (see [Contact form](#contact-form) for the one-time setup).
+- [ ] A filled honeypot or a failed Turnstile check sends no email.
 - [ ] The chosen analytics provider receives page views and all four event goals,
       with no cookies or submitted personal information.
 - [ ] An unknown nested URL returns the branded page with status 404.

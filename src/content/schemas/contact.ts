@@ -43,6 +43,9 @@ export const contact = defineCollection({
       submit: text,
       sending: text,
       submissionError: text,
+      verificationRequired: text,
+      noJavaScript: text,
+      delivery: z.object({ subject: text, service: text, branch: text }),
       honeypot: text,
       /** Message prefill for ?service=01.2. {service} is the service name. */
       servicePrefill: text,

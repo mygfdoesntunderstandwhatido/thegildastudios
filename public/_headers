@@ -1,7 +1,28 @@
-# Cache rules for Cloudflare Workers static assets. Every other file keeps
-# Workers' default, `public, max-age=0, must-revalidate`: HTML, metadata and
-# stable-name artwork revalidate on every request. Workers joins the values
-# of every matching rule, so don't add a catch-all Cache-Control rule here.
+# Headers for Cloudflare Workers static assets. Workers joins the values of
+# every matching rule, so each header is set by one rule only. Responses from
+# Worker code (/api/contact, /keystatic) don't read this file: src/middleware.ts
+# sends the same security headers for them.
+
+# Security baseline (#89). The CSP is report-only for now: violations show in
+# the browser console without blocking anything. Turnstile on /contact/ needs
+# challenges.cloudflare.com, and every page inlines its stylesheet and small
+# scripts. Before enforcing it, add any new third party (the Meta Pixel, #84).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
+
+# Only the production domain is indexed (#88). The production Worker also
+# answers on workers.dev; branch previews there already get noindex from
+# Cloudflare.
+https://thegildastudios.:subdomain.workers.dev/*
+  X-Robots-Tag: noindex
+
+# Cache rules. Every other file keeps Workers' default,
+# `public, max-age=0, must-revalidate`: HTML, metadata and stable-name artwork
+# revalidate on every request. Don't add a catch-all Cache-Control rule here.
 
 # Content hashes change whenever these generated assets change.
 /_astro/*

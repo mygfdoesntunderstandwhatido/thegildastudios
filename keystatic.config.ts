@@ -345,6 +345,13 @@ const caseStudies = collection({
       { label: 'Card image', description: 'Shown on the Projects page and homepage cards.' },
     ),
     hero: picture('Main image', 'The large image at the top of the page.'),
+    heroPhone: fields.image({
+      label: 'Main image on phones',
+      description:
+        'Optional. A tighter crop of the main image for phones, such as one screen or one post, so it can be read at that size. It uses the main image’s alt text, so it must show the same thing. Leave empty to use the main image.',
+      directory: 'src/assets/content/case-studies',
+      publicPath: '../../assets/content/case-studies/',
+    }),
     gallery: fields.array(picture('Image'), {
       label: 'Gallery',
       description: 'Up to three images at the end of the page.',
@@ -756,6 +763,16 @@ const contact = singleton({
         phone: caps('Phone label'),
         based: caps('Location label'),
         basedValue: required('Location'),
+        booking: caps('Booking label'),
+        bookingText: required('Booking link text'),
+        bookingUrl: fields.text({
+          label: 'Booking page address',
+          description:
+            'Optional. The full https:// address of a page where people pick a time to talk, such as a Google Calendar appointment schedule. The booking row shows only when this is filled in.',
+          validation: {
+            pattern: { regex: /^(https:\/\/\S+)?$/, message: 'Use a full https:// address.' },
+          },
+        }),
       },
       {
         label: 'Contact details',
@@ -863,7 +880,7 @@ const settings = singleton({
         siteUrl: fields.text({
           label: 'Public site address',
           description:
-            'The live HTTPS origin, with no path. Change to https://www.thegildastudios.com when the domain is connected. Preview domains never belong here.',
+            'The live HTTPS origin, with no path: https://thegildastudios.com. Preview and workers.dev addresses never belong here.',
           validation: {
             isRequired: true,
             pattern: {

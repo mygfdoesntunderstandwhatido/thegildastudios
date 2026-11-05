@@ -21,9 +21,28 @@ proceed before #28 closes. Accessibility fixes remain in #29.
   their first use. Each selected overlay loads eagerly with low priority,
   preserving the mark's reserved aspect ratio; without JavaScript the base
   mark is still present.
+- Images come in two kinds (#90). **Artwork** (the mark, illustrations,
+  logos) is encoded lossless at quality 100 (#64). **Photographs and other
+  editor uploads** (team portraits, project cards, case-study heroes and
+  galleries) use `PHOTO` from `src/lib/images.ts`: lossy AVIF first, at
+  quality 80 with 4:4:4 chroma, then WebP. `src/lib/image-service.ts` switches
+  the encoders from lossless to lossy below quality 100. Most uploads are
+  JPEGs already, and lossless re-encoding only preserved their artefacts at
+  four to five times the size. At 1280, image bytes fell by 54% on About and
+  75–78% on each case study.
+- `test:performance` keeps both kinds honest. Artwork must decode to exactly
+  the pixels of its lossless PNG. A photograph (`<picture data-photo>`) must
+  stay within a PSNR floor of its PNG: 32 dB for AVIF and 27 dB for WebP,
+  just under the lowest measured values (33.7 and 28.5 dB, on dense foliage
+  at 354px, which looks the same as the PNG at 2×). The Lighthouse image and
+  transfer limits per page are in `lighthouserc.cjs`.
+- A case study can set a separate hero image for phones (#91).
+  `HeroPicture.astro` adds it as `<source media>` entries with their own
+  PNG reference, so the verification and ratio tests apply to it too.
 - The decorative engraved mask uses a lossless WebP at its original 823×1000
   resolution, reducing it from 259 KB to 110 KB. Its alpha channel is
-  byte-identical to the PNG; CSS `image-set` retains that PNG as a fallback.
+  byte-identical to the PNG; CSS `image-set` retains that PNG as a fallback,
+  in every place the mask is used (the case-study highlight panel since #90).
 - Cloudflare caches hashed `/_astro/*` resources for one year with `immutable`.
   Stable-name `/fonts/*` resources cache for one week without `immutable`.
   HTML and other stable-name resources keep Workers' default and revalidate on

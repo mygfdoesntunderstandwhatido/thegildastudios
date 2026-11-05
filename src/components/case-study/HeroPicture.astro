@@ -1,0 +1,73 @@
+---
+// The case-study hero. Astro's Picture can't switch images by screen size, so
+// this builds the <picture> by hand: an optional phone crop (`phone`) for
+// screens under 768px, then the main image (#91). Both are photographs (#90).
+// Each group lists AVIF and WebP, then a lossless PNG: the main image's PNG is
+// the <img> fallback, the phone crop's is its last <source>.
+import type { ImageMetadata, ImageOutputFormat } from 'astro';
+import { getImage } from 'astro:assets';
+import { PHOTO } from '../../lib/images';
+
+interface Props {
+  src: ImageMetadata;
+  phone?: ImageMetadata | null;
+  alt: string;
+  class?: string;
+  widths: number[];
+  sizes: string;
+  phoneWidths: number[];
+  phoneSizes: string;
+}
+
+const { src, phone, alt, class: className, widths, sizes, phoneWidths, phoneSizes } = Astro.props;
+const PHONE_MEDIA = '(width < 768px)';
+
+const render = (image: ImageMetadata, format: ImageOutputFormat, imageWidths: number[]) =>
+  getImage({ src: image, format, widths: imageWidths, quality: PHOTO.quality });
+
+const sources = async (image: ImageMetadata, formats: ImageOutputFormat[], imageWidths: number[]) =>
+  Promise.all(
+    formats.map(async (format) => ({
+      type: `image/${format}`,
+      result: await render(image, format, imageWidths),
+    })),
+  );
+
+const phoneSources = phone
+  ? await sources(phone, [...PHOTO.formats, PHOTO.fallbackFormat], phoneWidths)
+  : [];
+const mainSources = await sources(src, PHOTO.formats, widths);
+const fallback = await render(src, PHOTO.fallbackFormat, widths);
+
+const ratio = `--image-ratio: ${src.width} / ${src.height}`;
+const style = phone ? `${ratio}; --image-ratio-phone: ${phone.width} / ${phone.height}` : ratio;
+---
+
+<picture {...PHOTO.pictureAttributes}>
+  {phoneSources.map(({ type, result }) => (
+    <source
+      media={PHONE_MEDIA}
+      type={type}
+      srcset={result.srcSet.attribute}
+      sizes={phoneSizes}
+      width={result.attributes.width}
+      height={result.attributes.height}
+    />
+  ))}
+  {mainSources.map(({ type, result }) => (
+    <source type={type} srcset={result.srcSet.attribute} sizes={sizes} />
+  ))}
+  <img
+    class={className}
+    style={style}
+    src={fallback.src}
+    srcset={fallback.srcSet.attribute}
+    sizes={sizes}
+    width={fallback.attributes.width}
+    height={fallback.attributes.height}
+    alt={alt}
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+</picture>

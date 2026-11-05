@@ -21,11 +21,17 @@ Social profiles populate `sameAs` only when supplied.
 
 ## Production domain and previews
 
-The public site address is the Worker's address,
-`https://thegildastudios.chris-aa-vella.workers.dev` (#51). Change it to
-`https://www.thegildastudios.com` when #33 connects the custom domain, then
-rebuild. This single setting updates Astro's site URL, canonicals, cards,
-JSON-LD, sitemap and robots. Never enter a preview or content branch URL there.
+The public site address is the production domain, `https://thegildastudios.com`
+(#88). `www.thegildastudios.com` redirects to it. This single setting updates
+Astro's site URL, canonicals, cards, JSON-LD, sitemap and robots. Never enter a
+preview, content branch or `workers.dev` URL there.
+
+The production Worker also still answers on
+`https://thegildastudios.chris-aa-vella.workers.dev`, so the Keystatic admin
+keeps working there until its GitHub App callback moves to the production
+domain. `public/_headers` sends `X-Robots-Tag: noindex` for that host, so
+search engines index only the production domain. Branch previews get the same
+header from Cloudflare.
 
 Cloudflare Workers previews (every branch except `main`) emit
 `noindex, follow` and `Disallow: /`. Their canonical and image URLs still point

@@ -65,8 +65,8 @@ if (enabled) {
       } else if (trigger instanceof HTMLButtonElement && trigger.type === 'submit') {
         track('Send message');
       } else {
-        const label = trigger.textContent?.replace(/\s+/g, ' ').trim();
-        track(label === 'Book a call' ? 'Book a call' : 'Book a chat');
+        // Every booking button says "Book a chat" (#92), so it is one goal.
+        track('Book a chat');
       }
     });
 

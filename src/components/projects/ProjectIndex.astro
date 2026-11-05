@@ -6,6 +6,7 @@ import Chip from '../core/Chip.astro';
 import type { DotColor } from '../core/types';
 import { orderBranches } from '../../lib/branches';
 import { caseStudyHref, type CaseStudy } from '../../lib/case-studies';
+import { PHOTO } from '../../lib/images';
 
 interface Props {
   entries: CaseStudy[];
@@ -65,9 +66,7 @@ const filters = orderBranches().map((branch) => ({
                 style={`--image-ratio: ${data.cover.src.width} / ${data.cover.src.height}`}
                 src={data.cover.src}
                 alt={data.cover.alt}
-                formats={['webp', 'avif']}
-                quality={100}
-                fallbackFormat="png"
+                {...PHOTO}
                 widths={[354, 708, 1080]}
                 sizes="(width < 768px) calc(100vw - 48px), min(368px, calc((100vw - 176px) / 3))"
               />

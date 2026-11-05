@@ -55,6 +55,8 @@ export const caseStudies = defineCollection({
       /** The card image. It sits inside a link that already names the project. */
       cover: z.object({ src: image(), alt: z.string().default('') }),
       hero: picture,
+      /** Optional phone crop of the hero, shown under 768px. It shares the hero's alt text. */
+      heroPhone: image().nullish(),
       gallery: z.array(picture).max(3).default([]),
       /** Featured entries appear in the homepage Selected work, in `order`. */
       featured: z.boolean().default(false),

@@ -42,6 +42,7 @@
     "src": "../../assets/content/case-studies/malta-business-network/hero/src.jpg",
     "alt": "Malta Business Network project collage with a phone showing Stronger Business Connections, event photographs and a list of delivered services"
   },
+  "heroPhone": "../../assets/content/case-studies/malta-business-network/heroPhone.jpg",
   "gallery": [
     {
       "src": "../../assets/content/case-studies/malta-business-network/gallery/0/src.jpg",

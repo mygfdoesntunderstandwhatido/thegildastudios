@@ -47,10 +47,11 @@ If Plausible is chosen:
 2. Set the public build variable `PUBLIC_PLAUSIBLE_SCRIPT_URL` in Netlify and
    rebuild. It contains a public script URL, never an API key.
 3. Add these custom event goals, matching names exactly: `Book a chat`,
-   `Book a call`, `Ask about this service`, `Send message`, `Form submitted`.
+   `Ask about this service`, `Send message`, `Form submitted`. (Every booking
+   button says "Book a chat" since #92, so there is no `Book a call` goal.)
 4. In the provider's measurements, keep automatic form submissions disabled:
    this form explicitly records `Form submitted` only after an accepted POST.
-5. Confirm page views and all five goals in Plausible. Check DevTools for cookies
+5. Confirm page views and all four goals in Plausible. Check DevTools for cookies
    and storage. Test failures must not produce a `Form submitted` conversion.
 
 Contact links rendered by `Button` are marked automatically for click tracking,
@@ -80,10 +81,34 @@ redirects to Projects. Query strings are preserved by Netlify. Astro uses
 there is no wildcard slash redirect that could loop. Verify `/projects` and
 `/contact` redirect to their slash equivalents on the Deploy Preview.
 
-The apex-to-`www` redirect belongs to the primary-domain configuration in #33.
-No hostname redirect is forced here: it would redirect away from working
-preview URLs before the production domain is set up. Confirm that Netlify
-redirects the apex once `www.thegildastudios.com` is its primary domain.
+The bare domain, `thegildastudios.com`, is canonical (#88). The `www` to
+bare-domain redirect is a Cloudflare Redirect Rule, not a `_redirects` entry: a
+hostname redirect in the Worker would also redirect away from preview URLs. See
+[launch checklist](launch-checklist.md#4-domain).
+
+## Security headers
+
+Every page sends `X-Content-Type-Options: nosniff`,
+`Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that
+turns off the camera, microphone and location, and
+`X-Frame-Options: SAMEORIGIN` (#89). Static files get them from
+`public/_headers`. Workers doesn't apply that file to responses from Worker
+code, so `src/middleware.ts` adds the same four to `/api/contact` and the
+Keystatic admin. Keep the two lists in step.
+
+Static pages also send a `Content-Security-Policy-Report-Only`. It blocks
+nothing, but the browser console reports anything outside it. It allows the
+site itself, inline styles and scripts (each page inlines its stylesheet and
+small scripts), and Turnstile on `challenges.cloudflare.com`. To enforce it:
+
+1. Add any new third party first, such as the Meta Pixel (#84) or Plausible.
+2. Open Home, About, Services, Projects, one case study and Contact on a
+   preview, and check the console shows no report-only violations from the
+   page itself. Messages from inside Turnstile's own iframe don't count.
+3. Rename the header to `Content-Security-Policy`.
+
+HSTS is set in the Cloudflare dashboard, not here
+([launch checklist](launch-checklist.md#4-domain)).
 
 ## Verification record
 

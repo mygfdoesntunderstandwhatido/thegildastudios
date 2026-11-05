@@ -43,6 +43,7 @@
     "src": "../../assets/content/case-studies/cs-butcher/hero/src.jpg",
     "alt": "The CS Butcher website on a phone, next to three CS Butcher social posts: fresh beef burgers, customer reviews and Local Butcher Since 2001"
   },
+  "heroPhone": "../../assets/content/case-studies/cs-butcher/heroPhone.jpg",
   "gallery": [
     {
       "src": "../../assets/content/case-studies/cs-butcher/gallery/0/src.jpg",

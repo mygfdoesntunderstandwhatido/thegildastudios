@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, sharpImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
@@ -16,12 +16,21 @@ export default defineConfig({
   // Each page has a small stylesheet. Inlining avoids a blocking CSS round trip.
   build: { inlineStylesheets: 'always' },
   image: {
-    service: sharpImageService({
-      // Preserve fine artwork and text in every negotiated image format.
-      avif: { lossless: true, chromaSubsampling: '4:4:4' },
-      webp: { lossless: true },
-      png: { palette: false },
-    }),
+    service: {
+      // Sharp runs at build time only. Quality 100 keeps these lossless
+      // encoders for artwork (#64); photographs ask for a lower quality and
+      // are encoded lossy (#90, src/lib/images.ts).
+      build: {
+        entrypoint: './src/lib/image-service.ts',
+        config: {
+          avif: { lossless: true, chromaSubsampling: '4:4:4' },
+          webp: { lossless: true },
+          png: { palette: false },
+        },
+      },
+      // The Cloudflare adapter's runtime stub: the Worker serves prebuilt files.
+      runtime: { entrypoint: '@astrojs/cloudflare/image-service-workerd' },
+    },
   },
   adapter: cloudflare({
     // Images stay optimised with Sharp at build time, so no Images binding.

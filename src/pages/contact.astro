@@ -184,6 +184,15 @@ const { email, phone } = site.data;
       font-size: 16px;
     }
 
+    /* Thumb-sized links (#93): a 44px tap area that reaches into the row's
+       padding, so the rows keep their height. */
+    dd a {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--space-11);
+      margin-block: calc((1lh - var(--space-11)) / 2);
+    }
+
     .form-band {
       --band-padding: 48px;
     }

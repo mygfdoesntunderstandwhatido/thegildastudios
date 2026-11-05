@@ -179,6 +179,25 @@ const year = new Date().getUTCFullYear();
       font-size: var(--footer-phone-size);
     }
 
+    /* Thumb-sized links (#93): each link is a 44px-tall row with the text
+       centred, so neighbouring tap areas meet without overlapping. The label
+       gap shrinks by the extra space above the first link. */
+    .column-label {
+      margin-block-end: var(--space-1);
+    }
+
+    ul {
+      gap: 0;
+    }
+
+    .footer-column a,
+    .bottom a {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--space-11);
+      min-inline-size: var(--space-11);
+    }
+
     .bottom {
       padding-block-start: var(--space-4);
     }

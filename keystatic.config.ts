@@ -863,7 +863,7 @@ const settings = singleton({
         siteUrl: fields.text({
           label: 'Public site address',
           description:
-            'The live HTTPS origin, with no path. Change to https://www.thegildastudios.com when the domain is connected. Preview domains never belong here.',
+            'The live HTTPS origin, with no path: https://thegildastudios.com. Preview and workers.dev addresses never belong here.',
           validation: {
             isRequired: true,
             pattern: {

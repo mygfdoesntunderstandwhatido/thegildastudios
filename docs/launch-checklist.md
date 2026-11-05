@@ -1,6 +1,6 @@
 # Launch checklist (#33)
 
-Work through this list to put the site live on `www.thegildastudios.com`.
+Work through this list to put the site live on `thegildastudios.com`.
 It is written so a relaunch can follow it again. Tick each item, or accept it
 with a reason. Most items need an account (Cloudflare, Google, GitHub) or a
 decision from the studio, so a person does them.
@@ -125,30 +125,37 @@ nothing, and contact-form notifications depend on it.
 runs as the `thegildastudios` Worker in the same Cloudflare account (#51). DNS
 stays in Cloudflare and needs no external records.
 
-- [ ] Cloudflare → Workers & Pages → `thegildastudios` → Settings → Domains
-      & Routes: add `www.thegildastudios.com` and `thegildastudios.com` as
-      **Custom Domains**. Cloudflare creates the DNS records and the
-      certificates.
-- [ ] Make `www` canonical: a **Redirect Rule** sends
-      `thegildastudios.com/*` to `https://www.thegildastudios.com/` with the
-      same path, as a 301 that keeps the query string.
-- [ ] SSL/TLS → Edge Certificates: turn on **Always Use HTTPS** and HSTS.
-- [ ] In Keystatic, set Site settings → Search and social previews → Public
-      site address to
-      `https://www.thegildastudios.com`. This changes the canonical URLs,
-      sitemap, `robots.txt` and social-card URLs in one place.
+The bare domain, `https://thegildastudios.com`, is canonical (#88). `www`
+only redirects to it.
+
+- [x] Cloudflare → Workers & Pages → `thegildastudios` → Settings → Domains
+      & Routes: `thegildastudios.com` is a **Custom Domain**.
+- [ ] Add `www.thegildastudios.com` as a second **Custom Domain** on the same
+      Worker, so the name resolves and has a certificate.
+- [ ] Rules → **Redirect Rules**: send `www.thegildastudios.com/*` to
+      `https://thegildastudios.com/` with the same path, as a 301 that keeps
+      the query string.
+- [ ] SSL/TLS → Edge Certificates: turn on **Always Use HTTPS** and HSTS
+      (`max-age` of 6 months to start, without `includeSubDomains` or
+      preload).
+- [x] Site settings → Search and social previews → Public site address is
+      `https://thegildastudios.com` (#88). This one setting drives the
+      canonical URLs, sitemap, `robots.txt`, social-card URLs and JSON-LD.
+- [x] The production `workers.dev` address answers with
+      `X-Robots-Tag: noindex` (`public/_headers`, #88). Branch previews get
+      the same header from Cloudflare.
 - [ ] Point the Keystatic GitHub App's callback URLs at the production
       domain.
-- [ ] Check: `http://thegildastudios.com`, `https://thegildastudios.com` and
-      `http://www.thegildastudios.com` all end at
-      `https://www.thegildastudios.com/` with one redirect each.
+- [ ] Check: `http://thegildastudios.com`, `https://www.thegildastudios.com`
+      and `http://www.thegildastudios.com` all end at
+      `https://thegildastudios.com/` with one redirect each.
 - [ ] Leave the old Netlify project untouched for two weeks after launch as a
       fallback, then delete it.
 
 ## 5. Search and monitoring
 
 - [ ] Verify the domain in Google Search Console (a DNS TXT record in
-      Cloudflare) and submit `https://www.thegildastudios.com/sitemap-index.xml`.
+      Cloudflare) and submit `https://thegildastudios.com/sitemap-index.xml`.
 - [ ] Optional: link a Google Business Profile.
 - [ ] Uptime monitoring: Cloudflare notifications, or an external check on
       the homepage.

@@ -69,8 +69,9 @@ site and note the change.
       width. Accept (checked at 1440 in [QA](qa.md)).
 - [ ] #9: the open mobile menu is a proposal (not in the design). Sign off.
 - [ ] #9: the header is not sticky. Accept.
-- [ ] #9: the wording is "Book a chat" in the header and hero but "Book a
-      call" in the CTA bands, as designed. Confirm.
+- [x] #9: every booking button and the contact chip say "Book a chat",
+      including the CTA bands the design labels "Book a call". (done, the
+      studio's choice in #92)
 - [x] #10: the footer's Studio links read "About · Services" on every page,
       and the header reads "About · Services · Projects". On phones the
       footer shows the same columns, labels and links as desktop, instead of

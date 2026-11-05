@@ -47,10 +47,11 @@ If Plausible is chosen:
 2. Set the public build variable `PUBLIC_PLAUSIBLE_SCRIPT_URL` in Netlify and
    rebuild. It contains a public script URL, never an API key.
 3. Add these custom event goals, matching names exactly: `Book a chat`,
-   `Book a call`, `Ask about this service`, `Send message`, `Form submitted`.
+   `Ask about this service`, `Send message`, `Form submitted`. (Every booking
+   button says "Book a chat" since #92, so there is no `Book a call` goal.)
 4. In the provider's measurements, keep automatic form submissions disabled:
    this form explicitly records `Form submitted` only after an accepted POST.
-5. Confirm page views and all five goals in Plausible. Check DevTools for cookies
+5. Confirm page views and all four goals in Plausible. Check DevTools for cookies
    and storage. Test failures must not produce a `Form submitted` conversion.
 
 Contact links rendered by `Button` are marked automatically for click tracking,

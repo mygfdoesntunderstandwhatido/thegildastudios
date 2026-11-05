@@ -16,7 +16,7 @@ Successful enhanced submissions show the existing confirmation; `Form submitted`
 ### One-time setup (Chris)
 
 1. **Resend account.** Sign up at resend.com. Domains → **Add Domain** → `thegildastudios.com` (region EU, Ireland).
-2. **DNS records.** Resend lists a DKIM record (`resend._domainkey`) and an MX and SPF TXT record on the `send` subdomain. Add them in Cloudflare → `thegildastudios.com` → DNS → Records, with **Proxy status off** (DNS only), or use Resend’s Cloudflare auto-configure. They don’t touch Google Workspace’s records on the root domain. Back in Resend, choose **Verify DNS Records** and wait for **Verified**.
+2. **DNS records.** Resend lists a DKIM record (`resend._domainkey`) and an MX and SPF TXT record on the `rsend` subdomain (the return path; Resend’s default is `send`). Add them in Cloudflare → `thegildastudios.com` → DNS → Records, with **Proxy status off** (DNS only), or use Resend’s Cloudflare auto-configure. They don’t touch Google Workspace’s records on the root domain. Back in Resend, choose **Verify DNS Records** and wait for **Verified**.
 3. **API key.** Resend → API Keys → **Create API Key**: name `Website contact form`, permission **Sending access**, domain `thegildastudios.com`. Copy it; Resend shows it once.
 4. **Turnstile.** Cloudflare → Turnstile → **Add widget**: mode **Managed**, hostnames `thegildastudios.com`, `www.thegildastudios.com` and `chris-aa-vella.workers.dev` (previews), pre-clearance **off** (it sets a `cf_clearance` cookie). The site key is public and lives in `ContactForm.astro`, used only by Cloudflare’s builds; copy the secret key.
 5. **Worker settings.** Workers & Pages → `thegildastudios` → Settings:

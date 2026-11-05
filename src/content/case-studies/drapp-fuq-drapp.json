@@ -36,24 +36,24 @@
     }
   ],
   "cover": {
-    "src": "../../assets/content/case-studies/drapp-fuq-drapp/cover/src.png"
+    "src": "../../assets/content/case-studies/drapp-fuq-drapp/cover/src.jpg"
   },
   "hero": {
     "src": "../../assets/content/case-studies/drapp-fuq-drapp/hero/src.png",
-    "alt": "Photo placeholder for the Drapp fuq Drapp project"
+    "alt": "The Drapp Fuq Drapp name and sewing-machine logo on a wooden table, next to striped fabric and scissors"
   },
   "gallery": [
     {
       "src": "../../assets/content/case-studies/drapp-fuq-drapp/gallery/0/src.png",
-      "alt": "Photo placeholder for the Drapp fuq Drapp project, image 1"
+      "alt": "A hand holding the novel What Happens in France in front of a quilted linen book sleeve, against orange flowers"
     },
     {
       "src": "../../assets/content/case-studies/drapp-fuq-drapp/gallery/1/src.png",
-      "alt": "Photo placeholder for the Drapp fuq Drapp project, image 2"
+      "alt": "A smiling woman at the Drapp fuq Drapp stand, next to a wooden case of fabric book sleeves and pouches"
     },
     {
       "src": "../../assets/content/case-studies/drapp-fuq-drapp/gallery/2/src.png",
-      "alt": "Photo placeholder for the Drapp fuq Drapp project, image 3"
+      "alt": "A hand holding the novel The Seven Husbands of Evelyn Hugo in front of a green patterned book sleeve, against orange flowers"
     }
   ],
   "sections": [

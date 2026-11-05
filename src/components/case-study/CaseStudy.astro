@@ -4,7 +4,9 @@ import { Picture } from 'astro:assets';
 import BranchDots from '../branch/BranchDots.astro';
 import CtaBand from '../layout/CtaBand.astro';
 import { caseStudyHref, type CaseStudy } from '../../lib/case-studies';
+import { PHOTO } from '../../lib/images';
 import Blocks, { type ResolvedBlock } from './Blocks.astro';
+import HeroPicture from './HeroPicture.astro';
 
 interface Props {
   entry: CaseStudy;
@@ -52,6 +54,7 @@ const sections = await Promise.all(
 const accentText = study.accent === 'olive' ? 'var(--olive-text)' : `var(--${study.accent})`;
 
 const heroSizes = '(width < 768px) calc(100vw - 48px), min(1168px, calc(100vw - 112px))';
+const heroPhoneSizes = 'calc(100vw - 48px)';
 const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw - 160px) / 3))';
 ---
 
@@ -71,18 +74,15 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
         </div>
         <p class="summary">{study.summary}</p>
       </div>
-      <Picture
+      <HeroPicture
         class="hero-image"
-        style={`--image-ratio: ${study.hero.src.width} / ${study.hero.src.height}`}
         src={study.hero.src}
+        phone={study.heroPhone}
         alt={study.hero.alt}
-        formats={['webp', 'avif']}
-        quality={100}
-        fallbackFormat="png"
         widths={[400, 800, 1080, 1600, 2336]}
         sizes={heroSizes}
-        loading="eager"
-        fetchpriority="high"
+        phoneWidths={[400, 800, 1080]}
+        phoneSizes={heroPhoneSizes}
       />
       <dl class="facts">
         {study.facts.map((fact) => (
@@ -129,9 +129,7 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
               style={`--image-ratio: ${image.src.width} / ${image.src.height}`}
               src={image.src}
               alt={image.alt}
-              formats={['webp', 'avif']}
-              quality={100}
-              fallbackFormat="png"
+              {...PHOTO}
               widths={[354, 708, 1080]}
               sizes={gallerySizes}
             />
@@ -407,12 +405,13 @@ const gallerySizes = '(width < 768px) calc(100vw - 48px), min(373px, calc((100vw
       font-size: 21px;
     }
 
-    /* Preserve the full uploaded image on phones, including text near its edges. */
+    /* Preserve the full uploaded image on phones, including text near its edges.
+       A hero with a phone crop (#91) takes that crop's ratio. */
     /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro owns the image. */
     .intro-inner :global(.hero-image),
     /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro owns the image. */
     .gallery-grid :global(.gallery-image) {
-      aspect-ratio: var(--image-ratio);
+      aspect-ratio: var(--image-ratio-phone, var(--image-ratio));
       object-fit: contain;
     }
 

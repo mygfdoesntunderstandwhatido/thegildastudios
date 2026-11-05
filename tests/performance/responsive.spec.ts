@@ -15,10 +15,18 @@ for (const width of [375, 390]) {
         const images = page.locator('.hero-image, .gallery-image, .cover');
         expect(await images.count()).toBeGreaterThan(0);
         for (const image of await images.all()) {
-          const ratios = await image.evaluate((element: HTMLImageElement) => ({
-            displayed: element.clientWidth / element.clientHeight,
-            source: Number(element.getAttribute('width')) / Number(element.getAttribute('height')),
-          }));
+          const ratios = await image.evaluate((element: HTMLImageElement) => {
+            // A hero with a phone crop (#91) shows that crop: compare with the
+            // <source> whose media query matches, else with the <img> itself.
+            const phone = [
+              ...(element.parentElement?.querySelectorAll('source[media]') ?? []),
+            ].find((source) => matchMedia(source.getAttribute('media')!).matches);
+            const shown = phone ?? element;
+            return {
+              displayed: element.clientWidth / element.clientHeight,
+              source: Number(shown.getAttribute('width')) / Number(shown.getAttribute('height')),
+            };
+          });
           expect(ratios.displayed).toBeCloseTo(ratios.source, 1);
         }
       });

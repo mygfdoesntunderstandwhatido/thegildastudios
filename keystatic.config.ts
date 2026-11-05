@@ -345,6 +345,13 @@ const caseStudies = collection({
       { label: 'Card image', description: 'Shown on the Projects page and homepage cards.' },
     ),
     hero: picture('Main image', 'The large image at the top of the page.'),
+    heroPhone: fields.image({
+      label: 'Main image on phones',
+      description:
+        'Optional. A tighter crop of the main image for phones, such as one screen or one post, so it can be read at that size. It uses the main image’s alt text, so it must show the same thing. Leave empty to use the main image.',
+      directory: 'src/assets/content/case-studies',
+      publicPath: '../../assets/content/case-studies/',
+    }),
     gallery: fields.array(picture('Image'), {
       label: 'Gallery',
       description: 'Up to three images at the end of the page.',

@@ -114,7 +114,9 @@ nothing, and contact-form notifications depend on it.
 
 - [ ] Choose forwarding (Cloudflare Email Routing) or a hosted mailbox
       (Google Workspace, Microsoft 365, Fastmail) and set it up.
-- [ ] Add SPF, DKIM and DMARC records in Cloudflare.
+- [x] Add SPF, DKIM and DMARC records in Cloudflare. Google’s DMARC report
+      for 4 November 2026 shows SPF and DKIM passing for both Google
+      Workspace and Resend. The policy is `p=none` (monitoring only).
 - [ ] Send a test email to `hello@` and reply from it.
 - [ ] The contact form delivers to `hello@` (#52). Check its sending setup
       matches the choice above ([operations](operations.md)).

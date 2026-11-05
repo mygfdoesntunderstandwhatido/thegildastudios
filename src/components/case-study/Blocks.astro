@@ -166,6 +166,12 @@ const pad = (index: number) => String(index + 1).padStart(2, '0');
     block-size: 231px;
     background: var(--olive);
     mask: url('../../assets/logos/mask-engraved.png') center / contain no-repeat;
+
+    /* The lossless WebP is 107 KB against the PNG's 252 KB, with the same alpha (#90). */
+    mask-image: image-set(
+      url('../../assets/logos/mask-engraved.webp') type('image/webp'),
+      url('../../assets/logos/mask-engraved.png') type('image/png')
+    );
   }
 
   .highlight-label {

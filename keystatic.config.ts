@@ -763,6 +763,16 @@ const contact = singleton({
         phone: caps('Phone label'),
         based: caps('Location label'),
         basedValue: required('Location'),
+        booking: caps('Booking label'),
+        bookingText: required('Booking link text'),
+        bookingUrl: fields.text({
+          label: 'Booking page address',
+          description:
+            'Optional. The full https:// address of a page where people pick a time to talk, such as a Google Calendar appointment schedule. The booking row shows only when this is filled in.',
+          validation: {
+            pattern: { regex: /^(https:\/\/\S+)?$/, message: 'Use a full https:// address.' },
+          },
+        }),
       },
       {
         label: 'Contact details',

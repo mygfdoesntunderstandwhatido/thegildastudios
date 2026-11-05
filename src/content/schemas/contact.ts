@@ -21,6 +21,13 @@ export const contact = defineCollection({
       phone: text,
       based: text,
       basedValue: text,
+      /** An optional scheduling page (#92). The row shows only when `bookingUrl` is set. */
+      booking: text,
+      bookingText: text,
+      bookingUrl: optionalText.refine(
+        (value) => value === undefined || /^https:\/\/\S+$/.test(value),
+        'Use a full https:// address, or leave it empty.',
+      ),
     }),
     form: z.object({
       title: text,

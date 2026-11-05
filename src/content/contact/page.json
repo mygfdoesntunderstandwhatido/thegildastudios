@@ -3,7 +3,7 @@
     "title": "Contact · The Gilda Studios",
     "description": "Tell us what you're planning and we'll take it from there. Email, call or meet the studio in Malta."
   },
-  "eyebrow": "CONTACT · BOOK A CALL",
+  "eyebrow": "CONTACT · BOOK A CHAT",
   "headline": "Start with a conversation.",
   "body": "Tell us what you're planning and we'll take it from there.",
   "direct": {
@@ -11,7 +11,10 @@
     "email": "EMAIL",
     "phone": "PHONE",
     "based": "BASED IN",
-    "basedValue": "Malta"
+    "basedValue": "Malta",
+    "booking": "BOOK A TIME",
+    "bookingText": "Choose a time to talk",
+    "bookingUrl": ""
   },
   "form": {
     "title": "Send us a message.",

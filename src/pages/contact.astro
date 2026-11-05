@@ -33,6 +33,14 @@ const { email, phone } = site.data;
               <a href={phone.href}>{phone.label}</a>
             </dd>
           </div>
+          {copy.direct.bookingUrl && (
+            <div class="direct-row">
+              <dt>{copy.direct.booking}</dt>
+              <dd>
+                <a href={copy.direct.bookingUrl}>{copy.direct.bookingText}</a>
+              </dd>
+            </div>
+          )}
           <div class="direct-row">
             <dt>{copy.direct.based}</dt>
             <dd>{copy.direct.basedValue}</dd>

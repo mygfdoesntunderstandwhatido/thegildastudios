@@ -2,6 +2,7 @@
 import '../styles/fonts.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
+import '../styles/motion.css';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import Analytics from '../components/analytics/Analytics.astro';
@@ -18,6 +19,25 @@ interface Props {
 
 const { title, description, caseStudy, header = 'cream' } = Astro.props;
 const { seo } = await getSettings();
+
+// Fetch a page's HTML while the pointer rests on its link (or on touch start),
+// so the click lands on a page that is already downloaded. Prefetch never runs
+// the page, so analytics only count real visits. Browsers without speculation
+// rules ignore the tag. Worker routes and generated files are left alone.
+const speculationRules = JSON.stringify({
+  prefetch: [
+    {
+      where: {
+        and: [
+          { href_matches: '/*' },
+          { not: { href_matches: ['/api/*', '/keystatic', '/keystatic/*', '/og/*', '/icons/*'] } },
+          { not: { selector_matches: '[rel~=nofollow], [download], [target=_blank]' } },
+        ],
+      },
+      eagerness: 'moderate',
+    },
+  ],
+});
 ---
 
 <!doctype html>
@@ -40,6 +60,7 @@ const { seo } = await getSettings();
       type="font/woff2"
       crossorigin
     />
+    <script type="speculationrules" is:inline set:html={speculationRules} />
     <Seo title={title} description={description} caseStudy={caseStudy} />
     <Analytics />
   </head>

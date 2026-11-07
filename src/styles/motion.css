@@ -75,9 +75,16 @@
   /* Later bands: each block settles over the first --reveal-length of its
      journey up the screen, measured from its top edge so tall blocks don't
      reveal slower. Content already on screen at load shows in full. The
-     testimonial rotator animates its own slides, so it stays still here. */
+     testimonial rotator animates its own slides, so it stays still here.
+     Forms never fade: their fields are read and filled in at the screen's
+     bottom edge. And a block snaps fully into view as soon as anything in it
+     has focus, since the browser scrolls a focused control only just on
+     screen, where it would otherwise sit half-revealed. */
   @supports (animation-timeline: view()) {
-    main .band:not(.motion-enter) > .container:not(gilda-testimonial-rotator) > * {
+    main
+      .band:not(.motion-enter)
+      > .container:not(gilda-testimonial-rotator)
+      > :not(form, :has(form), :focus-within) {
       animation: gilda-reveal linear both;
       animation-timing-function: var(--ease-settle);
       animation-timeline: view();

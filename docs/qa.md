@@ -126,6 +126,9 @@ Safari 16.4+, Chrome and Edge 111+, Firefox 121+.
 | Media ranges such as `(width < 768px)` | Every component                        | Safari 16.4+. Older Safari would show the desktop layout on phones. Below the baseline                   |
 | `color-mix()`                          | Button hover, About portrait tint      | Safari 16.2+, inside the baseline                                                                        |
 | `<dialog>` and `inert`                 | Mobile menu, rotator                   | Safari 15.4+, inside the baseline                                                                        |
+| Cross-document view transitions        | Cross-fade between pages               | Chrome 126+, Safari 18.2+. Elsewhere pages load as before, with no fade                                  |
+| Scroll-driven animations (`view()`)    | Bands revealing on scroll              | Behind `@supports`: Chrome 115+, Safari 26+. Elsewhere the content is simply there                       |
+| Speculation rules                      | Prefetch on hover                      | Chromium only. Other browsers ignore the tag and fetch on click                                          |
 
 ## Browser checklist
 

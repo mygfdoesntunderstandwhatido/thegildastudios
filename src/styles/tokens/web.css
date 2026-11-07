@@ -20,4 +20,17 @@
   --hover-duration: 150ms;
   --mark-duration: 200ms;
   --strip-duration: 200ms;
+
+  /* Motion (src/styles/motion.css). One easing for everything that settles:
+     fast out, soft landing. Only applied without prefers-reduced-motion. */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --page-duration: 240ms;
+  --enter-duration: 720ms;
+  --enter-stagger: 90ms;
+  --enter-distance: 20px;
+  --reveal-distance: 32px;
+  --reveal-length: 200px;
+  --press-duration: 120ms;
+  --press-scale: 0.96;
+  --sweep-duration: 360ms;
 }

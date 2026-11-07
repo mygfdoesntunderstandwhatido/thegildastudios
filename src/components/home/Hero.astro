@@ -12,7 +12,7 @@ const { hero } = home.data;
 const { booking } = site.data;
 ---
 
-<section class="band band--brine hero" aria-labelledby="hero-title">
+<section class="band band--brine hero motion-enter" aria-labelledby="hero-title">
   <div class="hero-header">
     <SiteHeader skipTo="hero-copy" />
   </div>
@@ -115,6 +115,33 @@ const { booking } = site.data;
       55.3vw,
       100vw - 10px - var(--page-gutter) - var(--hero-lede) - var(--space-6)
     );
+  }
+
+  /* Entrance: the copy rises in through .motion-enter (src/styles/motion.css);
+     the mark fades up behind it and the strip's three branches settle last,
+     in branch order, over the strip's solid ground. The mark only fades, so
+     its box never moves under the pointer. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-mark-place {
+      animation: gilda-fade-in calc(var(--enter-duration) * 1.4) var(--ease-settle) both;
+      animation-delay: calc(var(--enter-stagger) * 2);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- BranchStrip renders its own cells. */
+    .hero :global(.strip-cell) {
+      animation: gilda-enter var(--enter-duration) var(--ease-settle) both;
+      animation-delay: calc(var(--enter-stagger) * (4 + var(--strip-step, 0)));
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- BranchStrip renders its own cells. */
+    .hero :global(.strip-cell:nth-child(2)) {
+      --strip-step: 1;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- BranchStrip renders its own cells. */
+    .hero :global(.strip-cell:nth-child(3)) {
+      --strip-step: 2;
+    }
   }
 
   @media (width < 768px) {

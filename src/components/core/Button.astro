@@ -62,12 +62,19 @@ const {
     --button-ring: none;
     --button-disabled-opacity: 0.4;
 
+    /* Hover sweeps this fill across the pill, left to right. By default it is
+       a veil of the label colour, which keeps the label's contrast. */
+    --button-sweep: color-mix(in srgb, var(--button-foreground) 14%, transparent);
+
+    position: relative;
+    isolation: isolate;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
     max-inline-size: 100%;
     padding: var(--button-pad-block) var(--button-pad-inline);
+    overflow: hidden;
     border: 0;
     border-radius: var(--radius-pill);
     background: var(--button-background);
@@ -85,7 +92,22 @@ const {
     cursor: pointer;
     transition:
       opacity var(--hover-duration) ease,
-      background-color var(--hover-duration) ease;
+      background-color var(--hover-duration) ease,
+      transform var(--press-duration) var(--ease-settle);
+  }
+
+  /* The sweep sits between the fill and the label. It leaves to the right,
+     the way it came in, so a pass over the button reads as one motion. */
+  .button::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--button-sweep);
+    content: '';
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--sweep-duration) var(--ease-settle);
   }
 
   .button[data-size='sm'] {
@@ -118,22 +140,46 @@ const {
     --button-ring: inset 0 0 0 1.5px var(--cream);
   }
 
-  .button:hover {
-    background: var(--button-hover-background, var(--button-background));
-    color: var(--button-foreground);
-    opacity: var(--button-hover-opacity, var(--hover-opacity));
+  /* Olive and anchovy fills darken instead of fading: at 86% opacity their
+     Cream labels fall under AA (3.7:1 and 4.3:1). The darker fill is also
+     what sweeps in. */
+  .button:is([data-variant='primary'], [data-variant='anchovy']) {
+    --button-sweep: color-mix(in srgb, var(--button-background) 86%, var(--brine));
   }
 
-  /* Olive and anchovy fills darken instead of fading: at 86% opacity their
-     Cream labels fall under AA (3.7:1 and 4.3:1). */
-  .button:is([data-variant='primary'], [data-variant='anchovy']) {
-    --button-hover-background: color-mix(in srgb, var(--button-background) 86%, var(--brine));
-    --button-hover-opacity: 1;
+  /* The sweep replaces the old fade, so a hovered label keeps full contrast. */
+  .button:hover {
+    background: var(--button-background);
+    color: var(--button-foreground);
+    opacity: 1;
+  }
+
+  .button:hover::before {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* A firm press: the pill gives a little under the pointer or key. */
+  .button:active {
+    transform: scale(var(--press-scale));
   }
 
   .button:is(:disabled, [aria-disabled='true']) {
     opacity: var(--button-disabled-opacity);
     cursor: default;
+    transform: none;
+  }
+
+  .button:is(:disabled, [aria-disabled='true'])::before {
+    display: none;
+  }
+
+  /* Touch screens keep :hover after a tap; skip the sweep there so a tapped
+     button doesn't stay filled. The press still shows. */
+  @media (hover: none) {
+    .button:hover::before {
+      transform: scaleX(0);
+    }
   }
 
   @media (any-pointer: coarse) {
@@ -142,9 +188,15 @@ const {
     }
   }
 
+  /* Reduced motion: the sweep appears at once and the button never scales. */
   @media (prefers-reduced-motion: reduce) {
-    .button {
+    .button,
+    .button::before {
       transition-duration: 0s;
+    }
+
+    .button:active {
+      transform: none;
     }
   }
 </style>

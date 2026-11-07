@@ -93,7 +93,11 @@ const {
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     cursor: pointer;
-    transition: opacity var(--hover-duration) ease;
+    transition:
+      opacity var(--hover-duration) ease,
+      background-color var(--hover-duration) ease,
+      color var(--hover-duration) ease,
+      transform var(--press-duration) var(--ease-settle);
   }
 
   .chip[data-variant='toggle'][data-on-dark='true'] {
@@ -163,6 +167,10 @@ const {
     opacity: var(--hover-opacity);
   }
 
+  .chip[data-variant='toggle']:active:not(:disabled) {
+    transform: scale(var(--press-scale));
+  }
+
   .chip:disabled {
     opacity: var(--chip-disabled-opacity);
     cursor: default;
@@ -186,6 +194,10 @@ const {
   @media (prefers-reduced-motion: reduce) {
     .chip[data-variant='toggle'] {
       transition-duration: 0s;
+    }
+
+    .chip[data-variant='toggle']:active:not(:disabled) {
+      transform: none;
     }
   }
 </style>

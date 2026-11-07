@@ -31,7 +31,7 @@ const filters = orderBranches().map((branch) => ({
   data-count-label={copy.countLabel}
   data-status-label={copy.filter.status}
 >
-  <section class="opening band band--cream" aria-labelledby="projects-title">
+  <section class="opening band band--cream motion-enter" aria-labelledby="projects-title">
     <div class="container opening-grid">
       <div class="opening-title">
         <Chip variant="filled">
@@ -225,13 +225,28 @@ const filters = orderBranches().map((branch) => ({
     block-size: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    transition: opacity var(--hover-duration) ease;
+    transition:
+      opacity var(--hover-duration) ease,
+      transform var(--sweep-duration) var(--ease-settle);
   }
 
-  /* Hover fades the image only: text keeps its full AA contrast. */
+  /* The picture frames the cover, so the hover zoom stays inside its box. */
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the picture. */
+  .card :global(picture) {
+    overflow: hidden;
+  }
+
+  /* Hover fades and gently enlarges the image only: text keeps its full AA contrast. */
   /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
   .card:hover :global(.cover) {
     opacity: var(--hover-opacity);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro's Picture renders the img. */
+    .card:hover :global(.cover) {
+      transform: scale(1.04);
+    }
   }
 
   .meta {

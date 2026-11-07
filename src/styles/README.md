@@ -35,6 +35,28 @@ Use a full-width band with a container inside it:
 - `.label` applies the shared mono label defaults. The Label component's
   additional sizes and tones are documented in [Shared components](../components/README.md).
 
+## Motion
+
+`motion.css` holds the site-wide motion, all of it CSS and all of it behind
+`prefers-reduced-motion: no-preference`. Timings and the shared easing are
+tokens in `tokens/web.css` (`--ease-settle`, `--enter-*`, `--reveal-*`,
+`--press-*`, `--sweep-duration`, `--page-duration`).
+
+- **Between pages:** same-origin navigations cross-fade (cross-document view
+  transitions). Browsers without them navigate as before.
+- **Opening band:** add `motion-enter` to a page's first band. Its
+  container's children rise in one after another. Entrances start at 1%
+  opacity so Largest Contentful Paint still counts the first paint.
+- **Later bands:** every other `.band` in `<main>` reveals its container's
+  children as they scroll in, over the first `--reveal-length` (200px) of
+  their way up the screen. This uses scroll-driven animations; browsers
+  without them show the content straight away. A reveal follows the nearest
+  scroll container, so don't put `overflow: hidden` on a band whose content
+  should reveal (`overflow: clip` clips without becoming one).
+- `Base.astro` also adds speculation rules: hovering a same-origin link for a
+  moment prefetches its HTML, so the click opens a page that's already
+  downloaded. Prefetch never runs the page, so analytics only count visits.
+
 For the About-style dark decoration, add `band--decorated` to a Brine band and
 an empty `<div class="band__mark" aria-hidden="true"></div>` inside. It clips
 the engraved mask, ignores pointer input and stays behind content. Its desktop

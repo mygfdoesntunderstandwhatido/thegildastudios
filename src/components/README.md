@@ -14,7 +14,12 @@ Action buttons default to `type="button"` so they do not submit surrounding form
 
 `disabled` uses the native button attribute. Disabled anchors keep link semantics,
 remove their destination, expose `aria-disabled` and leave the tab order. Both
-use 40% opacity. Hover is 86% over 150ms, or instant under reduced motion.
+use 40% opacity. Hover sweeps a fill across the pill from the left over 360ms
+and back out to the right: olive and anchovy darken 14% towards Brine, the
+other variants take a 14% veil of their label colour, so labels never fade.
+A press scales the pill to 96%. Touch screens skip the sweep (it would stick
+after a tap) but keep the press. Under reduced motion the fill appears at once
+and nothing scales.
 On devices with a coarse pointer the target is at least 44px tall.
 
 ## Label (#7)

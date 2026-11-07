@@ -276,6 +276,7 @@ const followId = uniqueId('menu-follow');
   }
 
   .nav-link {
+    position: relative;
     display: block;
     color: var(--brine);
     font-size: 14px;
@@ -286,6 +287,25 @@ const followId = uniqueId('menu-follow');
 
   .nav-link:hover {
     color: var(--olive-text);
+  }
+
+  /* Hover draws the current-page rule in from the left, where the current
+     page's rule sits. The current link already has its rule. */
+  .nav-link:not([aria-current])::after {
+    position: absolute;
+    inset-block-end: calc(var(--space-1) * -1);
+    inset-inline: 0;
+    block-size: var(--nav-current-rule);
+    background: currentcolor;
+    content: '';
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--sweep-duration) var(--ease-settle);
+  }
+
+  .nav-link:not([aria-current]):hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
   }
 
   .nav-link[aria-current],
@@ -500,7 +520,8 @@ const followId = uniqueId('menu-follow');
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .menu-dialog {
+    .menu-dialog,
+    .nav-link::after {
       transition: none;
     }
   }

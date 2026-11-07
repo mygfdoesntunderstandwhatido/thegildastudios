@@ -1,0 +1,87 @@
+/* Page motion: transitions between pages, the opening band's entrance and
+   reveals as later bands scroll in. CSS only, so no page ships extra script.
+   Everything sits behind prefers-reduced-motion: no-preference; with reduced
+   motion the site renders exactly as it did before, with no movement at all.
+
+   Opt in: add `motion-enter` to a page's first band. Every other `.band` in
+   <main> reveals its container's children as they scroll into view. */
+
+/* Entrances start at 1% opacity rather than 0: it looks the same, and
+   browsers count the first paint as the moment the page's headline or hero
+   image appeared (Largest Contentful Paint ignores fully transparent content). */
+@keyframes gilda-enter {
+  from {
+    opacity: 0.01;
+    transform: translateY(var(--enter-distance));
+  }
+}
+
+@keyframes gilda-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(var(--reveal-distance));
+  }
+}
+
+@keyframes gilda-fade-in {
+  from {
+    opacity: 0.01;
+  }
+}
+
+@keyframes gilda-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Same-origin navigations cross-fade instead of flashing white. Browsers
+     without cross-document view transitions navigate as before. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root) {
+    animation: gilda-fade-out var(--page-duration) var(--ease-settle) both;
+  }
+
+  ::view-transition-new(root) {
+    animation: gilda-fade-in var(--page-duration) var(--ease-settle) both;
+  }
+
+  /* Opening band: its pieces rise into place one after another. */
+  .motion-enter > .container > * {
+    animation: gilda-enter var(--enter-duration) var(--ease-settle) both;
+    animation-delay: calc(var(--enter-step, 0) * var(--enter-stagger));
+  }
+
+  .motion-enter > .container > :nth-child(2) {
+    --enter-step: 1;
+  }
+
+  .motion-enter > .container > :nth-child(3) {
+    --enter-step: 2;
+  }
+
+  .motion-enter > .container > :nth-child(4) {
+    --enter-step: 3;
+  }
+
+  .motion-enter > .container > :nth-child(n + 5) {
+    --enter-step: 4;
+  }
+
+  /* Later bands: each block settles over the first --reveal-length of its
+     journey up the screen, measured from its top edge so tall blocks don't
+     reveal slower. Content already on screen at load shows in full. The
+     testimonial rotator animates its own slides, so it stays still here. */
+  @supports (animation-timeline: view()) {
+    main .band:not(.motion-enter) > .container:not(gilda-testimonial-rotator) > * {
+      animation: gilda-reveal linear both;
+      animation-timing-function: var(--ease-settle);
+      animation-timeline: view();
+      animation-range: cover 0 cover var(--reveal-length);
+    }
+  }
+}

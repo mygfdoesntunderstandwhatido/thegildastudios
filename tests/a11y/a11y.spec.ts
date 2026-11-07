@@ -89,6 +89,10 @@ for (const width of [390, 1280]) {
 
     for (const path of PAGES) {
       test(`${path} has no axe violations, one h1 and the main landmarks`, async ({ page }) => {
+        // Check the settled page: with motion, content fades in from the same
+        // final state, and axe would read contrast mid-fade. The motion test
+        // below checks that everything does settle at full opacity.
+        await page.emulateMedia({ reducedMotion: 'reduce' });
         await page.goto(path);
         expect(await axe(page)).toEqual([]);
         expect(await page.locator('h1').count()).toBe(1);
@@ -212,6 +216,46 @@ test.describe('reflow and motion', () => {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
         320,
       );
+    });
+
+    test(`${path} settles every entrance and scroll reveal in place`, async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await page.goto(path);
+      // Time-based entrances finish; scroll-driven reveals have no end time.
+      await page.evaluate(() =>
+        Promise.all(
+          document
+            .getAnimations()
+            .filter((animation) => animation.timeline instanceof DocumentTimeline)
+            .map((animation) => animation.finished),
+        ),
+      );
+      const unsettled = await page.evaluate(async () => {
+        const frame = () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          );
+        const animated = [...document.querySelectorAll<HTMLElement>('main *')].filter((element) =>
+          getComputedStyle(element).animationName.startsWith('gilda-'),
+        );
+        const failures: string[] = [];
+        for (const element of animated) {
+          element.scrollIntoView({ block: 'center', behavior: 'instant' });
+          await frame();
+          const style = getComputedStyle(element);
+          if (
+            style.opacity !== '1' ||
+            !['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(style.transform)
+          ) {
+            failures.push(
+              `${element.tagName.toLowerCase()}.${element.className} ${style.opacity} ${style.transform}`,
+            );
+          }
+        }
+        return { count: animated.length, failures };
+      });
+      expect(unsettled.count).toBeGreaterThan(0);
+      expect(unsettled.failures).toEqual([]);
     });
 
     test(`${path} has no transitions or animations with reduced motion`, async ({ page }) => {

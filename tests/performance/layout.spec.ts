@@ -128,6 +128,8 @@ for (const width of [390, 1280]) {
       await settle(page);
       const filters = page.locator('.filters');
       await filters.scrollIntoViewIfNeeded();
+      // Scroll reveals (src/styles/motion.css) catch up on the next frame.
+      await settle(page);
       const before = await filters.evaluate((element) => ({
         top: element.getBoundingClientRect().top + scrollY,
         height: element.getBoundingClientRect().height,
@@ -145,6 +147,7 @@ for (const width of [390, 1280]) {
       await settle(page);
       const trigger = page.locator('gilda-disclosure .trigger').first();
       await trigger.scrollIntoViewIfNeeded();
+      await settle(page);
       const top = await trigger.evaluate(
         (element) => element.getBoundingClientRect().top + scrollY,
       );

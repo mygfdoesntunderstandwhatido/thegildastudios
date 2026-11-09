@@ -31,6 +31,35 @@ Successful enhanced submissions show the existing confirmation; `Form submitted`
 - `npx playwright test tests/contact` exercises the enhanced UI with an intercepted widget and POSTs.
 - `npx wrangler dev --port 8787` serves the built Worker. Use an ignored `.dev.vars` for local test configuration, never real visitor data. Leave `RESEND_API_KEY` unset locally (the handler then answers 503 before sending), or use a test key and Resend’s test recipients; a real key sends real email. Dummy Turnstile tokens still need the corresponding test secret and Siteverify connectivity; local stubs do not establish real spam protection or email delivery.
 
+## Instagram feed band
+
+The homepage closes with the latest six posts from @thegildastudios (#79). `src/lib/instagram.ts` fetches them at build time from the [Instagram API with Instagram Login](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login) (`GET graph.instagram.com/me/media`), newest first. The images are downloaded and optimised into the build like every other photograph, so visitors never load anything from Instagram and the page ships no JavaScript for it. Each post’s alt text is the first line of its caption, without trailing hashtags; a post without a caption uses the **Alt text for a post without a caption** field (Keystatic → Homepage → Instagram feed band).
+
+**Fallback.** If the token is missing or expired, the API fails, or fewer than six posts have a usable image, the build still succeeds and the homepage shows the contact band (“Where to find us”) instead. The build log says why, on a line starting `[instagram]`. Local builds and CI have no token, so they show the contact band.
+
+### One-time setup (Chris)
+
+1. **Meta app.** At [developers.facebook.com](https://developers.facebook.com/apps), create an app of type **Business** and add the **Instagram** product, “API setup with Instagram login”. The @thegildastudios account must be a Business or Creator account.
+2. **Token.** Under **Generate access tokens**, add the @thegildastudios account and generate a token. It needs only `instagram_business_basic`. The generated token is long-lived: it lasts 60 days.
+3. **Worker build variable.** Cloudflare → Workers & Pages → `thegildastudios` → Settings → **Build** → **Variables and secrets**: add `INSTAGRAM_ACCESS_TOKEN` as a **Secret**. It is a build secret, not a runtime one: the Worker never sees it.
+4. **Daily rebuild.** Posts only change on the site when it rebuilds. In the same Build settings, create a **deploy hook** for the production branch (`main`) and copy its URL. In GitHub → Settings → Secrets and variables → Actions, add it as the repository secret `CLOUDFLARE_DEPLOY_HOOK_URL`. `.github/workflows/instagram-rebuild.yml` then calls it every morning; run it from the Actions tab to rebuild straight away.
+5. **Check.** Rebuild, then open the homepage at 1280 and 390. Six posts should show, newest first, each linking to its post.
+
+### Refreshing the token
+
+The token expires 60 days after it was generated or last refreshed. Before then, refresh it and replace the secret from step 3:
+
+```bash
+curl "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=CURRENT_TOKEN"
+```
+
+The answer’s `access_token` is the new token. A token can be refreshed once it is at least 24 hours old. If it has already expired, generate a new one (step 2). Until then the homepage shows the contact band, and the build log says the API answered 400.
+
+### Local checks
+
+- `node --test scripts/instagram.test.ts` covers ordering, alt text and every fallback.
+- `node scripts/instagram-stand-in.mjs` serves six fake posts. In a second terminal, `INSTAGRAM_API_URL=http://127.0.0.1:4599 INSTAGRAM_ACCESS_TOKEN=test npm run build`, then `npm run serve:performance`, shows the feed band. `INSTAGRAM_STAND_IN_POSTS=5` checks the fallback.
+
 ## Optional Plausible integration
 
 The provider choice remains a review decision from #32. Plausible is prepared

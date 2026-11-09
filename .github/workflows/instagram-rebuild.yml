@@ -1,0 +1,31 @@
+# Rebuilds the live site once a day so the homepage feed band (#79) shows the
+# latest Instagram posts. The posts are fetched at build time, so without this
+# they only change when something is merged. See docs/operations.md.
+#
+# CLOUDFLARE_DEPLOY_HOOK_URL is a repository secret: the production build
+# trigger's deploy hook URL from Cloudflare. Until it is set, the job does
+# nothing.
+name: Daily rebuild for Instagram
+
+on:
+  schedule:
+    # 05:17 UTC, early morning in Malta.
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  rebuild:
+    name: Start a production build
+    runs-on: ubuntu-latest
+    env:
+      HOOK_URL: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}
+    steps:
+      - name: Call the deploy hook
+        run: |
+          if [ -z "$HOOK_URL" ]; then
+            echo "::notice::CLOUDFLARE_DEPLOY_HOOK_URL is not set, so no rebuild was started."
+            exit 0
+          fi
+          curl --fail --silent --show-error --max-time 30 -X POST "$HOOK_URL" > /dev/null

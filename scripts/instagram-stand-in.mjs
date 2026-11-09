@@ -36,7 +36,8 @@ const posts = Array.from({ length: COUNT }, (_, index) => ({
 
 createServer(async (request, response) => {
   const url = new URL(request.url ?? '/', base);
-  if (url.pathname === '/me/media') {
+  // /me/media for Instagram Login, /{account-id}/media for Facebook Login.
+  if (/^(?:\/[\w.]+)+\/media$/.test(url.pathname)) {
     if (!url.searchParams.get('access_token')) {
       response.writeHead(400, { 'content-type': 'application/json' });
       response.end(JSON.stringify({ error: { message: 'Missing token' } }));

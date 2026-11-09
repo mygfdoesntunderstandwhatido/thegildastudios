@@ -1,11 +1,18 @@
 /**
  * The homepage feed band's posts (#79), fetched once per build from the
- * Instagram API with Instagram Login. Nothing here runs in the browser: the
+ * Instagram API. Nothing here runs in the browser: the
  * page is prerendered and the images are optimised into the build like any
  * other photograph.
  *
- * The access token is the build secret INSTAGRAM_ACCESS_TOKEN
- * (docs/operations.md). Without it, or when the API or an image fails, this
+ * Two kinds of token work (docs/operations.md), both as the build secret
+ * INSTAGRAM_ACCESS_TOKEN:
+ * - Facebook Login: a Page token for the Facebook Page linked to the account,
+ *   with INSTAGRAM_ACCOUNT_ID set to the Instagram account's ID. Read from
+ *   graph.facebook.com.
+ * - Instagram Login: an Instagram user token, without an account ID. Read
+ *   from graph.instagram.com.
+ *
+ * Without a token, or when the API or an image fails, this
  * returns no posts and the homepage keeps the contact band instead. A build
  * never fails because of Instagram.
  */
@@ -13,6 +20,8 @@
 export const FEED_SIZE = 6;
 
 const TIMEOUT_MS = 10_000;
+const FACEBOOK_API_URL = 'https://graph.facebook.com/v27.0';
+const INSTAGRAM_API_URL = 'https://graph.instagram.com';
 const ALT_MAX_LENGTH = 120;
 
 export interface InstagramPost {
@@ -79,8 +88,10 @@ export function toPosts(items: MediaItem[]): InstagramPost[] {
 
 export interface FetchOptions {
   token: string | undefined;
-  /** Instagram's API host, or a stand-in for tests. */
-  apiUrl: string;
+  /** The Instagram account's ID, for a Facebook Login token. Instagram Login reads /me. */
+  accountId?: string | undefined;
+  /** The API's base URL, or a stand-in for tests. Defaults to the host that matches the token. */
+  apiUrl?: string | undefined;
   fetch?: typeof fetch;
 }
 
@@ -100,13 +111,15 @@ async function isImage(get: (url: string) => Promise<Response>, url: string) {
 /** The latest six posts with a working image, or an empty list. Never throws. */
 export async function fetchPosts({
   token,
+  accountId,
   apiUrl,
   fetch: fetcher = fetch,
 }: FetchOptions): Promise<InstagramPost[]> {
   if (!token) return [];
   const get = (url: string) => fetcher(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
 
-  const url = new URL('/me/media', apiUrl);
+  const base = (apiUrl || (accountId ? FACEBOOK_API_URL : INSTAGRAM_API_URL)).replace(/\/+$/, '');
+  const url = new URL(`${base}/${accountId ? encodeURIComponent(accountId) : 'me'}/media`);
   url.searchParams.set(
     'fields',
     'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp',
@@ -152,8 +165,9 @@ let cached: Promise<InstagramPost[]> | undefined;
 export function getInstagramPosts(): Promise<InstagramPost[]> {
   cached ??= fetchPosts({
     token: process.env.INSTAGRAM_ACCESS_TOKEN,
+    accountId: process.env.INSTAGRAM_ACCOUNT_ID,
     // INSTAGRAM_API_URL points the build at a local stand-in (scripts/instagram-stand-in.mjs).
-    apiUrl: process.env.INSTAGRAM_API_URL || 'https://graph.instagram.com',
+    apiUrl: process.env.INSTAGRAM_API_URL,
   });
   return cached;
 }

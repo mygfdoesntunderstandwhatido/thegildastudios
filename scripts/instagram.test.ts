@@ -63,6 +63,19 @@ test('returns the latest six posts', async () => {
   assert.match(calls[0], /\/me\/media\?.*access_token=token/);
 });
 
+test('reads the account by ID with a Facebook Login token', async () => {
+  const items = Array.from({ length: 6 }, (_, index) => item(index + 1));
+  const { fetcher, calls } = stub(items);
+  const posts = await fetchPosts({
+    token: 'page-token',
+    accountId: '17841400000000000',
+    apiUrl: `${apiUrl}/v27.0/`,
+    fetch: fetcher,
+  });
+  assert.equal(posts.length, 6);
+  assert.match(calls[0], /^https:\/\/api\.test\/v27\.0\/17841400000000000\/media\?/);
+});
+
 test('skips posts whose image fails and still fills six from the spares', async () => {
   const items = Array.from({ length: 8 }, (_, index) => item(index + 1));
   const { fetcher } = stub(items, { broken: new Set(['https://cdn.test/8.jpg']) });

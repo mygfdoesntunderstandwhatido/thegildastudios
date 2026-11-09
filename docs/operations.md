@@ -33,27 +33,27 @@ Successful enhanced submissions show the existing confirmation; `Form submitted`
 
 ## Instagram feed band
 
-The homepage closes with the latest six posts from @thegildastudios (#79). `src/lib/instagram.ts` fetches them at build time from the [Instagram API with Instagram Login](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login) (`GET graph.instagram.com/me/media`), newest first. The images are downloaded and optimised into the build like every other photograph, so visitors never load anything from Instagram and the page ships no JavaScript for it. Each post’s alt text is the first line of its caption, without trailing hashtags; a post without a caption uses the **Alt text for a post without a caption** field (Keystatic → Homepage → Instagram feed band).
+The homepage closes with the latest six posts from @thegildastudios (#79). `src/lib/instagram.ts` fetches them at build time from Instagram’s API, newest first. The images are downloaded and optimised into the build like every other photograph, so visitors never load anything from Instagram and the page ships no JavaScript for it. Each post’s alt text is the first line of its caption, without trailing hashtags; a post without a caption uses the **Alt text for a post without a caption** field (Keystatic → Homepage → Instagram feed band).
 
 **Fallback.** If the token is missing or expired, the API fails, or fewer than six posts have a usable image, the build still succeeds and the homepage shows the contact band (“Where to find us”) instead. The build log says why, on a line starting `[instagram]`. Local builds and CI have no token, so they show the contact band.
 
+The site reads two build secrets: `INSTAGRAM_ACCESS_TOKEN` and `INSTAGRAM_ACCOUNT_ID`. The steps below use **Facebook Login**, which gives a Page token that does not expire. (An Instagram Login token also works: set only `INSTAGRAM_ACCESS_TOKEN`, and refresh it every 60 days with `graph.instagram.com/refresh_access_token`.)
+
 ### One-time setup (Chris)
 
-1. **Meta app.** At [developers.facebook.com](https://developers.facebook.com/apps), create an app of type **Business** and add the **Instagram** product, “API setup with Instagram login”. The @thegildastudios account must be a Business or Creator account.
-2. **Token.** Under **Generate access tokens**, add the @thegildastudios account and generate a token. It needs only `instagram_business_basic`. The generated token is long-lived: it lasts 60 days.
-3. **Worker build variable.** Cloudflare → Workers & Pages → `thegildastudios` → Settings → **Build** → **Variables and secrets**: add `INSTAGRAM_ACCESS_TOKEN` as a **Secret**. It is a build secret, not a runtime one: the Worker never sees it.
-4. **Daily rebuild.** Posts only change on the site when it rebuilds. In the same Build settings, create a **deploy hook** for the production branch (`main`) and copy its URL. In GitHub → Settings → Secrets and variables → Actions, add it as the repository secret `CLOUDFLARE_DEPLOY_HOOK_URL`. `.github/workflows/instagram-rebuild.yml` then calls it every morning; run it from the Actions tab to rebuild straight away.
-5. **Check.** Rebuild, then open the homepage at 1280 and 390. Six posts should show, newest first, each linking to its post.
+1. **Instagram account.** @thegildastudios must be a public **Business** account (Instagram → Settings → Account type and tools) and linked to the studio’s Facebook Page (Instagram → Settings → Accounts Center, or Facebook Page → Settings → Linked accounts → Instagram).
+2. **Meta app.** At [developers.facebook.com/apps](https://developers.facebook.com/apps), **Create app** → use case **Manage messaging & content on Instagram** (or **Other** → **Business**) → name it and create it. Under the Instagram use case, choose **API setup with Facebook login**. The app can stay in Development mode: it only reads accounts whose admins have a role on the app.
+3. **User token.** Open the [Graph API Explorer](https://developers.facebook.com/tools/explorer/). Pick the app under **Meta App**, set **User or Page** to **Get User Access Token**, and add the permissions `pages_show_list`, `pages_read_engagement`, `instagram_basic` and `business_management`. Click **Generate Access Token**, choose the Page and the Instagram account when asked, and approve.
+4. **Long-lived user token.** In the Explorer, click the ⓘ next to the token → **Open in Access Token Tool** → **Extend Access Token**, and copy the new token. It lasts 60 days, which is enough to make the next one.
+5. **Page token and account ID.** Paste the long-lived token into the Explorer’s token field, then run `GET me/accounts?fields=name,access_token,instagram_business_account`. In the studio Page’s entry, copy `access_token` (the Page token) and `instagram_business_account.id` (the account ID, a long number starting `1784`). Check the Page token in the [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/): **Expires** should say **Never**.
+6. **Check.** Run `GET <account ID>/media?fields=id,timestamp,permalink&limit=6` in the Explorer with the Page token. It should list the latest posts.
+7. **Build secrets.** Cloudflare → Workers & Pages → `thegildastudios` → Settings → **Build** → **Variables and secrets**: add `INSTAGRAM_ACCESS_TOKEN` (the Page token) as a **Secret**, and `INSTAGRAM_ACCOUNT_ID` (the account ID). They are build variables, not runtime ones: the Worker never sees them.
+8. **Daily rebuild.** Posts only change on the site when it rebuilds. In the same Build settings, create a **deploy hook** for the production branch (`main`) and copy its URL. In GitHub → Settings → Secrets and variables → Actions, add it as the repository secret `CLOUDFLARE_DEPLOY_HOOK_URL`. `.github/workflows/instagram-rebuild.yml` then calls it every morning; run it from the Actions tab to rebuild straight away.
+9. **Check the site.** Rebuild, then open the homepage at 1280 and 390. Six posts should show, newest first, each linking to its post.
 
-### Refreshing the token
+### When the token stops working
 
-The token expires 60 days after it was generated or last refreshed. Before then, refresh it and replace the secret from step 3:
-
-```bash
-curl "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=CURRENT_TOKEN"
-```
-
-The answer’s `access_token` is the new token. A token can be refreshed once it is at least 24 hours old. If it has already expired, generate a new one (step 2). Until then the homepage shows the contact band, and the build log says the API answered 400.
+A Page token does not expire on a date, but it stops working if the person who made it changes their Facebook password, loses their role on the Page, or removes the app. The homepage then shows the contact band and the build log says the API answered 400. Repeat steps 3 to 5 and replace the secret.
 
 ### Local checks
 

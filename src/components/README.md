@@ -170,6 +170,16 @@ the `featured` case studies in `order`, using each entry's `homeTitle` and
 reference but is no longer shown on the homepage (#72). `src/pages/index.astro`
 assembles the hero, origin story and rotator (#76); the footer comes from `Base`.
 
+## FeedBand (#79)
+
+`home/FeedBand.astro` closes the homepage with the latest six Instagram posts,
+fetched and optimised at build time by `src/lib/instagram.ts`. Its copy is
+`feed` in `home.json`; the Follow button and the "Also on" links are the social
+channels in Site settings. When six posts aren't available (no token, an API
+error, a missing image) it renders `home/ContactBand.astro` instead, so the band
+never shows empty tiles. Setup, the token and the daily rebuild are in
+`docs/operations.md`.
+
 ## Case study template (#24)
 
 `case-study/CaseStudy.astro` renders one `caseStudies` entry (schema in

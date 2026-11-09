@@ -27,7 +27,22 @@ export const homepage = defineCollection({
       previousLabel: text,
       nextLabel: text,
     }),
-    /** The contact band that closes the page. The button, email, phone and channels are in Site settings. */
+    /**
+     * The Instagram feed band that closes the page, with the latest six posts.
+     * The profile links are the social channels in Site settings. In postAlt,
+     * {date} is filled in; it is the alt text for a post without a caption.
+     */
+    feed: z.object({
+      number: text,
+      label: text,
+      title: text,
+      body: text,
+      button: text,
+      alsoLabel: text,
+      note: text,
+      postAlt: text,
+    }),
+    /** Shown instead of the feed band when six Instagram posts aren't available. The button, email, phone and channels are in Site settings. */
     contact: z.object({
       number: text,
       label: text,

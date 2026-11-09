@@ -12,7 +12,8 @@ const navLink = link.extend({
     .transform((branch) => (branch === 'none' ? undefined : branch)),
 });
 
-/** A social profile, listed in the footer, the phone menu and the homepage contact band. */
+/** A social profile, listed in the footer, the phone menu and the homepage feed and contact bands.
+ * The Instagram channel is the feed band's Follow button. */
 const socialChannel = z.object({
   name: text,
   handle: text,

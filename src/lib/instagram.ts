@@ -115,7 +115,10 @@ export async function fetchPosts({
   apiUrl,
   fetch: fetcher = fetch,
 }: FetchOptions): Promise<InstagramPost[]> {
-  if (!token) return [];
+  if (!token) {
+    warn('INSTAGRAM_ACCESS_TOKEN is not set for this build.');
+    return [];
+  }
   const get = (url: string) => fetcher(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
 
   const base = (apiUrl || (accountId ? FACEBOOK_API_URL : INSTAGRAM_API_URL)).replace(/\/+$/, '');
@@ -153,6 +156,9 @@ export async function fetchPosts({
     warn(`Only ${posts.length} of ${FEED_SIZE} posts have an image.`);
     return [];
   }
+  console.log(
+    `[instagram] Showing the latest ${posts.length} posts from ${accountId ? `account ${accountId}` : 'the token’s account'}.`,
+  );
   return posts;
 }
 

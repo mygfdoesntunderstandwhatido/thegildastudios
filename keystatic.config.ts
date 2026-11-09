@@ -558,6 +558,30 @@ const home = singleton({
       },
       { label: 'Where the name comes from' },
     ),
+    feed: fields.object(
+      {
+        number: required('Section number'),
+        label: required('Section label'),
+        title: required('Headline'),
+        body: required('Text', { multiline: true }),
+        button: required('Button text', {
+          description: 'Links to the Instagram channel in Site settings.',
+        }),
+        alsoLabel: required('Other channels label', {
+          description: 'Shown before links to the other channels in Site settings.',
+        }),
+        note: required('Note under the posts'),
+        postAlt: required('Alt text for a post without a caption', {
+          description:
+            'Each post is described by the first line of its caption. {date} is filled in with the post date.',
+        }),
+      },
+      {
+        label: 'Instagram feed band',
+        description:
+          'The band that closes the page, with the latest six Instagram posts. The posts update when the site rebuilds.',
+      },
+    ),
     contact: fields.object(
       {
         number: required('Section number'),
@@ -569,7 +593,7 @@ const home = singleton({
       {
         label: 'Contact band',
         description:
-          'The band that closes the page. The button, email, phone and social channels are in Site settings.',
+          'Shown instead of the Instagram feed band when six posts can’t be loaded. The button, email, phone and social channels are in Site settings.',
       },
     ),
   },

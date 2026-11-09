@@ -45,6 +45,16 @@
       "href": "/about/"
     }
   },
+  "feed": {
+    "number": "03",
+    "label": "Pepper · Grow, on our own feed",
+    "title": "We run our own feed the way we run yours.",
+    "body": "Twelve posts a month, planned by the 25th. This is ours, live from Instagram.",
+    "button": "Follow @thegildastudios",
+    "alsoLabel": "Also on",
+    "note": "Latest six posts · from Instagram",
+    "postAlt": "Instagram post, {date}"
+  },
   "contact": {
     "number": "03",
     "label": "Contact",

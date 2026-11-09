@@ -1,0 +1,277 @@
+---
+// The homepage's Instagram feed band (#79): the studio's latest six posts,
+// fetched and optimised at build time (src/lib/instagram.ts). When six posts
+// aren't available, the page keeps the contact band instead, so the band never
+// shows gaps or empty tiles. No client JavaScript.
+import type { ImageOutputFormat } from 'astro';
+import { getImage } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import { getSettings } from '../../lib/settings';
+import { getInstagramPosts, type InstagramPost } from '../../lib/instagram';
+import { PHOTO } from '../../lib/images';
+import { typography } from '../../lib/typography';
+import { uniqueId } from '../../lib/ids';
+import BranchDots from '../branch/BranchDots.astro';
+import Button from '../core/Button.astro';
+import SectionHeader from '../layout/SectionHeader.astro';
+import ContactBand from './ContactBand.astro';
+
+const home = await getEntry('homepage', 'home');
+if (!home) throw new Error('Missing the homepage singleton: src/content/homepage/home.json');
+const copy = home.data.feed;
+const { social } = await getSettings();
+
+const isInstagram = (href: string) => /(^|\.)instagram\.com$/.test(new URL(href).hostname);
+const instagram = social.find((channel) => isInstagram(channel.href));
+const others = social.filter((channel) => channel !== instagram);
+
+const WIDTHS = [180, 240, 360, 480];
+const SIZES = '(width < 900px) 45vw, (width < 1280px) 19vw, 240px';
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Europe/Malta',
+});
+
+const render = (post: InstagramPost, format: ImageOutputFormat) =>
+  getImage({
+    src: post.image,
+    inferSize: true,
+    format,
+    widths: WIDTHS,
+    quality: PHOTO.quality,
+  });
+
+/** The posts with their optimised images, or none if any image can't be built locally. */
+async function build(posts: InstagramPost[]) {
+  try {
+    const built = await Promise.all(
+      posts.map(async (post) => {
+        const sources = await Promise.all(
+          PHOTO.formats.map(async (format) => ({
+            type: `image/${format}`,
+            result: await render(post, format),
+          })),
+        );
+        const fallback = await render(post, PHOTO.fallbackFormat);
+        const alt =
+          post.caption ||
+          copy.postAlt.replace('{date}', dateFormat.format(new Date(post.timestamp)));
+        return { post, sources, fallback, alt };
+      }),
+    );
+    // Astro leaves an image it isn't allowed to optimise (astro.config.mjs,
+    // image.remotePatterns) on Instagram's CDN. The page only loads its own images.
+    const local = built.every(({ fallback, sources }) =>
+      [fallback, ...sources.map((source) => source.result)].every((image) =>
+        image.src.startsWith('/'),
+      ),
+    );
+    if (!local) {
+      console.warn(
+        '[instagram] An image is on a host the build may not optimise. Showing the contact band.',
+      );
+      return [];
+    }
+    return built;
+  } catch (error) {
+    console.warn(
+      `[instagram] An image could not be read (${error instanceof Error ? error.message : error}). Showing the contact band.`,
+    );
+    return [];
+  }
+}
+
+const posts = instagram ? await build(await getInstagramPosts()) : [];
+const titleId = uniqueId('feed-band');
+---
+
+{posts.length === 0 ? (
+  <ContactBand />
+) : (
+  <section class="feed-band band band--cream" aria-labelledby={titleId}>
+    <div class="container">
+      <SectionHeader class="feed-header" number={copy.number} title={copy.label} />
+      <div class="feed-grid">
+        <div class="intro">
+          <div class="intro-copy">
+            <BranchDots />
+            <h3 id={titleId}>{copy.title}</h3>
+            <p class="body">{copy.body}</p>
+          </div>
+          <div class="actions">
+            <Button href={instagram!.href}>{copy.button}</Button>
+            {others.length > 0 && (
+              <p class="also">
+                {copy.alsoLabel}{' '}
+                {others.map((channel, index) => (
+                  <>
+                    {index > 0 && ` ${typography.dot} `}
+                    <a href={channel.href}>{channel.name}</a>
+                  </>
+                ))}
+              </p>
+            )}
+          </div>
+        </div>
+        <div class="posts">
+          <ul class="post-grid">
+            {posts.map(({ post, sources, fallback, alt }) => (
+              <li>
+                <a class="post" href={post.href}>
+                  <picture {...PHOTO.pictureAttributes}>
+                    {sources.map(({ type, result }) => (
+                      <source type={type} srcset={result.srcSet.attribute} sizes={SIZES} />
+                    ))}
+                    <img
+                      src={fallback.src}
+                      srcset={fallback.srcSet.attribute}
+                      sizes={SIZES}
+                      width={fallback.attributes.width}
+                      height={fallback.attributes.height}
+                      alt={alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="note">{copy.note}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .feed-band {
+    --feed-title-size: clamp(38px, 4.4vw, 56px);
+    --feed-body-measure: 360px;
+    --feed-note-size: 11px;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro forwards this class to SectionHeader. */
+  .feed-band :global(.feed-header) {
+    margin-block-end: var(--space-12);
+  }
+
+  .feed-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--space-6) var(--space-12);
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-10);
+  }
+
+  .intro-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  h3 {
+    font-size: var(--feed-title-size);
+    line-height: 1.02;
+  }
+
+  .body {
+    max-inline-size: var(--feed-body-measure);
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .also {
+    font: var(--type-label);
+    line-height: 1.8;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .also a {
+    color: var(--brine);
+  }
+
+  .also a:hover {
+    color: var(--olive-text);
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .post {
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--sand);
+  }
+
+  .post img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: opacity var(--hover-duration) ease;
+  }
+
+  .post:hover img {
+    opacity: 0.86;
+  }
+
+  .note {
+    margin-block-start: var(--space-5);
+    color: var(--olive-text);
+    font: var(--type-label);
+    font-size: var(--feed-note-size);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  @media (width < 900px) {
+    .feed-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .post-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width < 768px) {
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Astro forwards this class to SectionHeader. */
+    .feed-band :global(.feed-header) {
+      margin-block-end: var(--space-8);
+    }
+
+    .body {
+      font-size: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post img {
+      transition: none;
+    }
+  }
+</style>

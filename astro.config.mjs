@@ -16,6 +16,15 @@ export default defineConfig({
   // Each page has a small stylesheet. Inlining avoids a blocking CSS round trip.
   build: { inlineStylesheets: 'always' },
   image: {
+    // The homepage feed band's Instagram images (#79), downloaded and
+    // optimised at build time. INSTAGRAM_API_URL is a local stand-in for tests.
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.cdninstagram.com' },
+      { protocol: 'https', hostname: '**.fbcdn.net' },
+      ...(process.env.INSTAGRAM_API_URL
+        ? [{ hostname: new URL(process.env.INSTAGRAM_API_URL).hostname }]
+        : []),
+    ],
     service: {
       // Sharp runs at build time only. Quality 100 keeps these lossless
       // encoders for artwork (#64); photographs ask for a lower quality and

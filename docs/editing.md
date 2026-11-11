@@ -18,7 +18,9 @@ you publish it.
 
 1. Click the branch name at the top left (it says **main**) and choose **New branch**.
 2. Give it a short name in lower case with dashes, such as `spring-update`. The admin adds `content-` in
-   front, so the branch is `content-spring-update`.
+   front, so the branch is `content-spring-update`. Don’t leave the name empty, and start and end it
+   with a letter or digit: a branch called just `content-`, or one ending in a dash, can’t get a
+   preview, and its pull request fails the **Branch name works for previews** check.
 
 The live site is protected, so saving straight onto **main** won’t work. Always start a branch first.
 You can reuse one branch for a whole batch of changes.

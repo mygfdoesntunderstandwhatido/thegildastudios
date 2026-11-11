@@ -7,13 +7,15 @@ interface Props {
   phases: NonNullable<CollectionEntry<'services'>['data']['phases']>;
   title: string;
   id: string;
+  /** The service heading, so each timeline has its own accessible name. */
+  serviceTitleId: string;
 }
 
-const { phases, title, id } = Astro.props;
+const { phases, title, id, serviceTitleId } = Astro.props;
 const branches = orderBranches();
 ---
 
-<section class="timeline" aria-labelledby={id}>
+<section class="timeline" aria-labelledby={`${id} ${serviceTitleId}`}>
   <SectionHeader title={title} id={id} headingLevel={4} accent="anchovy" accentTitle />
   <ol class="phases" role="list" style={`--phase-count: ${phases.length}`}>
     {phases.map((phase, index) => {

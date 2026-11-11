@@ -51,20 +51,20 @@
       "build": {
         "description": "We design, build and host your website, then look after it. The people who made it are the people who fix it.",
         "services": [
-          "Web design",
-          "Development",
-          "Hosting and care"
+          "Logo and brand identity",
+          "Web design and development",
+          "Hosting and ongoing care"
         ],
-        "servicesShort": "Web design · Development · Hosting and care"
+        "servicesShort": "Logo and brand identity · Web design and development · Hosting and ongoing care"
       },
       "grow": {
         "description": "We run your social media and marketing month by month: the posts, the captions and the campaigns.",
         "services": [
           "Social media management",
-          "Marketing management",
-          "Campaigns"
+          "Photoshoots and content",
+          "Marketing campaigns"
         ],
-        "servicesShort": "Social media · Marketing · Campaigns"
+        "servicesShort": "Social media management · Photoshoots and content · Marketing campaigns"
       }
     }
   },

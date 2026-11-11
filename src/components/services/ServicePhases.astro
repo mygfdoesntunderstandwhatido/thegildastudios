@@ -15,7 +15,7 @@ const branches = orderBranches();
 
 <section class="timeline" aria-labelledby={id}>
   <SectionHeader title={title} id={id} headingLevel={4} accent="anchovy" accentTitle />
-  <ol class="phases" role="list">
+  <ol class="phases" role="list" style={`--phase-count: ${phases.length}`}>
     {phases.map((phase, index) => {
       const branch = branches[index % branches.length];
       return (
@@ -57,7 +57,7 @@ const branches = orderBranches();
   .phases {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--phase-count), minmax(0, 1fr));
     gap: var(--space-5);
     margin: 0;
     padding: 0;

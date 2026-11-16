@@ -21,7 +21,7 @@
     "pillars": [
       {
         "title": "One team.",
-        "body": "Events, websites, social media and marketing, handled by the same studio."
+        "body": "Brand identities, events, websites, social media and marketing, handled by the same studio."
       },
       {
         "title": "One invoice.",
@@ -42,11 +42,12 @@
       "plan": {
         "description": "We plan and run projects and events from the first brief to the last guest leaving. One plan, with owners and dates you can see.",
         "services": [
+          "Brand identities",
           "Project management",
           "Event management",
           "On-the-day coordination"
         ],
-        "servicesShort": "Project management · Event management · On the day"
+        "servicesShort": "Brand identities · Project management · Event management · On the day"
       },
       "build": {
         "description": "We design, build and host your website, then look after it. The people who made it are the people who fix it.",

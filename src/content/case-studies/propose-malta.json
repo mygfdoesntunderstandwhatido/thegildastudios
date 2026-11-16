@@ -31,13 +31,13 @@
     }
   ],
   "cover": {
-    "src": "../../assets/content/case-studies/propose-malta/cover/src.png"
+    "src": "../../assets/content/case-studies/propose-malta/cover/src.jpg"
   },
   "hero": {
-    "src": "../../assets/content/case-studies/propose-malta/hero/src.png",
+    "src": "../../assets/content/case-studies/propose-malta/hero/src.jpg",
     "alt": "The Propose Malta logo"
   },
-  "heroPhone": "../../assets/content/case-studies/propose-malta/heroPhone.png",
+  "heroPhone": "../../assets/content/case-studies/propose-malta/heroPhone.jpg",
   "gallery": [
     {
       "src": "../../assets/content/case-studies/propose-malta/gallery/0/src.jpg",

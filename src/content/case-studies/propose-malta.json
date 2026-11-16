@@ -1,0 +1,123 @@
+{
+  "name": "Propose Malta",
+  "meta": {},
+  "order": 1,
+  "draft": true,
+  "featured": false,
+  "branches": [
+    "plan",
+    "grow"
+  ],
+  "sector": "PROPOSAL SETUPS · MALTA",
+  "accent": "olive",
+  "short": "A new visual identity and Instagram templates for Propose Malta, inspired by the details of their proposal setups.",
+  "summary": "Propose Malta creates marriage proposal setups across the islands. We developed a visual identity inspired by roses, candlelight and an emerald-cut stone, then extended it into reusable Instagram templates for photography, testimonials and seasonal offers.",
+  "facts": [
+    {
+      "k": "CLIENT",
+      "v": "Propose Malta"
+    },
+    {
+      "k": "SECTOR",
+      "v": "Marriage Proposals"
+    },
+    {
+      "k": "BRANCHES",
+      "v": "Plan · Grow"
+    },
+    {
+      "k": "SERVICES",
+      "v": "Re-branding · Social media"
+    }
+  ],
+  "cover": {
+    "src": "../../assets/content/case-studies/propose-malta/cover/src.png"
+  },
+  "hero": {
+    "src": "../../assets/content/case-studies/propose-malta/hero/src.png",
+    "alt": "The Propose Malta logo"
+  },
+  "heroPhone": "../../assets/content/case-studies/propose-malta/heroPhone.png",
+  "gallery": [
+    {
+      "src": "../../assets/content/case-studies/propose-malta/gallery/0/src.jpg",
+      "alt": "Instagram Templates"
+    },
+    {
+      "src": "../../assets/content/case-studies/propose-malta/gallery/1/src.jpg",
+      "alt": "Polaroids "
+    },
+    {
+      "src": "../../assets/content/case-studies/propose-malta/gallery/2/src.jpg",
+      "alt": "Card"
+    }
+  ],
+  "sections": [
+    {
+      "title": "Overview",
+      "featured": false,
+      "blocks": [
+        {
+          "discriminant": "paragraph",
+          "value": {
+            "text": "Propose Malta creates marriage proposal setups across the Maltese islands. We developed a new visual identity and Instagram templates to bring the care and detail of those experiences into the brand’s communications.\n\nThe work covered the wordmark, colour palette, graphic elements and layouts for sharing photographs, testimonials and seasonal offers."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Challenge",
+      "featured": false,
+      "blocks": [
+        {
+          "discriminant": "paragraph",
+          "value": {
+            "text": "The identity needed to work across romantic proposal photography and practical information about packages, availability and offers.\n\nOn Instagram, the team also needed a way to publish text-based content alongside their photographs, keeping the feed varied while making every post recognisable as Propose Malta."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Strategy",
+      "featured": false,
+      "blocks": [
+        {
+          "discriminant": "paragraph",
+          "value": {
+            "text": "We took inspiration from the details already present in their setups. Deep red draws from the roses, warm ivory reflects candlelight, and an emerald-cut stone gives the identity its defining shape.\n\nBoth O letters in the wordmark were redrawn to reference that stone. The same shape becomes a frame and repeating pattern, connecting the logo to the wider identity.\n\nTogether with elegant typography and a warm colour palette, these elements give the team a consistent way to present both their work and their messages."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Our role",
+      "featured": false,
+      "blocks": [
+        {
+          "discriminant": "paragraph",
+          "value": {
+            "text": "Plan · Rebranding\n\nWe established the visual direction and developed the identity around it, including the custom wordmark, colour palette, typography and supporting graphic elements.\n\nWe explored how the identity could extend across social media and printed materials, including a congratulations card for newly engaged couples."
+          }
+        },
+        {
+          "discriminant": "paragraph",
+          "value": {
+            "text": "Grow · Social media templates\n\nWe created reusable Instagram templates for seasonal offers, announcements, testimonials and photography.\n\nThe layouts give text-based posts a place in the feed, allowing the team to promote packages and share updates between proposal photographs. Consistent colours, typography and framing hold the content together while leaving room for different messages."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Outcome",
+      "featured": false,
+      "blocks": [
+        {
+          "discriminant": "paragraph",
+          "value": {
+            "text": "Propose Malta now has a visual identity that connects its proposal experiences with its marketing.\n\nThe wordmark and supporting design elements work across photographic and text-based content, giving the team a reusable system for social media and future brand materials."
+          }
+        }
+      ]
+    }
+  ]
+}

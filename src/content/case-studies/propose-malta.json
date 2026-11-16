@@ -2,7 +2,7 @@
   "name": "Propose Malta",
   "meta": {},
   "order": 1,
-  "draft": true,
+  "draft": false,
   "featured": false,
   "branches": [
     "plan",

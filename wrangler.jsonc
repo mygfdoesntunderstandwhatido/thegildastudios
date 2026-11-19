@@ -7,7 +7,12 @@
   // The newest date the pinned workerd supports. Move it forward with Wrangler.
   "compatibility_date": "2026-10-12",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  // Astro's handler plus the daily rebuild's cron handler (src/worker.ts).
+  "main": "./src/worker.ts",
+  // Rebuilds production once a day so the homepage feed band shows new
+  // Instagram posts (#79). UTC: 05:17 is early morning in Malta. Needs the
+  // DEPLOY_HOOK_URL Worker secret (docs/operations.md).
+  "triggers": { "crons": ["17 5 * * *"] },
   "assets": {
     "binding": "ASSETS",
     // Every public page is a static file. Directory routes get one trailing

@@ -56,8 +56,8 @@ changed here.
 1. **Content → Case studies → Add.**
 2. Fill in the project name. The **Web address** fills itself in from the name: the page will be
    `/projects/<web-address>/`. Choose it carefully, because changing it later breaks links to the page.
-3. Set the **Position** (1 comes first on the Projects page), tick the **Branches** that worked on it and
-   fill in the sector line, the card line, the summary and the four **Facts**.
+3. Tick the **Branches** that worked on it and fill in the sector line, the card line, the summary and
+   the four **Facts**.
 4. Add the **Card image** and the **Main image**. The main image needs **alt text**: one plain sentence
    saying what the photo shows, for people who can’t see it. Add up to three **Gallery** images the same
    way.
@@ -76,11 +76,22 @@ at the end of each case study. Homepage project previews were removed in #72; th
 
 To hide a project for a while, tick **Draft**. To edit one, open it, change it and save.
 
+## Reorder the case studies
+
+The order is set in one place: **Pages → Projects page → Order of case studies**. Drag a case study up or
+down and the others move along: put a project first and the one that was first becomes second. The same
+order is used on the Projects page and in the **Next project** links.
+
+A new case study goes at the end until you add it to this list: press **Add**, choose it, drag it where
+you want it and save. If you rename a project’s web address, choose it again in this list.
+
 ## Remove a case study
 
 Open it and use the bin icon at the top right, then confirm. It disappears from the Projects page, the
 count, the filters and the Next project loop, and its images are deleted with it. If a testimonial on the
-homepage points to it, choose another project for that testimonial first, or the site won’t build.
+homepage points to it, choose another project for that testimonial first, or the site won’t build. Then
+remove it from **Projects page → Order of case studies** to keep that list tidy (the site skips it either
+way).
 
 ## Images
 

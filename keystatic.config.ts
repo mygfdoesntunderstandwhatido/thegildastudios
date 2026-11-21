@@ -269,7 +269,6 @@ const caseStudies = collection({
   path: 'src/content/case-studies/*',
   format: 'json',
   slugField: 'name',
-  columns: ['order'],
   previewUrl: preview('/projects/{slug}/'),
   schema: {
     name: fields.slug({
@@ -281,7 +280,6 @@ const caseStudies = collection({
       },
     }),
     meta: meta(),
-    order: order('Where it sits on the Projects page and in the Next project loop. 1 comes first.'),
     draft: fields.checkbox({
       label: 'Draft',
       description: 'Drafts stay off the site until you untick this.',
@@ -724,6 +722,19 @@ const projectsPage = singleton({
   previewUrl: preview('/projects/'),
   schema: {
     meta: meta(),
+    order: fields.array(
+      fields.relationship({
+        label: 'Case study',
+        collection: 'caseStudies',
+        validation: { isRequired: true },
+      }),
+      {
+        label: 'Order of case studies',
+        description:
+          'The order on the Projects page and in the Next project links. Drag a case study up or down and the others move along. New case studies go at the end until you add them here.',
+        itemLabel: (props) => props.value ?? 'Choose a case study',
+      },
+    ),
     countLabel: caps(
       'Count chip',
       '{shown} and {total} are filled in, such as PROJECTS · 03 / 03.',

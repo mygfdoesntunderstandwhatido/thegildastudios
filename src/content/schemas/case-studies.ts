@@ -58,13 +58,11 @@ export const caseStudies = defineCollection({
       /** Optional phone crop of the hero, shown under 768px. It shares the hero's alt text. */
       heroPhone: image().nullish(),
       gallery: z.array(picture).max(3).default([]),
-      /** Featured entries appear in the homepage Selected work, in `order`. */
+      /** Featured entries appear in the homepage Selected work, in the Projects page order. */
       featured: z.boolean().default(false),
       /** The homepage card's title and sector line. They fall back to `short` and `sector`. */
       homeTitle: optionalText,
       homeSector: optionalText,
-      /** Position on the Projects index and in the Next project loop. */
-      order: z.number().int(),
       /** Drafts get no page and stay out of the index and the Next project loop. */
       draft: z.boolean().default(false),
       sections: z

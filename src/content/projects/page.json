@@ -3,6 +3,12 @@
     "title": "Projects · The Gilda Studios",
     "description": "The businesses we've worked with, what they needed and what we did."
   },
+  "order": [
+    "propose-malta",
+    "malta-business-network",
+    "cs-butcher",
+    "drapp-fuq-drapp"
+  ],
   "countLabel": "PROJECTS · {shown} / {total}",
   "headline": "Projects.",
   "body": "The businesses we've worked with, what they needed and what we did. Filter by branch to see where each ingredient came in.",

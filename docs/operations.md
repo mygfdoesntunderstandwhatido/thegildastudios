@@ -48,7 +48,11 @@ The site reads two build secrets: `INSTAGRAM_ACCESS_TOKEN` and `INSTAGRAM_ACCOUN
 5. **Page token and account ID.** Paste the long-lived token into the Explorer’s token field, then run `GET me/accounts?fields=name,access_token,instagram_business_account`. In the studio Page’s entry, copy `access_token` (the Page token) and `instagram_business_account.id` (the account ID, a long number starting `1784`). Check the Page token in the [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/): **Expires** should say **Never**.
 6. **Check.** Run `GET <account ID>/media?fields=id,timestamp,permalink&limit=6` in the Explorer with the Page token. It should list the latest posts.
 7. **Build secrets.** Cloudflare → Workers & Pages → `thegildastudios` → Settings → **Build** → **Variables and secrets**: add `INSTAGRAM_ACCESS_TOKEN` (the Page token) as a **Secret**, and `INSTAGRAM_ACCOUNT_ID` (the account ID). They are build variables, not runtime ones: the Worker never sees them.
-8. **Daily rebuild.** Posts only change on the site when it rebuilds. In the same Build settings, create a **deploy hook** for the production branch (`main`) and copy its URL. In GitHub → Settings → Secrets and variables → Actions, add it as the repository secret `CLOUDFLARE_DEPLOY_HOOK_URL`. `.github/workflows/instagram-rebuild.yml` then calls it every morning; run it from the Actions tab to rebuild straight away.
+8. **Daily rebuild.** Posts only change on the site when it rebuilds. The site’s Worker has a cron trigger (`wrangler.jsonc`, 05:17 UTC, early morning in Malta) that asks Cloudflare for a production build every day, so no GitHub Actions minutes are used. It needs a deploy hook:
+   - In the same Build settings, under **Deploy hooks**, create a hook for the production branch (`main`) and copy its URL. Anyone with the URL can start a build, so keep it private.
+   - Workers & Pages → `thegildastudios` → Settings → **Variables and Secrets** (the runtime ones, not the Build ones), under **Production**: add `DEPLOY_HOOK_URL` as a **Secret** with the hook’s URL. Previews have no cron trigger and don’t need it.
+   - To check it, open the Worker’s **Settings → Trigger events**: the cron should be listed. After the next morning’s run, **Observability → Events** (filter on `[rebuild]`) shows `Started a production build`, and **Deployments** shows the new build. If the secret is missing or the hook was deleted, the cron run shows as failed and the log says why.
+   - To show a new post straight away, use **Deployments → Retry build** on the latest production build, or `curl -X POST "<hook URL>"`.
 9. **Check the site.** Rebuild, then open the homepage at 1280 and 390. Six posts should show, newest first, each linking to its post.
 
 ### When the token stops working
@@ -58,6 +62,7 @@ A Page token does not expire on a date, but it stops working if the person who m
 ### Local checks
 
 - `node --test scripts/instagram.test.ts` covers ordering, alt text and every fallback.
+- `node --test scripts/rebuild.test.ts` covers the daily rebuild’s call to the deploy hook and its failures.
 - `node scripts/instagram-stand-in.mjs` serves six fake posts. In a second terminal, `INSTAGRAM_API_URL=http://127.0.0.1:4599 INSTAGRAM_ACCESS_TOKEN=test npm run build`, then `npm run serve:performance`, shows the feed band. `INSTAGRAM_STAND_IN_POSTS=5` checks the fallback.
 
 ## Optional Plausible integration

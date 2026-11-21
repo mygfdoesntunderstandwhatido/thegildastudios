@@ -10,6 +10,12 @@ export const projects = defineCollection({
   schema: z.object({
     /** Editable metadata; blank fields use Site settings. */
     meta,
+    /**
+     * Case study slugs, in the order they show on the Projects index, in the
+     * Next project loop and in Selected work. Case studies not listed follow,
+     * by name. Unknown slugs (a renamed or removed project) are skipped.
+     */
+    order: z.array(z.string()).default([]),
     /** The count chip. {shown} and {total} are two-digit counts. */
     countLabel: text,
     headline: text,

@@ -1,0 +1,28 @@
+{
+  "name": "Brand identity design",
+  "branch": "build",
+  "number": "02.2",
+  "order": 2,
+  "description": "We design visual identities for new businesses and established brands ready for a refresh. We develop your logo, colours, typography and visual style so your brand looks consistent across your website, social media and printed materials.",
+  "bestFor": "New businesses, and established brands ready for a refresh.",
+  "included": [],
+  "howItStarts": "With a brief: we get to know your business, who you want to reach and how you want people to see your brand.",
+  "phases": [
+    {
+      "title": "Brief",
+      "description": "We get to know your business, who you want to reach and how you want people to see your brand."
+    },
+    {
+      "title": "Moodboard",
+      "description": "We put together a moodboard with colour, typography and visual references. We agree on a direction with you before developing the identity."
+    },
+    {
+      "title": "Branding",
+      "description": "We turn the agreed direction into a visual identity, developing your logo and the design elements that work alongside it."
+    },
+    {
+      "title": "Deliverables",
+      "description": "We hand over your final brand files for digital and print, with guidelines so you and your team know how to use them."
+    }
+  ]
+}

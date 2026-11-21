@@ -54,7 +54,12 @@ const id = `service-${service.number.replace('.', '-')}`;
       </dl>
     </div>
     {service.phases && (
-      <ServicePhases phases={service.phases} title={labels.phases} id={`${id}-phases`} />
+      <ServicePhases
+        phases={service.phases}
+        title={labels.phases}
+        id={`${id}-phases`}
+        serviceTitleId={`${id}-title`}
+      />
     )}
   </div>
 </article>

@@ -15,6 +15,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Cloudflare Workers names each branch preview after the branch, and refuses
+  # a name that doesn't start and end with a letter or digit, or that has other
+  # characters than - _ / . + =. A branch made in the admin with an empty name
+  # is just `content-`, so its preview fails (#101). This says why, in words
+  # editors can act on.
+  branch-name:
+    name: Branch name works for previews
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the branch name
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          if [ "$BRANCH" = "content-" ]; then
+            echo "::error::This branch has no name after content-, so it can't get a preview. In the admin, start a new branch with a name such as spring-update, save your changes there, and close this pull request."
+            exit 1
+          fi
+          if ! printf '%s' "$BRANCH" | grep -Eq '^[A-Za-z0-9]([A-Za-z0-9._/+=-]*[A-Za-z0-9])?$'; then
+            echo "::error::The branch name \"$BRANCH\" can't get a preview. Use only letters, digits and dashes, and start and end with a letter or digit, such as content-spring-update. Start a new branch with a name like that and close this pull request."
+            exit 1
+          fi
+          echo "Branch name \"$BRANCH\" is fine for a preview."
+
   build:
     name: Lint, type check and build
     runs-on: ubuntu-latest
